@@ -3,27 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your Name - Academic Portfolio</title>
+    <title>Academic Portfolio</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/12.0.0/marked.min.js"></script>
     <style>
-        /* Modern and clean design */
         :root {
             --primary-color: #2c3e50;
             --secondary-color: #3498db;
-            --background-color: #f8f9fa;
-            --text-color: #2c3e50;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+            --text-color: #333;
+            --background-color: #fff;
         }
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             line-height: 1.6;
             color: var(--text-color);
-            background-color: var(--background-color);
+            margin: 0;
+            padding: 0;
         }
 
         .container {
@@ -32,75 +27,53 @@
             padding: 0 20px;
         }
 
-        /* Header styling */
-        header {
-            background-color: var(--primary-color);
-            color: white;
-            padding: 2rem 0;
-            margin-bottom: 2rem;
-        }
-
         nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            background: var(--primary-color);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
         }
 
         nav ul {
-            display: flex;
             list-style: none;
+            display: flex;
+            justify-content: center;
             gap: 2rem;
+            margin: 0;
+            padding: 0;
         }
 
         nav a {
             color: white;
             text-decoration: none;
             font-weight: 500;
-            transition: color 0.3s;
         }
 
-        nav a:hover {
-            color: var(--secondary-color);
-        }
-
-        /* Main content styling */
         .hero {
             display: flex;
-            gap: 2rem;
-            margin-bottom: 3rem;
             align-items: center;
+            gap: 2rem;
+            padding: 4rem 0;
         }
 
         .profile-img {
+            border-radius: 50%;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             width: 200px;
             height: 200px;
-            border-radius: 50%;
             object-fit: cover;
         }
 
         .section {
-            margin-bottom: 3rem;
-        }
-
-        h1, h2, h3 {
-            color: var(--primary-color);
-            margin-bottom: 1rem;
+            padding: 2rem 0;
         }
 
         .publication {
-            margin-bottom: 1.5rem;
+            margin-bottom: 2rem;
             padding: 1rem;
-            background-color: white;
-            border-radius: 5px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-
-        /* Footer styling */
-        footer {
-            background-color: var(--primary-color);
-            color: white;
-            padding: 2rem 0;
-            margin-top: 3rem;
+            border-left: 4px solid var(--secondary-color);
+            background: #f8f9fa;
         }
 
         .social-links {
@@ -110,8 +83,34 @@
         }
 
         .social-links a {
-            color: white;
+            color: var(--secondary-color);
             text-decoration: none;
+        }
+
+        footer {
+            background: var(--primary-color);
+            color: white;
+            padding: 1rem 0;
+            text-align: center;
+            margin-top: 2rem;
+        }
+
+        /* Dark mode support */
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --primary-color: #1a242f;
+                --secondary-color: #2980b9;
+                --text-color: #e1e1e1;
+                --background-color: #121212;
+            }
+
+            body {
+                background-color: var(--background-color);
+            }
+
+            .publication {
+                background: #1e1e1e;
+            }
         }
 
         /* Responsive design */
@@ -122,33 +121,33 @@
             }
 
             nav ul {
-                gap: 1rem;
+                flex-direction: column;
+                align-items: center;
             }
         }
     </style>
 </head>
 <body>
-    <header>
+    <nav>
         <div class="container">
-            <nav>
-                <h1>Your Name</h1>
-                <ul>
-                    <li><a href="#about">About</a></li>
-                    <li><a href="#research">Research</a></li>
-                    <li><a href="#publications">Publications</a></li>
-                    <li><a href="#contact">Contact</a></li>
-                </ul>
-            </nav>
+            <ul>
+                <li><a href="#about">About</a></li>
+                <li><a href="#research">Research</a></li>
+                <li><a href="#publications">Publications</a></li>
+                <li><a href="#contact">Contact</a></li>
+                <li><a href="blog.html">Blog</a></li>
+            </ul>
         </div>
-    </header>
+    </nav>
 
-    <main class="container">
-        <section id="about" class="hero">
+    <div class="container" role="main">
+        <section id="about" class="section hero">
             <img src="/api/placeholder/200/200" alt="Your Profile Picture" class="profile-img">
             <div>
+                <h1>Your Name</h1>
                 <h2>About Me</h2>
                 <p>I am a postdoctoral researcher at EMPA, the federal material science research facility of Switzerland. I specialize in transmission electron microscopy.</p>
-                <p>Currently, I am working on  in situ tensite tesiting of metals and multilayer thin films.</p>
+                <p>Currently, I am working on in situ tensile testing of metals and multilayer thin films.</p>
             </div>
         </section>
 
@@ -163,15 +162,8 @@
 
         <section id="publications" class="section">
             <h2>Selected Publications</h2>
-            <div class="publication">
-                <h3>Publication Title 1</h3>
-                <p>Authors, Journal Name (Year)</p>
-                <p>Brief description of the publication and its impact.</p>
-            </div>
-            <div class="publication">
-                <h3>Publication Title 2</h3>
-                <p>Authors, Journal Name (Year)</p>
-                <p>Brief description of the publication and its impact.</p>
+            <div id="publications-content">
+                <!-- Publications will be loaded from publications.md -->
             </div>
         </section>
 
@@ -182,18 +174,29 @@
             <p>Institution Name</p>
             <p>Address Line 1</p>
             <p>Address Line 2</p>
+
             <div class="social-links">
-                <a href="#">Google Scholar</a>
-                <a href="#">LinkedIn</a>
-                <a href="#">Twitter</a>
+                <a href="#" target="_blank">Google Scholar</a>
+                <a href="#" target="_blank">LinkedIn</a>
+                <a href="#" target="_blank">Twitter</a>
             </div>
         </section>
-    </main>
+    </div>
 
     <footer>
         <div class="container">
             <p>© 2024 Your Name. All rights reserved.</p>
         </div>
     </footer>
+
+    <script>
+        // Load publications from markdown file
+        fetch('publications.md')
+            .then(response => response.text())
+            .then(text => {
+                document.getElementById('publications-content').innerHTML = marked.parse(text);
+            })
+            .catch(error => console.error('Error loading publications:', error));
+    </script>
 </body>
 </html>
