@@ -3,77 +3,121 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Academic Portfolio</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/12.0.0/marked.min.js"></script>
+    <title>Your Academic Website</title>
     <style>
-        :root {
-            --primary-color: #2c3e50;
-            --secondary-color: #3498db;
-            --text-color: #333;
-            --background-color: #fff;
+        /* Reset and base styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
             line-height: 1.6;
-            color: var(--text-color);
-            margin: 0;
-            padding: 0;
-        }
-
-        .container {
+            color: #333;
             max-width: 1200px;
             margin: 0 auto;
             padding: 0 20px;
         }
 
+        /* Navigation */
         nav {
-            background: var(--primary-color);
+            background: white;
             padding: 1rem 0;
             position: sticky;
             top: 0;
+            border-bottom: 1px solid #eee;
+            margin-bottom: 2rem;
             z-index: 1000;
         }
 
-        nav ul {
-            list-style: none;
+        .nav-container {
             display: flex;
-            justify-content: center;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-links {
+            display: flex;
             gap: 2rem;
-            margin: 0;
-            padding: 0;
+            list-style: none;
         }
 
-        nav a {
-            color: white;
+        .nav-links a {
             text-decoration: none;
+            color: #333;
             font-weight: 500;
+            transition: color 0.3s ease;
         }
 
+        .nav-links a:hover {
+            color: #007bff;
+        }
+
+        /* Hero section */
         .hero {
             display: flex;
             align-items: center;
-            gap: 2rem;
-            padding: 4rem 0;
+            gap: 3rem;
+            margin: 4rem 0;
         }
 
         .profile-img {
+            width: 250px;
+            height: 250px;
             border-radius: 50%;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            width: 200px;
-            height: 200px;
             object-fit: cover;
         }
 
-        .section {
-            padding: 2rem 0;
+        .hero-content h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
         }
 
-        .publication {
-            margin-bottom: 2rem;
-            padding: 1rem;
-            border-left: 4px solid var(--secondary-color);
+        .hero-content h2 {
+            font-size: 1.5rem;
+            color: #666;
+            margin-bottom: 1rem;
+        }
+
+        /* Sections */
+        .section {
+            margin: 4rem 0;
+            padding: 2rem 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .section h2 {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            color: #222;
+        }
+
+        /* Research interests */
+        .research-list {
+            list-style: none;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .research-item {
             background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 8px;
+            transition: transform 0.3s ease;
+        }
+
+        .research-item:hover {
+            transform: translateY(-5px);
+        }
+
+        /* Contact section */
+        .contact-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
         }
 
         .social-links {
@@ -83,34 +127,26 @@
         }
 
         .social-links a {
-            color: var(--secondary-color);
+            color: #666;
             text-decoration: none;
+            padding: 0.5rem 1rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            transition: all 0.3s ease;
         }
 
-        footer {
-            background: var(--primary-color);
+        .social-links a:hover {
+            background: #007bff;
             color: white;
-            padding: 1rem 0;
-            text-align: center;
-            margin-top: 2rem;
+            border-color: #007bff;
         }
 
-        /* Dark mode support */
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --primary-color: #1a242f;
-                --secondary-color: #2980b9;
-                --text-color: #e1e1e1;
-                --background-color: #121212;
-            }
-
-            body {
-                background-color: var(--background-color);
-            }
-
-            .publication {
-                background: #1e1e1e;
-            }
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 2rem 0;
+            color: #666;
+            margin-top: 4rem;
         }
 
         /* Responsive design */
@@ -120,17 +156,27 @@
                 text-align: center;
             }
 
-            nav ul {
+            .profile-img {
+                width: 200px;
+                height: 200px;
+            }
+
+            .nav-container {
                 flex-direction: column;
-                align-items: center;
+                gap: 1rem;
+            }
+
+            .nav-links {
+                flex-wrap: wrap;
+                justify-content: center;
             }
         }
     </style>
 </head>
 <body>
     <nav>
-        <div class="container">
-            <ul>
+        <div class="nav-container">
+            <ul class="nav-links">
                 <li><a href="#about">About</a></li>
                 <li><a href="#research">Research</a></li>
                 <li><a href="#publications">Publications</a></li>
@@ -140,12 +186,12 @@
         </div>
     </nav>
 
-    <div class="container" role="main">
-        <section id="about" class="section hero">
+    <main>
+        <section id="about" class="hero">
             <img src="/images/profile_pic.jpeg" alt="Your Profile Picture" class="profile-img">
-            <div>
+            <div class="hero-content">
                 <h1>Your Name</h1>
-                <h2>About Me</h2>
+                <h2>Postdoctoral Researcher at EMPA</h2>
                 <p>I am a postdoctoral researcher at EMPA, the federal material science research facility of Switzerland. I specialize in transmission electron microscopy.</p>
                 <p>Currently, I am working on in situ tensile testing of metals and multilayer thin films.</p>
             </div>
@@ -153,52 +199,43 @@
 
         <section id="research" class="section">
             <h2>Research Interests</h2>
-            <ul>
-                <li>Advanced transmission electron microscopy</li>
-				<li>Grain boundaries and defects</li>
-				<li>Deformation mechanics</li>
-                <li>Additive manufacturing</li>
-                <li>Thin film depositions</li>
+            <ul class="research-list">
+                <li class="research-item">Advanced transmission electron microscopy</li>
+                <li class="research-item">Grain boundaries and defects</li>
+                <li class="research-item">Deformation mechanics</li>
+                <li class="research-item">Additive manufacturing</li>
+                <li class="research-item">Thin film depositions</li>
             </ul>
         </section>
 
         <section id="publications" class="section">
             <h2>Selected Publications</h2>
             <div id="publications-content">
-                <!-- Publications will be loaded from publications.md -->
+                <!-- Publications will be added here -->
             </div>
         </section>
 
         <section id="contact" class="section">
             <h2>Contact</h2>
-            <p>Email: your.email@institution.edu</p>
-            <p>Office: Building Name, Room Number</p>
-            <p>Institution Name</p>
-            <p>Address Line 1</p>
-            <p>Address Line 2</p>
-
-            <div class="social-links">
-                <a href="#" target="_blank">Google Scholar</a>
-                <a href="#" target="_blank">LinkedIn</a>
-                <a href="#" target="_blank">Twitter</a>
+            <div class="contact-info">
+                <div>
+                    <p>Email: your.email@institution.edu</p>
+                    <p>Office: Building Name, Room Number</p>
+                    <p>Institution Name</p>
+                    <p>Address Line 1</p>
+                    <p>Address Line 2</p>
+                </div>
+                <div class="social-links">
+                    <a href="#" target="_blank">Google Scholar</a>
+                    <a href="#" target="_blank">LinkedIn</a>
+                    <a href="#" target="_blank">Twitter</a>
+                </div>
             </div>
         </section>
-    </div>
+    </main>
 
     <footer>
-        <div class="container">
-            <p>© 2024 Your Name. All rights reserved.</p>
-        </div>
+        <p>© 2024 Your Name. All rights reserved.</p>
     </footer>
-
-    <script>
-        // Load publications from markdown file
-        fetch('publications.md')
-            .then(response => response.text())
-            .then(text => {
-                document.getElementById('publications-content').innerHTML = marked.parse(text);
-            })
-            .catch(error => console.error('Error loading publications:', error));
-    </script>
 </body>
 </html>
