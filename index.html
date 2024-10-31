@@ -3,64 +3,51 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your Academic Website</title>
+    <title>Vivek Devulapalli - Academic Website</title>
     <style>
-        /* Reset and base styles */
-        * {
+        /* Core styles */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
-            line-height: 1.6;
             color: #333;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-
-        /* Navigation */
-        nav {
-            background: white;
-            padding: 1rem 0;
-            position: sticky;
-            top: 0;
-            border-bottom: 1px solid #eee;
-            margin-bottom: 2rem;
-            z-index: 1000;
         }
 
         .nav-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            background: #f8f9fa;
+            padding: 1rem;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
         }
 
-        .nav-links {
-            display: flex;
-            gap: 2rem;
+        .nav-container ul {
             list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
         }
 
-        .nav-links a {
+        .nav-container a {
             text-decoration: none;
             color: #333;
             font-weight: 500;
-            transition: color 0.3s ease;
         }
 
-        .nav-links a:hover {
-            color: #007bff;
+        .section {
+            padding: 4rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
         }
 
-        /* Hero section */
         .hero {
             display: flex;
             align-items: center;
             gap: 3rem;
-            margin: 4rem 0;
+            padding: 6rem 2rem;
         }
 
         .profile-img {
@@ -70,54 +57,42 @@
             object-fit: cover;
         }
 
-        .hero-content h1 {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
+        .hero-content {
+            flex: 1;
         }
 
-        .hero-content h2 {
-            font-size: 1.5rem;
-            color: #666;
-            margin-bottom: 1rem;
-        }
-
-        /* Sections */
-        .section {
-            margin: 4rem 0;
-            padding: 2rem 0;
-            border-bottom: 1px solid #eee;
-        }
-
-        .section h2 {
-            font-size: 2rem;
-            margin-bottom: 1.5rem;
-            color: #222;
-        }
-
-        /* Research interests */
-        .research-list {
-            list-style: none;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        .publications-list {
+            display: flex;
+            flex-direction: column;
             gap: 1.5rem;
         }
 
-        .research-item {
-            background: #f8f9fa;
+        .publication-item {
             padding: 1.5rem;
+            background: #f8f9fa;
             border-radius: 8px;
-            transition: transform 0.3s ease;
+            border-left: 4px solid #0066cc;
         }
 
-        .research-item:hover {
-            transform: translateY(-5px);
+        .publication-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
         }
 
-        /* Contact section */
+        .publication-authors {
+            font-style: italic;
+            color: #666;
+            margin-bottom: 0.5rem;
+        }
+
+        .publication-journal {
+            color: #444;
+        }
+
         .contact-info {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
         }
 
         .social-links {
@@ -127,68 +102,26 @@
         }
 
         .social-links a {
-            color: #666;
             text-decoration: none;
-            padding: 0.5rem 1rem;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            transition: all 0.3s ease;
-        }
-
-        .social-links a:hover {
-            background: #007bff;
-            color: white;
-            border-color: #007bff;
-        }
-
-        /* Footer */
-        footer {
-            text-align: center;
-            padding: 2rem 0;
-            color: #666;
-            margin-top: 4rem;
-        }
-
-        /* Responsive design */
-        @media (max-width: 768px) {
-            .hero {
-                flex-direction: column;
-                text-align: center;
-            }
-
-            .profile-img {
-                width: 200px;
-                height: 200px;
-            }
-
-            .nav-container {
-                flex-direction: column;
-                gap: 1rem;
-            }
-
-            .nav-links {
-                flex-wrap: wrap;
-                justify-content: center;
-            }
+            color: #0066cc;
+            font-weight: 500;
         }
     </style>
 </head>
 <body>
-    <nav>
-        <div class="nav-container">
-            <ul class="nav-links">
-                <li><a href="#about">About</a></li>
-                <li><a href="#research">Research</a></li>
-                <li><a href="#publications">Publications</a></li>
-                <li><a href="#contact">Contact</a></li>
-                <li><a href="blog.html">Blog</a></li>
-            </ul>
-        </div>
+    <nav class="nav-container">
+        <ul>
+            <li><a href="#about">About</a></li>
+            <li><a href="#research">Research</a></li>
+            <li><a href="#publications">Publications</a></li>
+            <li><a href="#contact">Contact</a></li>
+            <li><a href="blog.html">Blog</a></li>
+        </ul>
     </nav>
 
     <main>
-        <section id="about" class="hero">
-            <img src="/images/profile_pic.jpeg" alt="Your Profile Picture" class="profile-img">
+        <section id="about" class="section hero">
+            <img src="/api/placeholder/250/250" alt="Vivek Devulapalli" class="profile-img">
             <div class="hero-content">
                 <h1>Vivek Devulapalli</h1>
                 <h2>Postdoctoral Researcher at EMPA</h2>
@@ -199,22 +132,32 @@
 
         <section id="research" class="section">
             <h2>Research Interests</h2>
-            <ul class="research-list">
-                <li class="research-item">Advanced transmission electron microscopy</li>
-                <li class="research-item">Grain boundaries and defects</li>
-                <li class="research-item">Deformation mechanics</li>
-                <li class="research-item">Additive manufacturing</li>
-                <li class="research-item">Thin film depositions</li>
+            <ul>
+                <li>Advanced transmission electron microscopy</li>
+                <li>Grain boundaries and defects</li>
+                <li>Deformation mechanics</li>
+                <li>Additive manufacturing</li>
+                <li>Thin film depositions</li>
             </ul>
         </section>
 
         <section id="publications" class="section">
             <h2>Selected Publications</h2>
-            <div id="publications-content">
-                <div class="markdown-body">
-                    {% capture publications %}{% include_relative publications.md %}{% endcapture %}
-                    {{ publications | markdownify }}
+            <div class="publications-list">
+                <!-- Example publication entries - Replace with your actual publications -->
+                <div class="publication-item">
+                    <div class="publication-title">
+                        In-situ observation of dislocation-twin boundary interaction in a TWIP steel using optical microscopy and EBSD
+                    </div>
+                    <div class="publication-authors">
+                        Devulapalli, V., Saraf, L., Martens, R.
+                    </div>
+                    <div class="publication-journal">
+                        Materials Science and Engineering: A (2023)
+                    </div>
                 </div>
+                
+                <!-- Add more publications here -->
             </div>
         </section>
 
@@ -234,8 +177,8 @@
         </section>
     </main>
 
-    <footer>
-        <p>© 2024 Your Name. All rights reserved.</p>
+    <footer style="text-align: center; padding: 2rem;">
+        <p>© 2024 Vivek Devulapalli. All rights reserved.</p>
     </footer>
 </body>
 </html>
