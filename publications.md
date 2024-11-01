@@ -1,4 +1,9 @@
-# Publications
+# publications.md
+---
+layout: page
+title: Publications
+---
+
 
 ## First Author
 
@@ -20,3 +25,6 @@
 
 ## Co-Author
 <!-- Add co-authored publications here when available -->
+
+
+
