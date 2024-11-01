@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% if page.title %}{{ page.title }} | {% endif %}{{ site.title }}</title>
+    
+    <!-- Add minima theme CSS first as a fallback -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/minima@2.5.1/assets/css/style.css">
+    
+    <!-- Then add your custom CSS -->
+    <link rel="stylesheet" href="{{ '/assets/css/main.css' | relative_url }}">
+</head>
+<body>
+    <header class="site-header">
+        {% include header.html %}
+    </header>
+
+    <main class="content">
+        {{ content }}
+    </main>
+
+    <footer class="site-footer">
+        {% include footer.html %}
+    </footer>
+</body>
+</html>
