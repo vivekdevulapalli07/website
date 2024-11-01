@@ -2,3 +2,16 @@
 title: Vivek Devulapalli
 description: Postdoctoral Researcher at EMPA
 theme: minima  # Using GitHub's supported theme for simplicity
+
+# Add to existing _config.yml
+permalink: /blog/:year/:month/:day/:title/
+
+# Show excerpts on the blog page
+show_excerpts: true
+
+# Navigation
+header_pages:
+  - research.md
+  - publications.md
+  - blog.md
+  - contact.md

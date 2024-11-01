@@ -1,0 +1,44 @@
+---
+---
+
+@import "{{ site.theme }}";
+
+.blog-posts {
+  margin: 2em 0;
+  
+  .post-preview {
+    margin-bottom: 2em;
+    padding-bottom: 1em;
+    border-bottom: 1px solid #eee;
+    
+    h2 {
+      margin-bottom: 0.5em;
+      
+      a {
+        color: #333;
+        text-decoration: none;
+        
+        &:hover {
+          color: #0366d6;
+        }
+      }
+    }
+    
+    .post-meta {
+      color: #666;
+      font-size: 0.9em;
+      margin-bottom: 1em;
+    }
+    
+    .read-more {
+      display: inline-block;
+      margin-top: 1em;
+      color: #0366d6;
+      text-decoration: none;
+      
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+}
