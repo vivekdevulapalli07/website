@@ -4,7 +4,7 @@ title: Home
 ---
 
 <div class="profile">
-    <img src="assets/images/profile.jpg" alt="Vivek Devulapalli">
+    <img src="assets/images/profile_pic.jpeg" alt="Vivek Devulapalli">
     <div>
         <h1>Vivek Devulapalli</h1>
         <h2>Postdoctoral Researcher at EMPA</h2>
