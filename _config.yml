@@ -1,17 +1,33 @@
-# _config.yml
+# Site settings
 title: Vivek Devulapalli
 description: Postdoctoral Researcher at EMPA
-theme: minima  # Using GitHub's supported theme for simplicity
+theme: minima
 
-# Add to existing _config.yml
-permalink: /blog/:year/:month/:day/:title/
+# Build settings
+markdown: kramdown
 
-# Show excerpts on the blog page
-show_excerpts: true
+# Minima specific settings
+minima:
+  date_format: "%b %-d, %Y"
 
-# Navigation
+# Add navigation items
 header_pages:
+  - index.md
   - research.md
   - publications.md
   - blog.md
   - contact.md
+
+# Blog settings
+permalink: /blog/:year/:month/:day/:title/
+show_excerpts: true
+
+# Social links (optional)
+minima:
+  social_links:
+    - platform: github
+      user_url: "https://github.com/vivekdevulapalli07"
+    - platform: linkedin
+      user_url: "https://www.linkedin.com/in/vivek-devulapalli-stem/"
+    - platform: google_scholar
+      user_url: "https://scholar.google.com/citations?user=TE3lrxoAAAAJ&hl=en"

@@ -14,3 +14,6 @@ permalink: /blog/
     </article>
   {% endfor %}
 </div>
+{% else %}
+<p>No posts yet.</p>
+{% endif %}
