@@ -13,6 +13,7 @@ minima:
 # Add navigation items
 header_pages:
   - index.md
+  - education.md
   - research.md
   - publications.md
   - blog.md
