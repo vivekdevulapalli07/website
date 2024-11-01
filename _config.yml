@@ -1,27 +1,28 @@
-# Site settings
 title: Vivek Devulapalli
 description: Postdoctoral Researcher at EMPA
 theme: minima
 
-# Build settings
-markdown: kramdown
-
-# Minima specific settings
-minima:
-  date_format: "%b %-d, %Y"
-
-# Add navigation items
+# Navigation
 header_pages:
   - index.md
   - education.md
-  - research.md
   - publications.md
-  - blog.md
   - contact.md
 
-# Blog settings
-permalink: /blog/:year/:month/:day/:title/
-show_excerpts: true
+# Social links
+github_username:  vivekdevulapalli07
+linkedin_username: vivek-devulapalli-stem
+google_scholar: TE3lrxoAAAAJ
+
+# Build settings
+markdown: kramdown
+plugins:
+  - jekyll-feed
+  - jekyll-seo-tag
+
+# Minima theme settings
+minima:
+  date_format: "%b %-d, %Y"
 
 # Social links (optional)
 minima:
