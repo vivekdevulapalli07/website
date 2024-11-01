@@ -8,7 +8,7 @@ title: Publications
 <div class="publications">
     <div class="publication">
         <div class="title">
-            <a href="https://doi.org/10.1126/science.adi3701" target="_blank">Topological grain boundary segregation transitions</a>
+            <a href="https://doi.org/10.1126/science.adq4147" target="_blank">Topological grain boundary segregation transitions</a>
         </div>
         <div class="authors">V. Devulapalli, E. Chen, T. Brink, T. Frolov, C.H. Liebscher</div>
         <div class="journal">Science, 386 (2024), 420-424</div>
@@ -16,7 +16,7 @@ title: Publications
 
 <div class="publication">
         <div class="title">
-            <a href="https://doi.org/10.1016/j.addma.2023.104338" target="_blank">Laser powder bed fusion synthesis of nanoparticle reinforced CoCrFeNi</a>
+            <a href="https://doi.org/10.1016/j.addma.2024.104338" target="_blank">Laser powder bed fusion synthesis of nanoparticle reinforced CoCrFeNi</a>
         </div>
         <div class="authors">V. Devulapalli, F. Schulz, E.S. Barreto, N. Ellendt, E.A. Jägle, G. Dehm</div>
         <div class="journal">Additive Manufacturing, 91 (2024), 104338</div>
