@@ -3,8 +3,6 @@ layout: page
 title: Publications
 ---
 
-# Publications
-
 ## First Author
 
 <div class="publications">
