@@ -3,6 +3,73 @@
 
 @import "{{ site.theme }}";
 
+/* Publications styling */
+.publications {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.publication {
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    border-left: 4px solid #2196F3;
+    background-color: #f8f9fa;
+    border-radius: 0 4px 4px 0;
+    transition: transform 0.2s ease-in-out;
+}
+
+.publication:hover {
+    transform: translateX(5px);
+    background-color: #f1f3f5;
+}
+
+.publication .title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #1a73e8;
+    margin-bottom: 0.5rem;
+}
+
+.publication .authors {
+    font-size: 1rem;
+    color: #424242;
+    margin-bottom: 0.5rem;
+}
+
+.publication .journal {
+    font-size: 0.9rem;
+    color: #666;
+    font-style: italic;
+}
+
+/* Impact journals styling */
+.publication .journal:contains("Science") {
+    color: #1565c0;
+    font-weight: 500;
+}
+
+/* Responsive design */
+@media screen and (max-width: 600px) {
+    .publication {
+        padding: 1rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .publication .title {
+        font-size: 1.1rem;
+    }
+    
+    .publication .authors {
+        font-size: 0.9rem;
+    }
+    
+    .publication .journal {
+        font-size: 0.85rem;
+    }
+}
+
+@import "{{ site.theme }}";
+
 .blog-posts {
   margin: 2em 0;
   
