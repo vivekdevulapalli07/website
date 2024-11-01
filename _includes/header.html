@@ -1,0 +1,8 @@
+<header class="site-header">
+    <nav>
+        <a href="{{ '/' | relative_url }}" {% if page.url == '/' %}class="active"{% endif %}>About</a>
+        <a href="{{ '/research' | relative_url }}" {% if page.url == '/research' %}class="active"{% endif %}>Research</a>
+        <a href="{{ '/publications' | relative_url }}" {% if page.url == '/publications' %}class="active"{% endif %}>Publications</a>
+        <a href="{{ '/contact' | relative_url }}" {% if page.url == '/contact' %}class="active"{% endif %}>Contact</a>
+    </nav>
+</header>
