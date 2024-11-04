@@ -6,39 +6,33 @@
     max-width: 800px;
     margin: 2rem auto;
     overflow: hidden;
-
-    &:hover {
-        .carousel-button {
-            opacity: 1;
-        }
-    }
 }
 
 .carousel-container {
     position: relative;
+    width: 100%;
+    height: 400px;  // Fixed height
     overflow: hidden;
     border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .carousel-track {
-    position: relative;
-    height: 400px; // Fixed height for slides
-    transform: translateX(0);
+    display: flex;
+    width: 100%;
+    height: 100%;
     transition: transform 0.5s ease-in-out;
 }
 
 .carousel-slide {
-    position: absolute;
-    top: 0;
-    width: 100%;
-    height: 100%;
+    flex: 0 0 100%;  // Each slide takes full width
+    min-width: 100%; // Ensure full width
+    position: relative;
     
     img {
         width: 100%;
         height: 100%;
         object-fit: cover;
-        display: block;
     }
 }
 
@@ -53,12 +47,6 @@
     margin: 0;
     font-size: 0.9rem;
     text-align: center;
-    transform: translateY(100%);
-    transition: transform 0.3s ease;
-}
-
-.carousel-slide:hover .carousel-caption {
-    transform: translateY(0);
 }
 
 .carousel-button {
@@ -74,9 +62,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    opacity: 0;
-    transition: opacity 0.3s ease, background-color 0.3s ease;
     z-index: 2;
+    transition: background-color 0.3s ease;
     
     &:hover {
         background: white;
@@ -98,16 +85,15 @@
 }
 
 @media (max-width: 768px) {
+    .carousel-container {
+        height: 300px;
+    }
+    
     .carousel-button {
-        opacity: 1;
         width: 32px;
         height: 32px;
         
         &.prev { left: 0.5rem; }
         &.next { right: 0.5rem; }
-    }
-    
-    .carousel-track {
-        height: 300px;
     }
 }
