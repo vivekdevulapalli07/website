@@ -1,5 +1,10 @@
+# Site settings
 title: Vivek Devulapalli
 description: Postdoctoral Researcher at EMPA
+baseurl: "/website" # the subpath of your site, e.g. /blog
+url: "https://vivekdevulapalli07.github.io" # the base hostname & protocol
+
+# Theme settings
 theme: minima
 
 # Navigation
@@ -10,11 +15,6 @@ header_pages:
   - education.md
   - contact.md
 
-# Social links
-github_username:  vivekdevulapalli07
-linkedin_username: vivek-devulapalli-stem
-google_scholar: TE3lrxoAAAAJ
-
 # Build settings
 markdown: kramdown
 plugins:
@@ -24,9 +24,6 @@ plugins:
 # Minima theme settings
 minima:
   date_format: "%b %-d, %Y"
-
-# Social links (optional)
-minima:
   social_links:
     - platform: github
       user_url: "https://github.com/vivekdevulapalli07"
@@ -39,12 +36,6 @@ minima:
 sass:
   sass_dir: _sass
   style: compressed
-
-# Site-wide variables and settings
-title: Vivek Devulapalli
-description: Postdoctoral Researcher at EMPA
-baseurl: "" # If your site is in a subdirectory, put it here
-url: "https://vivekdevulapalli07.github.io/website/" # Your site's full URL
 
 # Assets configuration
 defaults:
