@@ -34,3 +34,25 @@ minima:
       user_url: "https://www.linkedin.com/in/vivek-devulapalli-stem/"
     - platform: google_scholar
       user_url: "https://scholar.google.com/citations?user=TE3lrxoAAAAJ&hl=en"
+
+# SASS configuration
+sass:
+  sass_dir: _sass
+  style: compressed
+
+# Site-wide variables and settings
+title: Your Name
+description: Your academic website
+baseurl: "" # If your site is in a subdirectory, put it here
+url: "https://vivekdevulapalli07.github.io/website/" # Your site's full URL
+
+# Assets configuration
+defaults:
+  - scope:
+      path: "assets/js"
+    values:
+      js: true
+  - scope:
+      path: "assets/images"
+    values:
+      image: true

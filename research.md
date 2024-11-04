@@ -4,6 +4,9 @@ title: Research
 permalink: /blog/
 ---
 
+<h2>Research Highlights</h2>
+{% include research-carousel.html %}
+
 <div class="blog-posts">
   {% for post in site.posts %}
     <article class="post-preview">
