@@ -41,8 +41,8 @@ sass:
   style: compressed
 
 # Site-wide variables and settings
-title: Your Name
-description: Your academic website
+title: Vivek Devulapalli
+description: Postdoctoral Researcher at EMPA
 baseurl: "" # If your site is in a subdirectory, put it here
 url: "https://vivekdevulapalli07.github.io/website/" # Your site's full URL
 

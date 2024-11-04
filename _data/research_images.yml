@@ -1,0 +1,19 @@
+# _data/research_images.yml
+
+- file: Ti_asymmetric_GB.png
+  caption: "Atomically resolved HAADF image of an asymmetric grain boundary in Ti showing 'cage' formation due to Fe segregation."
+
+- file: Film_anneal.png
+  caption: "Annealing to Ti thin film depicting the grwoth of one grain orientation at the expense of another."
+
+- file: Ti_GB_circuit.png
+  caption: "Burgers circuit drawn around a pure Ti grain boundary to measure the defect content in it."
+
+- file: Ti_sapphire.jpeg
+  caption: "HRTEM image of the Ti thin film / Sapphire substrate interface used to find out the orientation relationship."
+
+- file: Fe_seg_side.png
+  caption: "Atom probe tomography of Fe segregation at Ti grain boundary."
+
+- file: Unique_grian_map.bmp
+  caption: "A unique grain map obtained from electron backscatter diffraction scan of the Ti thin film showing one large grain with islands of several smaller grains in it."
