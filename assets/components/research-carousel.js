@@ -1,16 +1,24 @@
 const ResearchCarousel = () => {
   const [currentSlide, setCurrentSlide] = React.useState(0);
   const [images, setImages] = React.useState([]);
-  
+  const [debug, setDebug] = React.useState({ loaded: false, error: null });
+
   React.useEffect(() => {
     // Get the images from the data-images attribute
     const imagesContainer = document.getElementById('research-carousel');
     if (imagesContainer) {
       try {
-        const imagesData = JSON.parse(imagesContainer.getAttribute('data-images'));
+        const rawData = imagesContainer.getAttribute('data-images');
+        console.log('Raw image data:', rawData); // Debug log
+
+        const imagesData = JSON.parse(rawData);
+        console.log('Parsed images:', imagesData); // Debug log
+        
         setImages(imagesData);
+        setDebug({ loaded: true, error: null });
       } catch (error) {
         console.error('Error parsing images data:', error);
+        setDebug({ loaded: false, error: error.message });
       }
     }
   }, []);
@@ -24,34 +32,63 @@ const ResearchCarousel = () => {
   };
 
   React.useEffect(() => {
-    const timer = setInterval(nextSlide, 5000);
-    return () => clearInterval(timer);
+    if (images.length > 0) {
+      const timer = setInterval(nextSlide, 5000);
+      return () => clearInterval(timer);
+    }
   }, [images.length]);
 
-  if (images.length === 0) return null;
+  // If no images, show debug info
+  if (images.length === 0) {
+    return (
+      <div className="p-4 bg-gray-100 rounded">
+        <p>Status: {debug.loaded ? 'Loaded' : 'Loading...'}</p>
+        {debug.error && <p className="text-red-500">Error: {debug.error}</p>}
+      </div>
+    );
+  }
 
   return (
     <div className="relative w-full h-96 overflow-hidden rounded-lg bg-gray-100">
       <div className="relative h-full">
-        {images.map((image, index) => (
-          <div
-            key={image.file}
-            className={`absolute w-full h-full transition-opacity duration-500 ease-in-out ${
-              index === currentSlide ? 'opacity-100' : 'opacity-0'
-            }`}
-          >
-            <div className="relative w-full h-full">
-              <img
-                src={`${window.baseurl}/assets/images/research/${image.file}`}
-                alt={image.caption}
-                className="w-full h-full object-cover"
-              />
-              <div className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 text-white p-4">
-                <p className="text-sm text-center">{image.caption}</p>
+        {images.map((image, index) => {
+          // Construct the image path
+          const imagePath = image.file.startsWith('/')
+            ? `${window.baseurl}${image.file}`
+            : `${window.baseurl}/assets/images/research/${image.file}`;
+
+          console.log('Image path:', imagePath); // Debug log
+
+          return (
+            <div
+              key={image.file}
+              className={`absolute w-full h-full transition-opacity duration-500 ease-in-out ${
+                index === currentSlide ? 'opacity-100' : 'opacity-0'
+              }`}
+            >
+              <div className="relative w-full h-full">
+                <img
+                  src={imagePath}
+                  alt={image.caption}
+                  className="w-full h-full object-cover"
+                  onError={(e) => {
+                    console.error('Image failed to load:', imagePath);
+                    e.target.style.backgroundColor = '#eee';
+                    e.target.style.padding = '2rem';
+                    e.target.insertAdjacentHTML('afterend', 
+                      `<div class="absolute inset-0 flex items-center justify-center">
+                        <p class="text-red-500">Image failed to load: ${image.file}</p>
+                      </div>`
+                    );
+                  }}
+                />
+                <div className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 text-white p-4">
+                  <p className="text-sm text-center">{image.caption}</p>
+                </div>
               </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
 
       <button
@@ -87,11 +124,17 @@ const ResearchCarousel = () => {
   );
 };
 
+// Debug log when mounting
+console.log('Research Carousel component loaded');
+
 // Render the component when the document is ready
 document.addEventListener('DOMContentLoaded', () => {
   const container = document.getElementById('research-carousel');
   if (container) {
+    console.log('Container found, rendering carousel');
     const root = ReactDOM.createRoot(container);
     root.render(<ResearchCarousel />);
+  } else {
+    console.error('Container not found');
   }
 });

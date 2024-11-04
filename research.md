@@ -6,12 +6,16 @@ permalink: /research/
 
 <h2>Research Highlights</h2>
 
+{% assign images = site.data.research_images %}
 <div id="research-carousel" 
-     data-images='{{ site.data.research_images | jsonify | replace: "'", "&#39;" }}'>
+     data-images='{{ images | jsonify | replace: "'", "&#39;" }}'>
 </div>
 
 <script>
   window.baseurl = "{{ site.baseurl }}";
+  // Debug log
+  console.log('Base URL:', window.baseurl);
+  console.log('Research images:', {{ images | jsonify }});
 </script>
 
 <div class="blog-posts">
