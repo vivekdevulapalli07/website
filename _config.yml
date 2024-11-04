@@ -5,6 +5,7 @@ theme: minima
 # Navigation
 header_pages:
   - index.md
+  - research.md
   - education.md
   - publications.md
   - contact.md
