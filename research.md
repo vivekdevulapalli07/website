@@ -1,12 +1,18 @@
 ---
 layout: page
 title: Research
-permalink: /blog/
+permalink: /research/
 ---
 
 <h2>Research Highlights</h2>
 
-<div id="research-carousel"></div>
+<div id="research-carousel" 
+     data-images='{{ site.data.research_images | jsonify | replace: "'", "&#39;" }}'>
+</div>
+
+<script>
+  window.baseurl = "{{ site.baseurl }}";
+</script>
 
 <div class="blog-posts">
   {% for post in site.posts %}
@@ -18,13 +24,3 @@ permalink: /blog/
     </article>
   {% endfor %}
 </div>
-
-<script type="text/javascript">
-  document.addEventListener('DOMContentLoaded', function() {
-    const container = document.getElementById('research-carousel');
-    if (container) {
-      const root = ReactDOM.createRoot(container);
-      root.render(React.createElement(ResearchCarousel));
-    }
-  });
-</script>
