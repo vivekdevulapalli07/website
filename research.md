@@ -6,28 +6,26 @@ permalink: /research/
 
 <h2>Research Highlights</h2>
 
-<!-- Debug info -->
-<script>
-console.log('Page loaded');
-</script>
-
-{% assign images = site.data.research_images %}
-<!-- Debug output -->
-<div style="display: none;">
-  Raw data: {{ images | inspect }}
+<div class="research-carousel">
+    <div class="carousel-container">
+        <div class="carousel-track">
+            {% for image in site.data.research_images %}
+            <div class="carousel-slide">
+                <img src="{{ '/assets/images/research/' | append: image.file | relative_url }}" 
+                     alt="{{ image.caption }}">
+                <div class="carousel-caption">{{ image.caption }}</div>
+            </div>
+            {% endfor %}
+        </div>
+        <button class="carousel-button prev">❮</button>
+        <button class="carousel-button next">❯</button>
+        <div class="carousel-indicators">
+            {% for image in site.data.research_images %}
+            <button class="carousel-indicator" aria-label="Go to slide {{ forloop.index }}"></button>
+            {% endfor %}
+        </div>
+    </div>
 </div>
-
-<div id="research-carousel" 
-     data-images='{{ images | jsonify | replace: "'", "&#39;" }}'
-     data-debug="true">
-</div>
-
-<script>
-  window.baseurl = "{{ site.baseurl }}";
-  console.log('Base URL:', window.baseurl);
-  console.log('Carousel container:', document.getElementById('research-carousel'));
-  console.log('Images data:', {{ images | jsonify }});
-</script>
 
 <div class="blog-posts">
   {% for post in site.posts %}
