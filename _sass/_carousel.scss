@@ -1,5 +1,4 @@
 // _sass/_carousel.scss
-
 .research-carousel {
     position: relative;
     width: 100%;
@@ -63,10 +62,11 @@
     align-items: center;
     justify-content: center;
     z-index: 2;
-    transition: background-color 0.3s ease;
+    transition: all 0.3s ease;
     
     &:hover {
         background: white;
+        transform: translateY(-50%) scale(1.1);
     }
 
     &.prev {
@@ -77,10 +77,47 @@
         right: 1rem;
     }
 
-    svg {
-        fill: #333;
-        width: 24px;
-        height: 24px;
+    // Replace SVG styles with direct content
+    &::before {
+        content: '❮';
+        font-size: 1.2rem;
+        color: #333;
+    }
+
+    &.next::before {
+        content: '❯';
+    }
+}
+
+// Add indicators
+.carousel-indicators {
+    position: absolute;
+    bottom: 4rem;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    z-index: 2;
+}
+
+.carousel-indicator {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    border: 2px solid white;
+    background: transparent;
+    padding: 0;
+    cursor: pointer;
+    transition: all 0.3s ease;
+
+    &.active {
+        background: white;
+        transform: scale(1.2);
+    }
+
+    &:hover {
+        background: rgba(255, 255, 255, 0.5);
     }
 }
 
@@ -95,5 +132,18 @@
         
         &.prev { left: 0.5rem; }
         &.next { right: 0.5rem; }
+
+        &::before {
+            font-size: 1rem;
+        }
+    }
+
+    .carousel-indicators {
+        bottom: 3.5rem;
+    }
+
+    .carousel-caption {
+        padding: 0.75rem;
+        font-size: 0.8rem;
     }
 }
