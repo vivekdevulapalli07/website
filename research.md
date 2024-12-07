@@ -6,7 +6,8 @@ permalink: /research/
 
 <h2>Research Highlights</h2>
 
-<div class="research-carousel">
+{% assign carousel_images = site.data.research_images | jsonify | replace: '"', '\"' %}
+<div class="research-carousel" data-images="{{ carousel_images }}">
     <div class="carousel-container">
         <div class="carousel-track">
             {% for image in site.data.research_images %}
