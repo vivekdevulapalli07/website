@@ -1,9 +1,22 @@
+// Save this as assets/js/carousel.js
 class ResearchCarousel {
     constructor(element) {
+        console.log('Initializing carousel...');
         this.container = element;
-        this.currentSlide = 0;
-        this.images = JSON.parse(this.container.getAttribute('data-images') || '[]');
+        
+        // Log the raw data attribute
+        console.log('Raw data-images attribute:', this.container.getAttribute('data-images'));
+        
+        try {
+            this.images = JSON.parse(this.container.getAttribute('data-images') || '[]');
+            console.log('Parsed images data:', this.images);
+        } catch (error) {
+            console.error('Error parsing images data:', error);
+            this.images = [];
+        }
+
         this.baseUrl = document.querySelector('meta[name="baseurl"]')?.getAttribute('content') || '';
+        console.log('Base URL:', this.baseUrl);
         
         this.init();
     }
@@ -25,10 +38,17 @@ class ResearchCarousel {
         this.images.forEach((image, index) => {
             const slide = document.createElement('div');
             slide.className = 'carousel-slide';
+            
+            // Log the full image path being used
+            const imagePath = `${this.baseUrl}/assets/images/research/${image.file}`;
+            console.log(`Creating slide ${index + 1}:`, imagePath);
+            
             slide.innerHTML = `
-                <img src="${this.baseUrl}/assets/images/research/${image.file}" 
-                     alt="${image.caption}" 
-                     loading="${index === 0 ? 'eager' : 'lazy'}">
+                <img src="${imagePath}" 
+                     alt="${image.caption}"
+                     loading="${index === 0 ? 'eager' : 'lazy'}"
+                     onerror="console.error('Failed to load image:', '${imagePath}')"
+                     onload="console.log('Successfully loaded image:', '${imagePath}')">
                 <div class="carousel-caption">${image.caption}</div>
             `;
             this.track.appendChild(slide);
@@ -48,10 +68,8 @@ class ResearchCarousel {
         this.container.querySelector('.prev').addEventListener('click', () => this.prevSlide());
         this.container.querySelector('.next').addEventListener('click', () => this.nextSlide());
 
-        // Start autoplay
-        this.startAutoplay();
-        
-        // Update initial state
+        // Initialize first slide
+        this.currentSlide = 0;
         this.updateSlides();
     }
 
@@ -71,7 +89,7 @@ class ResearchCarousel {
     }
 
     updateSlides() {
-        // Update track position
+        console.log('Updating to slide:', this.currentSlide);
         this.track.style.transform = `translateX(-${this.currentSlide * 100}%)`;
         
         // Update indicators
@@ -80,25 +98,12 @@ class ResearchCarousel {
             indicator.classList.toggle('active', index === this.currentSlide);
         });
     }
-
-    startAutoplay() {
-        this.stopAutoplay(); // Clear any existing interval
-        this.autoplayInterval = setInterval(() => this.nextSlide(), 5000);
-        
-        // Pause on hover
-        this.container.addEventListener('mouseenter', () => this.stopAutoplay());
-        this.container.addEventListener('mouseleave', () => this.startAutoplay());
-    }
-
-    stopAutoplay() {
-        if (this.autoplayInterval) {
-            clearInterval(this.autoplayInterval);
-        }
-    }
 }
 
 // Initialize all carousels when the document is ready
 document.addEventListener('DOMContentLoaded', () => {
+    console.log('Document ready, looking for carousels...');
     const carousels = document.querySelectorAll('.research-carousel');
+    console.log('Found carousels:', carousels.length);
     carousels.forEach(carousel => new ResearchCarousel(carousel));
 });
