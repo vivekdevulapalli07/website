@@ -1,43 +1,14 @@
 <header class="site-header">
-    <div class="wrapper">
-        <nav class="site-nav">
-            {% assign sorted_pages = site.pages | sort: 'order' %}
-            <a class="site-title" href="{{ '/' | relative_url }}">{{ site.title }}</a>
-            
-            <div class="nav-links">
-                <a href="{{ '/' | relative_url }}" 
-                   class="page-link {% if page.url == '/' %}active{% endif %}">
-                   About
-                </a>
-                
-                <a href="{{ '/research' | relative_url }}" 
-                   class="page-link {% if page.url == '/research/' %}active{% endif %}">
-                   Research
-                </a>
-                
-                <a href="{{ '/publications' | relative_url }}" 
-                   class="page-link {% if page.url == '/publications/' %}active{% endif %}">
-                   Publications
-                </a>
-
-                <a href="{{ '/education' | relative_url }}" 
-                   class="page-link {% if page.url == '/education/' %}active{% endif %}">
-                   Education
-                </a>
-                
-                <a href="{{ '/contact' | relative_url }}" 
-                   class="page-link {% if page.url == '/contact/' %}active{% endif %}">
-                   Contact
-                </a>
-            </div>
-
-            <button class="menu-icon" type="button" aria-label="Toggle menu">
-                <span></span>
-                <span></span>
-                <span></span>
-            </button>
-        </nav>
-    </div>
+  <div class="wrapper">
+    <a class="site-title" href="{{ '/' | relative_url }}">{{ site.title }}</a>
+    <nav class="nav-links">
+      <a class="page-link {% if page.url == '/' %}active{% endif %}" href="{{ '/' | relative_url }}">About</a>
+      <a class="page-link {% if page.url == '/research/' %}active{% endif %}" href="{{ '/research' | relative_url }}">Research</a>
+      <a class="page-link {% if page.url == '/publications/' %}active{% endif %}" href="{{ '/publications' | relative_url }}">Publications</a>
+      <a class="page-link {% if page.url == '/education/' %}active{% endif %}" href="{{ '/education' | relative_url }}">Education</a>
+      <a class="page-link {% if page.url == '/contact/' %}active{% endif %}" href="{{ '/contact' | relative_url }}">Contact</a>
+    </nav>
+  </div>
 </header>
 
 <style>
