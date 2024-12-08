@@ -15,13 +15,13 @@ title: Research
             </div>
             {% endfor %}
         </div>
-    </div>
-    <button class="carousel-button prev" aria-label="Previous slide">←</button>
-    <button class="carousel-button next" aria-label="Next slide">→</button>
-    <div class="carousel-indicators">
-        {% for image in site.data.research_images %}
-        <button class="carousel-indicator{% if forloop.first %} active{% endif %}" aria-label="Go to slide {{ forloop.index }}"></button>
-        {% endfor %}
+        <button class="carousel-button prev">←</button>
+        <button class="carousel-button next">→</button>
+        <div class="carousel-indicators">
+            {% for image in site.data.research_images %}
+            <button class="carousel-indicator{% if forloop.first %} active{% endif %}"></button>
+            {% endfor %}
+        </div>
     </div>
 </div>
 
@@ -35,3 +35,5 @@ title: Research
     </article>
     {% endfor %}
 </div>
+
+<script src="{{ site.baseurl }}/assets/js/carousel.js"></script>
