@@ -1,61 +1,98 @@
-class ResearchCarousel {
-    constructor(container) {
-        // Elements
-        this.container = container;
-        this.track = container.querySelector('.carousel-track');
-        this.slides = [...container.querySelectorAll('.carousel-slide')];
-        this.indicators = [...container.querySelectorAll('.carousel-indicator')];
-        
-        // State
-        this.currentIndex = 0;
-        this.slidesCount = this.slides.length;
-        
-        // Set initial track width
-        this.track.style.width = `${this.slidesCount * 100}%`;
-        
-        // Bind event listeners
-        container.querySelector('.prev').addEventListener('click', () => this.prev());
-        container.querySelector('.next').addEventListener('click', () => this.next());
-        
-        this.indicators.forEach((indicator, index) => {
-            indicator.addEventListener('click', () => this.goToSlide(index));
-        });
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialize all carousels on the page
+    const carousels = document.querySelectorAll('.research-carousel');
+    carousels.forEach(initializeCarousel);
+});
 
-        // Initial update
-        this.updateSlides();
-    }
+function initializeCarousel(carousel) {
+    // Only proceed if we found a carousel
+    if (!carousel) return;
 
-    updateSlides() {
-        // Move track to show current slide
-        const offset = -this.currentIndex * (100 / this.slidesCount);
-        this.track.style.transform = `translateX(${offset}%)`;
+    // Get carousel elements
+    const track = carousel.querySelector('.carousel-track');
+    const slides = Array.from(carousel.querySelectorAll('.carousel-slide'));
+    const prevButton = carousel.querySelector('.prev');
+    const nextButton = carousel.querySelector('.next');
+    const indicators = Array.from(carousel.querySelectorAll('.carousel-indicator'));
+
+    // Only proceed if we have all necessary elements
+    if (!track || !slides.length) return;
+
+    let currentIndex = 0;
+
+    // Set initial slide positions
+    function updateSlides() {
+        track.style.transform = `translateX(-${currentIndex * 100}%)`;
         
         // Update indicators
-        this.indicators.forEach((indicator, index) => {
-            indicator.classList.toggle('active', index === this.currentIndex);
+        indicators.forEach((indicator, index) => {
+            indicator.classList.toggle('active', index === currentIndex);
         });
     }
 
-    next() {
-        this.currentIndex = (this.currentIndex + 1) % this.slidesCount;
-        this.updateSlides();
+    // Event listeners for navigation buttons
+    if (prevButton) {
+        prevButton.addEventListener('click', () => {
+            currentIndex = (currentIndex - 1 + slides.length) % slides.length;
+            updateSlides();
+        });
     }
 
-    prev() {
-        this.currentIndex = (this.currentIndex - 1 + this.slidesCount) % this.slidesCount;
-        this.updateSlides();
+    if (nextButton) {
+        nextButton.addEventListener('click', () => {
+            currentIndex = (currentIndex + 1) % slides.length;
+            updateSlides();
+        });
     }
 
-    goToSlide(index) {
-        this.currentIndex = index;
-        this.updateSlides();
+    // Event listeners for indicators
+    indicators.forEach((indicator, index) => {
+        indicator.addEventListener('click', () => {
+            currentIndex = index;
+            updateSlides();
+        });
+    });
+
+    // Initialize the carousel
+    updateSlides();
+
+    // Optional: Add keyboard navigation
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowLeft') {
+            currentIndex = (currentIndex - 1 + slides.length) % slides.length;
+            updateSlides();
+        } else if (e.key === 'ArrowRight') {
+            currentIndex = (currentIndex + 1) % slides.length;
+            updateSlides();
+        }
+    });
+
+    // Optional: Add touch support
+    let touchStartX = 0;
+    let touchEndX = 0;
+
+    track.addEventListener('touchstart', (e) => {
+        touchStartX = e.touches[0].clientX;
+    });
+
+    track.addEventListener('touchend', (e) => {
+        touchEndX = e.changedTouches[0].clientX;
+        handleSwipe();
+    });
+
+    function handleSwipe() {
+        const swipeThreshold = 50; // minimum distance for a swipe
+        const diff = touchStartX - touchEndX;
+
+        if (Math.abs(diff) > swipeThreshold) {
+            if (diff > 0) {
+                // Swipe left
+                currentIndex = (currentIndex + 1) % slides.length;
+            } else {
+                // Swipe right
+                currentIndex = (currentIndex - 1 + slides.length) % slides.length;
+            }
+            updateSlides();
+        }
     }
 }
-
-// Initialize carousel when DOM is loaded
-document.addEventListener('DOMContentLoaded', () => {
-    const carousel = document.querySelector('.research-carousel');
-    if (carousel) {
-        new ResearchCarousel(carousel);
-    }
-});
