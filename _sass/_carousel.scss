@@ -17,18 +17,18 @@
 
 .carousel-track {
     display: flex;
-    transition: transform 0.5s ease-in-out;
+    position: absolute;  /* Add this */
+    left: 0;            /* Add this */
+    top: 0;             /* Add this */
+    width: 600%;        /* Set explicit width based on number of images */
     height: 100%;
-    /* Force slides to be in a row */
-    flex-wrap: nowrap;
-    /* Ensure track is wide enough to hold all slides */
-    width: calc(100% * var(--slide-count));
+    transition: transform 0.5s ease-in-out;
 }
 
 .carousel-slide {
-    flex: 0 0 100%;
-    min-width: 100%; /* Force each slide to be full width */
+    width: calc(100% / 6);  /* Divide by number of images */
     height: 100%;
+    flex-shrink: 0;         /* Add this */
     position: relative;
     
     img {
@@ -66,7 +66,7 @@
     align-items: center;
     justify-content: center;
     z-index: 2;
-    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     
     &:hover {
         background: white;
@@ -80,21 +80,11 @@
     &.next {
         right: 1rem;
     }
-
-    &.prev::before {
-        content: '❮';
-        font-size: 1.2rem;
-    }
-
-    &.next::before {
-        content: '❯';
-        font-size: 1.2rem;
-    }
 }
 
 .carousel-indicators {
     position: absolute;
-    bottom: 4rem;
+    bottom: 1rem;
     left: 0;
     right: 0;
     display: flex;
