@@ -4,12 +4,11 @@ title: Research
 permalink: /research/
 ---
 
-
 <h2>Research Highlights</h2>
 
 <div class="research-carousel">
   <div class="carousel-container">
-    <div class="carousel-track">
+    <div class="carousel-track" style="--slide-count: {{ site.data.research_images | size }};">
       {% for image in site.data.research_images %}
         <div class="carousel-slide">
           <img src="{{ site.baseurl }}/assets/images/research/{{ image.file }}" alt="{{ image.caption }}">
@@ -31,12 +30,8 @@ permalink: /research/
 </div>
 
 <!-- Initialize carousel -->
-<script src="{{ site.baseurl }}/assets/js/carousel.js"></script>
-<script>
-  document.addEventListener('DOMContentLoaded', function() {
-    new ResearchCarousel(document.querySelector('.research-carousel'));
-  });
-</script>
+<script defer src="{{ site.baseurl }}/assets/js/carousel.js"></script>
+
 
 <div class="blog-posts">
   {% for post in site.posts %}
