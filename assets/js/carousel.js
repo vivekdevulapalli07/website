@@ -1,80 +1,90 @@
-// Save as assets/js/carousel.js
 class ResearchCarousel {
     constructor(element) {
-        console.log('Initializing carousel...');
         this.container = element;
-        this.currentSlide = 0;
+        this.track = element.querySelector('.carousel-track');
+        this.slides = Array.from(element.querySelectorAll('.carousel-slide'));
+        this.indicators = Array.from(element.querySelectorAll('.carousel-indicator'));
+        this.currentIndex = 0;
+        this.slideWidth = 100; // percentage
+        this.autoplayInterval = null;
         
-        // Get the track and slides that are already in the DOM
-        this.track = this.container.querySelector('.carousel-track');
-        this.slides = Array.from(this.container.querySelectorAll('.carousel-slide'));
-        
-        console.log(`Found ${this.slides.length} slides`);
-        
-        // Set up event listeners
+        // Initialize
         this.setupEventListeners();
-        
-        // Initialize first slide
-        this.updateSlides();
-        
-        // Start autoplay if more than one slide
-        if (this.slides.length > 1) {
-            this.startAutoplay();
-        }
+        this.updateCarousel();
+        this.startAutoplay();
     }
 
     setupEventListeners() {
-        // Navigation buttons
-        const prevButton = this.container.querySelector('.prev');
-        const nextButton = this.container.querySelector('.next');
-        
-        if (prevButton) prevButton.addEventListener('click', () => this.prevSlide());
-        if (nextButton) nextButton.addEventListener('click', () => this.nextSlide());
-        
-        // Indicator buttons
-        const indicators = this.container.querySelectorAll('.carousel-indicator');
-        indicators.forEach((indicator, index) => {
+        // Prev/Next buttons
+        this.container.querySelector('.prev').addEventListener('click', () => this.prev());
+        this.container.querySelector('.next').addEventListener('click', () => this.next());
+
+        // Indicators
+        this.indicators.forEach((indicator, index) => {
             indicator.addEventListener('click', () => this.goToSlide(index));
         });
-        
+
         // Pause autoplay on hover
         this.container.addEventListener('mouseenter', () => this.stopAutoplay());
         this.container.addEventListener('mouseleave', () => this.startAutoplay());
-    }
 
-    goToSlide(index) {
-        if (index >= 0 && index < this.slides.length) {
-            this.currentSlide = index;
-            this.updateSlides();
-        }
-    }
+        // Handle touch events
+        let touchStartX = 0;
+        let touchEndX = 0;
 
-    nextSlide() {
-        this.currentSlide = (this.currentSlide + 1) % this.slides.length;
-        this.updateSlides();
-    }
+        this.container.addEventListener('touchstart', (e) => {
+            touchStartX = e.touches[0].clientX;
+        });
 
-    prevSlide() {
-        this.currentSlide = (this.currentSlide - 1 + this.slides.length) % this.slides.length;
-        this.updateSlides();
-    }
-
-    updateSlides() {
-        // Update track position
-        if (this.track) {
-            this.track.style.transform = `translateX(-${this.currentSlide * 100}%)`;
-        }
-        
-        // Update indicators
-        const indicators = this.container.querySelectorAll('.carousel-indicator');
-        indicators.forEach((indicator, index) => {
-            indicator.classList.toggle('active', index === this.currentSlide);
+        this.container.addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].clientX;
+            const diff = touchStartX - touchEndX;
+            
+            if (Math.abs(diff) > 50) { // Minimum swipe distance
+                if (diff > 0) {
+                    this.next();
+                } else {
+                    this.prev();
+                }
+            }
         });
     }
 
+    updateCarousel() {
+        // Update transform
+        const offset = -this.currentIndex * this.slideWidth;
+        this.track.style.transform = `translateX(${offset}%)`;
+
+        // Update indicators
+        this.indicators.forEach((indicator, index) => {
+            indicator.classList.toggle('active', index === this.currentIndex);
+        });
+    }
+
+    goToSlide(index) {
+        if (index < 0) {
+            index = this.slides.length - 1;
+        } else if (index >= this.slides.length) {
+            index = 0;
+        }
+        
+        this.currentIndex = index;
+        this.updateCarousel();
+    }
+
+    next() {
+        this.goToSlide(this.currentIndex + 1);
+    }
+
+    prev() {
+        this.goToSlide(this.currentIndex - 1);
+    }
+
     startAutoplay() {
-        this.stopAutoplay(); // Clear any existing interval
-        this.autoplayInterval = setInterval(() => this.nextSlide(), 5000);
+        if (this.slides.length > 1) {
+            this.stopAutoplay(); // Clear any existing interval
+            this.autoplayInterval = setInterval(() => this.next(), 5000);
+        }
     }
 
     stopAutoplay() {
@@ -87,8 +97,6 @@ class ResearchCarousel {
 
 // Initialize all carousels when the document is ready
 document.addEventListener('DOMContentLoaded', () => {
-    console.log('Document ready, looking for carousels...');
     const carousels = document.querySelectorAll('.research-carousel');
-    console.log('Found carousels:', carousels.length);
     carousels.forEach(carousel => new ResearchCarousel(carousel));
 });
