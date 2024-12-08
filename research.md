@@ -15,15 +15,13 @@ title: Research
             </div>
             {% endfor %}
         </div>
-    </div>
-    
-    <button class="carousel-button prev">❮</button>
-    <button class="carousel-button next">❯</button>
-    
-    <div class="carousel-indicators">
-        {% for image in site.data.research_images %}
-        <button class="carousel-indicator {% if forloop.first %}active{% endif %}"></button>
-        {% endfor %}
+        <button class="carousel-button prev">←</button>
+        <button class="carousel-button next">→</button>
+        <div class="carousel-indicators">
+            {% for image in site.data.research_images %}
+            <button class="carousel-indicator{% if forloop.first %} active{% endif %}"></button>
+            {% endfor %}
+        </div>
     </div>
 </div>
 

@@ -1,36 +1,33 @@
 class ResearchCarousel {
-    constructor(element) {
-        this.container = element;
-        this.track = element.querySelector('.carousel-track');
-        this.slides = Array.from(element.querySelectorAll('.carousel-slide'));
-        this.indicators = Array.from(element.querySelectorAll('.carousel-indicator'));
+    constructor(container) {
+        // Elements
+        this.container = container;
+        this.track = container.querySelector('.carousel-track');
+        this.slides = [...container.querySelectorAll('.carousel-slide')];
+        this.indicators = [...container.querySelectorAll('.carousel-indicator')];
+        
+        // State
         this.currentIndex = 0;
+        this.slidesCount = this.slides.length;
         
-        // Calculate slide width percentage based on number of slides
-        this.slideWidth = 100 / this.slides.length;
+        // Set initial track width
+        this.track.style.width = `${this.slidesCount * 100}%`;
         
-        // Set up event listeners
-        element.querySelector('.prev').addEventListener('click', () => this.prev());
-        element.querySelector('.next').addEventListener('click', () => this.next());
+        // Bind event listeners
+        container.querySelector('.prev').addEventListener('click', () => this.prev());
+        container.querySelector('.next').addEventListener('click', () => this.next());
         
         this.indicators.forEach((indicator, index) => {
             indicator.addEventListener('click', () => this.goToSlide(index));
         });
-        
-        // Initialize position
-        this.updateCarousel();
-        
-        // Set up autoplay
-        this.startAutoplay();
-        
-        // Handle mouse interactions
-        this.container.addEventListener('mouseenter', () => this.stopAutoplay());
-        this.container.addEventListener('mouseleave', () => this.startAutoplay());
+
+        // Initial update
+        this.updateSlides();
     }
 
-    updateCarousel() {
-        // Move the track to show the current slide
-        const offset = -this.currentIndex * this.slideWidth;
+    updateSlides() {
+        // Move track to show current slide
+        const offset = -this.currentIndex * (100 / this.slidesCount);
         this.track.style.transform = `translateX(${offset}%)`;
         
         // Update indicators
@@ -39,41 +36,26 @@ class ResearchCarousel {
         });
     }
 
-    goToSlide(index) {
-        // Handle wrap-around
-        if (index < 0) {
-            index = this.slides.length - 1;
-        } else if (index >= this.slides.length) {
-            index = 0;
-        }
-        
-        this.currentIndex = index;
-        this.updateCarousel();
-    }
-
     next() {
-        this.goToSlide(this.currentIndex + 1);
+        this.currentIndex = (this.currentIndex + 1) % this.slidesCount;
+        this.updateSlides();
     }
 
     prev() {
-        this.goToSlide(this.currentIndex - 1);
+        this.currentIndex = (this.currentIndex - 1 + this.slidesCount) % this.slidesCount;
+        this.updateSlides();
     }
 
-    startAutoplay() {
-        this.stopAutoplay(); // Clear any existing interval
-        this.autoplayInterval = setInterval(() => this.next(), 5000);
-    }
-
-    stopAutoplay() {
-        if (this.autoplayInterval) {
-            clearInterval(this.autoplayInterval);
-            this.autoplayInterval = null;
-        }
+    goToSlide(index) {
+        this.currentIndex = index;
+        this.updateSlides();
     }
 }
 
-// Initialize all carousels when the document is loaded
+// Initialize carousel when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
-    const carousels = document.querySelectorAll('.research-carousel');
-    carousels.forEach(carousel => new ResearchCarousel(carousel));
+    const carousel = document.querySelector('.research-carousel');
+    if (carousel) {
+        new ResearchCarousel(carousel);
+    }
 });
