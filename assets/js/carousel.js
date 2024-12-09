@@ -1,98 +1,46 @@
+// assets/js/carousel.js
 document.addEventListener('DOMContentLoaded', function() {
-    // Initialize all carousels on the page
-    const carousels = document.querySelectorAll('.research-carousel');
-    carousels.forEach(initializeCarousel);
-});
-
-function initializeCarousel(carousel) {
-    // Only proceed if we found a carousel
+    const carousel = document.querySelector('.carousel');
     if (!carousel) return;
-
-    // Get carousel elements
-    const track = carousel.querySelector('.carousel-track');
-    const slides = Array.from(carousel.querySelectorAll('.carousel-slide'));
-    const prevButton = carousel.querySelector('.prev');
-    const nextButton = carousel.querySelector('.next');
-    const indicators = Array.from(carousel.querySelectorAll('.carousel-indicator'));
-
-    // Only proceed if we have all necessary elements
-    if (!track || !slides.length) return;
-
-    let currentIndex = 0;
-
-    // Set initial slide positions
-    function updateSlides() {
-        track.style.transform = `translateX(-${currentIndex * 100}%)`;
+    
+    const slides = carousel.querySelectorAll('.slide');
+    const prevButton = carousel.querySelector('.carousel-control.prev');
+    const nextButton = carousel.querySelector('.carousel-control.next');
+    const indicators = carousel.querySelectorAll('.carousel-indicators button');
+    const slideCount = slides.length;
+    let currentSlide = 0;
+    
+    function updateCarousel() {
+        const container = carousel.querySelector('.carousel-inner');
+        container.style.transform = `translateX(-${currentSlide * 100}%)`;
         
         // Update indicators
         indicators.forEach((indicator, index) => {
-            indicator.classList.toggle('active', index === currentIndex);
+            indicator.classList.toggle('active', index === currentSlide);
         });
     }
-
-    // Event listeners for navigation buttons
-    if (prevButton) {
-        prevButton.addEventListener('click', () => {
-            currentIndex = (currentIndex - 1 + slides.length) % slides.length;
-            updateSlides();
-        });
+    
+    function nextSlide() {
+        currentSlide = (currentSlide + 1) % slideCount;
+        updateCarousel();
     }
-
-    if (nextButton) {
-        nextButton.addEventListener('click', () => {
-            currentIndex = (currentIndex + 1) % slides.length;
-            updateSlides();
-        });
+    
+    function prevSlide() {
+        currentSlide = (currentSlide - 1 + slideCount) % slideCount;
+        updateCarousel();
     }
-
-    // Event listeners for indicators
+    
+    // Event listeners
+    prevButton.addEventListener('click', prevSlide);
+    nextButton.addEventListener('click', nextSlide);
+    
     indicators.forEach((indicator, index) => {
         indicator.addEventListener('click', () => {
-            currentIndex = index;
-            updateSlides();
+            currentSlide = index;
+            updateCarousel();
         });
     });
-
-    // Initialize the carousel
-    updateSlides();
-
-    // Optional: Add keyboard navigation
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'ArrowLeft') {
-            currentIndex = (currentIndex - 1 + slides.length) % slides.length;
-            updateSlides();
-        } else if (e.key === 'ArrowRight') {
-            currentIndex = (currentIndex + 1) % slides.length;
-            updateSlides();
-        }
-    });
-
-    // Optional: Add touch support
-    let touchStartX = 0;
-    let touchEndX = 0;
-
-    track.addEventListener('touchstart', (e) => {
-        touchStartX = e.touches[0].clientX;
-    });
-
-    track.addEventListener('touchend', (e) => {
-        touchEndX = e.changedTouches[0].clientX;
-        handleSwipe();
-    });
-
-    function handleSwipe() {
-        const swipeThreshold = 50; // minimum distance for a swipe
-        const diff = touchStartX - touchEndX;
-
-        if (Math.abs(diff) > swipeThreshold) {
-            if (diff > 0) {
-                // Swipe left
-                currentIndex = (currentIndex + 1) % slides.length;
-            } else {
-                // Swipe right
-                currentIndex = (currentIndex - 1 + slides.length) % slides.length;
-            }
-            updateSlides();
-        }
-    }
-}
+    
+    // Optional: Auto-advance every 5 seconds
+    setInterval(nextSlide, 5000);
+});

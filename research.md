@@ -3,27 +3,29 @@ layout: page
 title: Research
 ---
 
-## Research Highlights
-
-<div class="research-carousel">
-    <div class="carousel-container">
-        <div class="carousel-track">
+<div class="research-content">
+    <div class="carousel">
+        <div class="carousel-inner">
             {% for image in site.data.research_images %}
-            <div class="carousel-slide">
+            <div class="slide">
                 <img src="{{ site.baseurl }}/assets/images/research/{{ image.file }}" alt="{{ image.caption }}">
-                <div class="carousel-caption">{{ image.caption }}</div>
+                <p class="caption">{{ image.caption }}</p>
             </div>
             {% endfor %}
         </div>
-        <button class="carousel-button prev">←</button>
-        <button class="carousel-button next">→</button>
+        
+        <button class="carousel-control prev" aria-label="Previous slide">&larr;</button>
+        <button class="carousel-control next" aria-label="Next slide">&rarr;</button>
+        
         <div class="carousel-indicators">
             {% for image in site.data.research_images %}
-            <button class="carousel-indicator{% if forloop.first %} active{% endif %}"></button>
+            <button aria-label="Go to slide {{ forloop.index }}"></button>
             {% endfor %}
         </div>
     </div>
 </div>
+
+<script src="{{ site.baseurl }}/assets/js/carousel.js"></script>
 
 <div class="blog-posts">
     {% for post in site.posts %}
@@ -35,5 +37,3 @@ title: Research
     </article>
     {% endfor %}
 </div>
-
-<script src="{{ site.baseurl }}/assets/js/carousel.js"></script>

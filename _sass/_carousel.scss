@@ -1,97 +1,88 @@
-.research-carousel {
+/* _sass/_carousel.scss */
+.carousel {
     position: relative;
     width: 100%;
     max-width: 800px;
     margin: 2rem auto;
-}
-
-.carousel-container {
-    width: 100%;
-    height: 400px;
-    position: relative;
-    overflow: hidden;  /* Critical - hides slides outside the container */
-}
-
-/* This ensures slides are in a horizontal line */
-.carousel-track {
-    position: absolute;
-    left: 0;
-    top: 0;
-    display: flex;
-    flex-direction: row;  /* Forces horizontal layout */
-    align-items: center;
-    transition: transform 0.3s ease-out;
-}
-
-/* Each slide takes up full width of container */
-.carousel-slide {
-    min-width: 100%;  /* Forces each slide to be full width */
-    height: 400px;
-    position: relative;
-}
-
-/* Image sizing */
-.carousel-slide img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    display: block;
-}
-
-/* Caption styling */
-.carousel-caption {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: rgba(0, 0, 0, 0.7);
-    color: white;
-    padding: 1rem;
-    text-align: center;
-}
-
-/* Navigation buttons */
-.carousel-button {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 40px;
-    height: 40px;
-    background: rgba(255, 255, 255, 0.8);
-    border: none;
-    border-radius: 50%;
-    cursor: pointer;
-    z-index: 10;
-}
-
-.carousel-button.prev {
-    left: 10px;
-}
-
-.carousel-button.next {
-    right: 10px;
-}
-
-/* Indicators */
-.carousel-indicators {
-    position: absolute;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    gap: 10px;
-    z-index: 10;
-}
-
-.carousel-indicator {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.5);
-    border: none;
-    cursor: pointer;
-}
-
-.carousel-indicator.active {
-    background: white;
+    overflow: hidden;
+    
+    &-inner {
+        display: flex;
+        transition: transform 0.5s ease-in-out;
+        
+        .slide {
+            min-width: 100%;
+            box-sizing: border-box;
+            padding: 1rem;
+            
+            img {
+                width: 100%;
+                height: auto;
+                border-radius: 8px;
+                box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            }
+            
+            .caption {
+                margin-top: 1rem;
+                text-align: center;
+                color: #666;
+                font-style: italic;
+            }
+        }
+    }
+    
+    .carousel-control {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background: rgba(0,0,0,0.5);
+        color: white;
+        padding: 1rem;
+        border: none;
+        cursor: pointer;
+        z-index: 10;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        
+        &:hover {
+            background: rgba(0,0,0,0.7);
+        }
+        
+        &.prev {
+            left: 1rem;
+        }
+        
+        &.next {
+            right: 1rem;
+        }
+    }
+    
+    .carousel-indicators {
+        display: flex;
+        justify-content: center;
+        gap: 0.5rem;
+        margin-top: 1rem;
+        
+        button {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            border: none;
+            background: #ccc;
+            cursor: pointer;
+            padding: 0;
+            
+            &.active {
+                background: #666;
+            }
+            
+            &:hover {
+                background: #999;
+            }
+        }
+    }
 }
