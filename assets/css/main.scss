@@ -1,6 +1,5 @@
 ---
 ---
-
 // Variables
 $primary-color: #0066cc;
 $text-color: #333;
@@ -30,12 +29,34 @@ body {
     border-bottom: 1px solid darken($light-bg, 10%);
     margin-bottom: 2rem;
 
-    nav {
+    .wrapper {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
         max-width: $max-width;
         margin: 0 auto;
+        padding: 0 1rem;
+    }
+
+    .site-title {
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: $text-color;
+        text-decoration: none;
+    }
+
+    .site-nav {
         text-align: center;
 
-        a {
+        .nav-trigger {
+            display: none;
+        }
+
+        .menu-icon {
+            display: none;
+        }
+
+        .page-link {
             color: $text-color;
             text-decoration: none;
             padding: 0.5rem 1rem;
@@ -55,6 +76,62 @@ body {
         }
     }
 }
+
+@media screen and (max-width: 768px) {
+    .site-header {
+        .site-nav {
+            position: relative;
+            
+            .nav-trigger {
+                display: none;
+                
+                &:checked ~ .trigger {
+                    display: block;
+                }
+            }
+
+            .menu-icon {
+                display: block;
+                float: right;
+                width: 36px;
+                height: 26px;
+                line-height: 0;
+                padding-top: 10px;
+                text-align: center;
+                cursor: pointer;
+
+                svg {
+                    fill: $text-color;
+                }
+            }
+
+            .trigger {
+                display: none;
+                position: absolute;
+                top: 100%;
+                right: 0;
+                background: $light-bg;
+                border: 1px solid darken($light-bg, 10%);
+                border-radius: 4px;
+                padding: 0.5rem;
+                box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+                z-index: 1;
+                
+                .page-link {
+                    display: block;
+                    margin: 0.5rem 0;
+                    padding: 0.5rem 1rem;
+                    text-align: left;
+                    
+                    &:not(:last-child) {
+                        margin-right: 0;
+                    }
+                }
+            }
+        }
+    }
+}
+
 
 // Profile section
 .profile {
