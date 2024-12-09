@@ -1,111 +1,24 @@
 ---
 ---
 
+// Import theme styles
 @import "{{ site.theme }}";
 
-/* Publications styling */
-.publications {
+// Theme-specific overrides
+.site-header {
+    .site-title {
+        font-size: 1.5rem;
+        font-weight: 600;
+    }
+}
+
+.page-content {
+    padding: 2rem 0;
+}
+
+.wrapper {
     max-width: 800px;
-    margin: 0 auto;
+    padding: 0 1rem;
 }
 
-.publication {
-    margin-bottom: 2rem;
-    padding: 1.5rem;
-    border-left: 4px solid #2196F3;
-    background-color: #f8f9fa;
-    border-radius: 0 4px 4px 0;
-    transition: transform 0.2s ease-in-out;
-}
-
-.publication:hover {
-    transform: translateX(5px);
-    background-color: #f1f3f5;
-}
-
-.publication .title {
-    font-size: 1.2rem;
-    font-weight: 600;
-    color: #1a73e8;
-    margin-bottom: 0.5rem;
-}
-
-.publication .authors {
-    font-size: 1rem;
-    color: #424242;
-    margin-bottom: 0.5rem;
-}
-
-.publication .journal {
-    font-size: 0.9rem;
-    color: #666;
-    font-style: italic;
-}
-
-/* Impact journals styling */
-.publication .journal:contains("Science") {
-    color: #1565c0;
-    font-weight: 500;
-}
-
-/* Responsive design */
-@media screen and (max-width: 600px) {
-    .publication {
-        padding: 1rem;
-        margin-bottom: 1.5rem;
-    }
-    
-    .publication .title {
-        font-size: 1.1rem;
-    }
-    
-    .publication .authors {
-        font-size: 0.9rem;
-    }
-    
-    .publication .journal {
-        font-size: 0.85rem;
-    }
-}
-
-@import "{{ site.theme }}";
-
-.blog-posts {
-  margin: 2em 0;
-  
-  .post-preview {
-    margin-bottom: 2em;
-    padding-bottom: 1em;
-    border-bottom: 1px solid #eee;
-    
-    h2 {
-      margin-bottom: 0.5em;
-      
-      a {
-        color: #333;
-        text-decoration: none;
-        
-        &:hover {
-          color: #0366d6;
-        }
-      }
-    }
-    
-    .post-meta {
-      color: #666;
-      font-size: 0.9em;
-      margin-bottom: 1em;
-    }
-    
-    .read-more {
-      display: inline-block;
-      margin-top: 1em;
-      color: #0366d6;
-      text-decoration: none;
-      
-      &:hover {
-        text-decoration: underline;
-      }
-    }
-  }
-}
+// Add any additional theme-specific overrides here

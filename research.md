@@ -3,28 +3,28 @@ layout: page
 title: Research
 ---
 
-<div class="research-content">
-    <div class="carousel" id="research-carousel">
-        <div class="carousel-inner">
-            {% for image in site.data.research_images %}
-            <div class="slide">
-                <img src="{{ site.baseurl }}/assets/images/research/{{ image.file }}" alt="{{ image.caption }}">
-                <p class="caption">{{ image.caption }}</p>
-            </div>
-            {% endfor %}
+<div class="carousel" id="research-carousel">
+    <div class="carousel-inner">
+        {% for image in site.data.research_images %}
+        <div class="slide" style="display: none;">
+            <img src="{{ site.baseurl }}/assets/images/research/{{ image.file }}" 
+                 alt="{{ image.caption }}"
+                 loading="lazy">
+            <p class="caption">{{ image.caption }}</p>
         </div>
-        
-        <button class="carousel-control prev" aria-label="Previous slide">&larr;</button>
-        <button class="carousel-control next" aria-label="Next slide">&rarr;</button>
-        
-        <div class="carousel-indicators">
-            {% for image in site.data.research_images %}
-            <button aria-label="Go to slide {{ forloop.index }}"></button>
-            {% endfor %}
-        </div>
+        {% endfor %}
+    </div>
+    
+    <button class="carousel-control prev" onclick="moveSlide(-1)">&larr;</button>
+    <button class="carousel-control next" onclick="moveSlide(1)">&rarr;</button>
+    
+    <div class="carousel-indicators">
+        {% for image in site.data.research_images %}
+        <button onclick="currentSlide({{ forloop.index }})" 
+                aria-label="Go to slide {{ forloop.index }}"></button>
+        {% endfor %}
     </div>
 </div>
-
 
 <div class="blog-posts">
     {% for post in site.posts %}
@@ -37,52 +37,140 @@ title: Research
     {% endfor %}
 </div>
 
+<style>
+.carousel {
+    position: relative;
+    max-width: 800px;
+    margin: 2rem auto;
+    overflow: hidden;
+}
 
-<!-- Add script at the bottom of the page -->
+.carousel .slide {
+    display: none;
+    width: 100%;
+    padding: 1rem;
+    box-sizing: border-box;
+}
+
+.carousel .slide.active {
+    display: block;
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+.carousel img {
+    width: 100%;
+    height: auto;
+    max-height: 500px;
+    object-fit: contain;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.carousel-control {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0,0,0,0.5);
+    color: white;
+    padding: 1rem;
+    border: none;
+    cursor: pointer;
+    z-index: 10;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+}
+
+.carousel-control:hover {
+    background: rgba(0,0,0,0.7);
+}
+
+.carousel-control.prev {
+    left: 1rem;
+}
+
+.carousel-control.next {
+    right: 1rem;
+}
+
+.carousel-indicators {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-top: 1rem;
+}
+
+.carousel-indicators button {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    border: none;
+    background: #ccc;
+    cursor: pointer;
+    padding: 0;
+}
+
+.carousel-indicators button.active {
+    background: #666;
+}
+
+.carousel-indicators button:hover {
+    background: #999;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+</style>
+
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    const carousel = document.getElementById('research-carousel');
-    if (!carousel) return;
+let slideIndex = 1;
+let timer = null;
+
+function showSlides(n) {
+    const slides = document.querySelectorAll('.slide');
+    const indicators = document.querySelectorAll('.carousel-indicators button');
     
-    const slides = carousel.querySelectorAll('.slide');
-    const prevButton = carousel.querySelector('.carousel-control.prev');
-    const nextButton = carousel.querySelector('.carousel-control.next');
-    const indicators = carousel.querySelectorAll('.carousel-indicators button');
-    const slideCount = slides.length;
-    let currentSlide = 0;
+    if (!slides.length) return;
     
-    function updateCarousel() {
-        const container = carousel.querySelector('.carousel-inner');
-        container.style.transform = `translateX(-${currentSlide * 100}%)`;
-        
-        // Update indicators
-        indicators.forEach((indicator, index) => {
-            indicator.classList.toggle('active', index === currentSlide);
-        });
-    }
+    if (n > slides.length) slideIndex = 1;
+    if (n < 1) slideIndex = slides.length;
     
-    function nextSlide() {
-        currentSlide = (currentSlide + 1) % slideCount;
-        updateCarousel();
-    }
-    
-    function prevSlide() {
-        currentSlide = (currentSlide - 1 + slideCount) % slideCount;
-        updateCarousel();
-    }
-    
-    // Event listeners
-    if (prevButton) prevButton.addEventListener('click', prevSlide);
-    if (nextButton) nextButton.addEventListener('click', nextSlide);
-    
-    indicators.forEach((indicator, index) => {
-        indicator.addEventListener('click', () => {
-            currentSlide = index;
-            updateCarousel();
-        });
+    slides.forEach(slide => {
+        slide.style.display = 'none';
+        slide.classList.remove('active');
     });
     
-    // Optional: Auto-advance every 5 seconds
-    setInterval(nextSlide, 5000);
+    indicators.forEach(indicator => {
+        indicator.classList.remove('active');
+    });
+    
+    slides[slideIndex - 1].style.display = 'block';
+    slides[slideIndex - 1].classList.add('active');
+    indicators[slideIndex - 1].classList.add('active');
+    
+    // Reset timer
+    if (timer) clearTimeout(timer);
+    timer = setTimeout(() => moveSlide(1), 5000);
+}
+
+function moveSlide(n) {
+    showSlides(slideIndex += n);
+}
+
+function currentSlide(n) {
+    showSlides(slideIndex = n);
+}
+
+// Initialize carousel after Jekyll has loaded all content
+document.addEventListener('DOMContentLoaded', function() {
+    if (document.querySelector('.carousel')) {
+        showSlides(slideIndex);
+    }
 });
 </script>
