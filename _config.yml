@@ -34,15 +34,11 @@ minima:
 
 # SASS configuration
 sass:
-  sass_dir: _sass
-  style: compressed
+  style: compressed    # Keeps CSS minified for faster loading
+  sourcemap: never    # Prevents sourcemap generation
 
 # Assets configuration
 defaults:
-  - scope:
-      path: "assets/js"
-    values:
-      js: true
   - scope:
       path: "assets/images"
     values:
