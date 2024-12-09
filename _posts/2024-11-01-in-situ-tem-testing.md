@@ -9,7 +9,7 @@ categories: [research, microscopy]
 
 Transmission Electron Microscopy (TEM) has revolutionized our understanding of materials at the atomic scale. When combined with in-situ mechanical testing, it becomes an even more powerful tool for understanding deformation mechanisms in real-time.
 
-## What is in-situ TEM testing?
+## What is in-situ TEM tensile testing?
 
 In-situ TEM tensile testing involves performing mechanical tests on specially prepared specimens while simultaneously observing them under the electron microscope. This allows us to directly observe:
 
@@ -32,5 +32,3 @@ This technique is particularly valuable for:
 - Studying interface-mediated processes
 - Validating atomistic simulations
 - Developing structure-property relationships
-
-[Continue writing your detailed article here...]
