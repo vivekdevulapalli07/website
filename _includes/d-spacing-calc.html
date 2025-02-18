@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
 <head>
     <style>
@@ -122,10 +123,10 @@
                 </optgroup>
                 <optgroup label="Cubic Ceramics">
                     <option value="MgO">Magnesium Oxide (MgO)</option>
-                    <option value="Al2O3">Aluminum Oxide (Al₂O₃)</option>
                     <option value="TiN">Titanium Nitride (TiN)</option>
                 </optgroup>
                 <optgroup label="Hexagonal Ceramics">
+                    <option value="Al2O3">Aluminum Oxide (α-Al₂O₃)</option>
                     <option value="AlN">Aluminum Nitride (AlN)</option>
                     <option value="ZnO">Zinc Oxide (ZnO)</option>
                 </optgroup>
@@ -180,7 +181,7 @@
             
             // Cubic Ceramics
             'MgO': { system: 'cubic', a: 4.212, c: null },
-            'Al2O3': { system: 'cubic', a: 4.785, c: null },
+            'Al2O3': { system: 'hexagonal', a: 4.785, c: 12.991 }, // α-phase alumina
             'TiN': { system: 'cubic', a: 4.242, c: null },
             
             // Hexagonal Ceramics
