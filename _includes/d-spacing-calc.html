@@ -25,6 +25,7 @@
             display: flex;
             gap: 10px;
             margin-bottom: 10px;
+            align-items: flex-end;
         }
         
         input[type="number"] {
@@ -88,12 +89,11 @@
             margin-top: 10px;
         }
 
-        .notation-info {
-            background: #f8f9fa;
+        .material-select-group {
+            margin-bottom: 20px;
             padding: 15px;
-            border-radius: 4px;
-            margin-top: 20px;
-            border-left: 4px solid #0066cc;
+            background: #f8f9fa;
+            border-radius: 8px;
         }
     </style>
 </head>
@@ -101,6 +101,37 @@
     <div class="calculator">
         <h2>Common Crystallographic Planes Calculator</h2>
         
+        <div class="material-select-group">
+            <label>Select Material:</label>
+            <select id="materialSelect" onchange="updateMaterialParameters()">
+                <option value="">Custom Parameters</option>
+                <optgroup label="Cubic Metals">
+                    <option value="Al">Aluminum (Al)</option>
+                    <option value="Cu">Copper (Cu)</option>
+                    <option value="Fe">Iron (Fe, BCC)</option>
+                    <option value="Ni">Nickel (Ni)</option>
+                    <option value="Au">Gold (Au)</option>
+                    <option value="Ag">Silver (Ag)</option>
+                    <option value="W">Tungsten (W)</option>
+                </optgroup>
+                <optgroup label="Hexagonal Metals">
+                    <option value="Ti">Titanium (Ti)</option>
+                    <option value="Mg">Magnesium (Mg)</option>
+                    <option value="Zn">Zinc (Zn)</option>
+                    <option value="Co">Cobalt (Co)</option>
+                </optgroup>
+                <optgroup label="Cubic Ceramics">
+                    <option value="MgO">Magnesium Oxide (MgO)</option>
+                    <option value="Al2O3">Aluminum Oxide (Al₂O₃)</option>
+                    <option value="TiN">Titanium Nitride (TiN)</option>
+                </optgroup>
+                <optgroup label="Hexagonal Ceramics">
+                    <option value="AlN">Aluminum Nitride (AlN)</option>
+                    <option value="ZnO">Zinc Oxide (ZnO)</option>
+                </optgroup>
+            </select>
+        </div>
+
         <div class="input-group">
             <label>Crystal System:</label>
             <select id="crystalSystem" onchange="updateInputFields()">
@@ -126,56 +157,79 @@
         
         <button onclick="calculateCommonPlanes()">Calculate Common Planes</button>
         
-        <div id="notationInfo" class="notation-info" style="display: none;">
-            <strong>Note:</strong> For hexagonal systems, planes are shown in both 3-index (hkl) and 4-index (hkil) Miller-Bravais notation where i = -(h+k).
-        </div>
-
         <div class="results" id="results"></div>
     </div>
 
     <script>
+        // Material database
+        const materialDatabase = {
+            // Cubic Metals
+            'Al': { system: 'cubic', a: 4.046, c: null },
+            'Cu': { system: 'cubic', a: 3.615, c: null },
+            'Fe': { system: 'cubic', a: 2.866, c: null },
+            'Ni': { system: 'cubic', a: 3.524, c: null },
+            'Au': { system: 'cubic', a: 4.078, c: null },
+            'Ag': { system: 'cubic', a: 4.086, c: null },
+            'W': { system: 'cubic', a: 3.165, c: null },
+            
+            // Hexagonal Metals
+            'Ti': { system: 'hexagonal', a: 2.950, c: 4.686 },
+            'Mg': { system: 'hexagonal', a: 3.209, c: 5.211 },
+            'Zn': { system: 'hexagonal', a: 2.665, c: 4.947 },
+            'Co': { system: 'hexagonal', a: 2.507, c: 4.070 },
+            
+            // Cubic Ceramics
+            'MgO': { system: 'cubic', a: 4.212, c: null },
+            'Al2O3': { system: 'cubic', a: 4.785, c: null },
+            'TiN': { system: 'cubic', a: 4.242, c: null },
+            
+            // Hexagonal Ceramics
+            'AlN': { system: 'hexagonal', a: 3.112, c: 4.982 },
+            'ZnO': { system: 'hexagonal', a: 3.250, c: 5.207 }
+        };
+
         // Common planes for different crystal systems
         const commonPlanes = {
             cubic: [
                 {h: 1, k: 0, l: 0}, {h: 1, k: 1, l: 0}, {h: 1, k: 1, l: 1},
                 {h: 2, k: 0, l: 0}, {h: 2, k: 1, l: 0}, {h: 2, k: 1, l: 1},
-                {h: 2, k: 2, l: 0}, {h: 2, k: 2, l: 1}, {h: 3, k: 0, l: 0},
-                {h: 3, k: 1, l: 0}, {h: 3, k: 1, l: 1}, {h: 3, k: 2, l: 0},
-                {h: 3, k: 2, l: 1}, {h: 3, k: 2, l: 2}, {h: 3, k: 3, l: 0},
-                {h: 4, k: 0, l: 0}, {h: 4, k: 1, l: 0}, {h: 4, k: 1, l: 1},
-                {h: 4, k: 2, l: 0}, {h: 4, k: 2, l: 1}
+                {h: 2, k: 2, l: 0}, {h: 2, k: 2, l: 1}, {h: 3, k: 0, l: 0}
             ],
             hexagonal: [
                 {h: 0, k: 0, l: 1}, {h: 1, k: 0, l: 0}, {h: 1, k: 0, l: 1},
-                {h: 1, k: 0, l: 2}, {h: 1, k: 0, l: 3}, {h: 1, k: 1, l: 0},
-                {h: 1, k: 1, l: 1}, {h: 1, k: 1, l: 2}, {h: 1, k: 1, l: 3},
-                {h: 2, k: 0, l: 0}, {h: 2, k: 0, l: 1}, {h: 2, k: 0, l: 2},
-                {h: 2, k: 0, l: 3}, {h: 2, k: 1, l: 0}, {h: 2, k: 1, l: 1},
-                {h: 2, k: 1, l: 2}, {h: 2, k: 2, l: 0}, {h: 2, k: 2, l: 1},
-                {h: 3, k: 0, l: 0}, {h: 3, k: 0, l: 1}
+                {h: 1, k: 0, l: 2}, {h: 1, k: 1, l: 0}, {h: 1, k: 1, l: 1},
+                {h: 1, k: 1, l: 2}, {h: 2, k: 0, l: 0}, {h: 2, k: 0, l: 1}
             ],
             tetragonal: [
                 {h: 0, k: 0, l: 1}, {h: 1, k: 0, l: 0}, {h: 1, k: 0, l: 1},
                 {h: 1, k: 1, l: 0}, {h: 1, k: 1, l: 1}, {h: 1, k: 0, l: 2},
-                {h: 2, k: 0, l: 0}, {h: 2, k: 0, l: 1}, {h: 2, k: 1, l: 0},
-                {h: 2, k: 1, l: 1}, {h: 2, k: 2, l: 0}, {h: 2, k: 0, l: 2},
-                {h: 3, k: 0, l: 0}, {h: 3, k: 0, l: 1}, {h: 3, k: 1, l: 0},
-                {h: 3, k: 1, l: 1}, {h: 3, k: 2, l: 0}, {h: 3, k: 0, l: 2},
-                {h: 4, k: 0, l: 0}, {h: 4, k: 0, l: 1}
+                {h: 2, k: 0, l: 0}, {h: 2, k: 0, l: 1}, {h: 2, k: 1, l: 0}
             ]
         };
+
+        function updateMaterialParameters() {
+            const materialSelect = document.getElementById('materialSelect');
+            const selectedMaterial = materialSelect.value;
+            
+            if (selectedMaterial && materialDatabase[selectedMaterial]) {
+                const material = materialDatabase[selectedMaterial];
+                document.getElementById('crystalSystem').value = material.system;
+                document.getElementById('a').value = material.a;
+                if (material.c) {
+                    document.getElementById('c').value = material.c;
+                }
+                updateInputFields();
+            }
+        }
 
         function updateInputFields() {
             const system = document.getElementById('crystalSystem').value;
             const cContainer = document.getElementById('cContainer');
-            const notationInfo = document.getElementById('notationInfo');
             
             if (system === 'cubic') {
                 cContainer.style.display = 'none';
-                notationInfo.style.display = 'none';
             } else {
                 cContainer.style.display = 'block';
-                notationInfo.style.display = system === 'hexagonal' ? 'block' : 'none';
             }
         }
         
@@ -192,11 +246,6 @@
             
             return d;
         }
-
-        function getMillerBravaisIndices(h, k, l) {
-            const i = -(h + k);
-            return `(${h}${k}${i}${l})`;
-        }
         
         function calculateCommonPlanes() {
             const system = document.getElementById('crystalSystem').value;
@@ -209,8 +258,7 @@
                 return {
                     ...plane,
                     d: d,
-                    invD: 1/d,
-                    millerBravais: system === 'hexagonal' ? getMillerBravaisIndices(plane.h, plane.k, plane.l) : null
+                    invD: 1/d
                 };
             });
             
@@ -223,21 +271,33 @@
                 <table>
                     <thead>
                         <tr>
-                            <th>Plane ${system === 'hexagonal' ? '(3-index)' : ''}</th>
-                            ${system === 'hexagonal' ? '<th>Plane (4-index)</th>' : ''}
+                            <th>${system === 'hexagonal' ? 'Plane (hkil)' : 'Plane (hkl)'}</th>
                             <th>d-spacing (Å)</th>
                             <th>1/d (Å⁻¹)</th>
                         </tr>
                     </thead>
                     <tbody>
-                        ${results.map(result => `
-                            <tr>
-                                <td>(${result.h}${result.k}${result.l})</td>
-                                ${system === 'hexagonal' ? `<td>${result.millerBravais}</td>` : ''}
-                                <td>${result.d.toFixed(4)}</td>
-                                <td>${result.invD.toFixed(4)}</td>
-                            </tr>
-                        `).join('')}
+                        ${results.map(result => {
+                            if (system === 'hexagonal') {
+                                // Calculate i = -(h + k) for Miller-Bravais notation
+                                const i = -(result.h + result.k);
+                                return `
+                                    <tr>
+                                        <td>(${result.h}${result.k}${i}${result.l})</td>
+                                        <td>${result.d.toFixed(4)}</td>
+                                        <td>${result.invD.toFixed(4)}</td>
+                                    </tr>
+                                `;
+                            } else {
+                                return `
+                                    <tr>
+                                        <td>(${result.h}${result.k}${result.l})</td>
+                                        <td>${result.d.toFixed(4)}</td>
+                                        <td>${result.invD.toFixed(4)}</td>
+                                    </tr>
+                                `;
+                            }
+                        }).join('')}
                     </tbody>
                 </table>
                 <p class="info-text">Planes are sorted by decreasing d-spacing value.</p>
