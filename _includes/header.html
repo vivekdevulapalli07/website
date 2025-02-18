@@ -15,7 +15,7 @@
       </label>
 
       <div class="trigger">
-        <a class="page-link {% if page.url == '/' %}active{% endif %}" 
+        <a class="page-link {% if page.url == '/' or page.url == '/research/' %}active{% endif %}" 
            href="{{ '/' | relative_url }}">Research</a>
         <a class="page-link {% if page.url == '/publications/' %}active{% endif %}" 
            href="{{ '/publications' | relative_url }}">Publications</a>
@@ -33,7 +33,7 @@
         </div>
         <a class="page-link {% if page.url == '/education/' %}active{% endif %}" 
            href="{{ '/education' | relative_url }}">Education</a>
-		<a class="page-link {% if page.url == '/about/' %}active{% endif %}" 
+        <a class="page-link {% if page.url == '/about/' %}active{% endif %}" 
            href="{{ '/about' | relative_url }}">About</a>
         <a class="page-link {% if page.url == '/contact/' %}active{% endif %}" 
            href="{{ '/contact' | relative_url }}">Contact</a>
