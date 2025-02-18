@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        .calculator {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+        
+        .input-group {
+            margin-bottom: 15px;
+        }
+        
+        .input-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+        
+        .input-row {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        
+        input[type="number"] {
+            width: 100px;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        
+        select {
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            width: 200px;
+        }
+        
+        button {
+            background: #0066cc;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        
+        button:hover {
+            background: #0052a3;
+        }
+        
+        .results {
+            margin-top: 20px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            background: white;
+        }
+        
+        th, td {
+            padding: 8px;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+        
+        th {
+            background: #f1f3f5;
+            position: sticky;
+            top: 0;
+        }
+        
+        tbody tr:hover {
+            background: #f8f9fa;
+        }
+        
+        .info-text {
+            color: #666;
+            font-size: 0.9em;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="calculator">
+        <h2>Common Crystallographic Planes Calculator</h2>
+        
+        <div class="input-group">
+            <label>Crystal System:</label>
+            <select id="crystalSystem" onchange="updateInputFields()">
+                <option value="cubic">Cubic</option>
+                <option value="hexagonal">Hexagonal</option>
+                <option value="tetragonal">Tetragonal</option>
+            </select>
+        </div>
+        
+        <div class="input-group">
+            <label>Lattice Parameters:</label>
+            <div class="input-row">
+                <div>
+                    <label>a (Å):</label>
+                    <input type="number" id="a" step="0.001" value="3.0">
+                </div>
+                <div id="cContainer" style="display: none;">
+                    <label>c (Å):</label>
+                    <input type="number" id="c" step="0.001" value="4.0">
+                </div>
+            </div>
+        </div>
+        
+        <button onclick="calculateCommonPlanes()">Calculate Common Planes</button>
+        
+        <div class="results" id="results"></div>
+    </div>
+
+    <script>
+        // Common planes for different crystal systems
+        const commonPlanes = {
+            cubic: [
+                {h: 1, k: 0, l: 0}, {h: 1, k: 1, l: 0}, {h: 1, k: 1, l: 1},
+                {h: 2, k: 0, l: 0}, {h: 2, k: 1, l: 0}, {h: 2, k: 1, l: 1},
+                {h: 2, k: 2, l: 0}, {h: 2, k: 2, l: 1}, {h: 3, k: 0, l: 0},
+                {h: 3, k: 1, l: 0}, {h: 3, k: 1, l: 1}, {h: 3, k: 2, l: 0},
+                {h: 3, k: 2, l: 1}, {h: 3, k: 2, l: 2}, {h: 3, k: 3, l: 0},
+                {h: 4, k: 0, l: 0}, {h: 4, k: 1, l: 0}, {h: 4, k: 1, l: 1},
+                {h: 4, k: 2, l: 0}, {h: 4, k: 2, l: 1}
+            ],
+            hexagonal: [
+                {h: 0, k: 0, l: 1}, {h: 1, k: 0, l: 0}, {h: 1, k: 0, l: 1},
+                {h: 1, k: 0, l: 2}, {h: 1, k: 0, l: 3}, {h: 1, k: 1, l: 0},
+                {h: 1, k: 1, l: 1}, {h: 1, k: 1, l: 2}, {h: 1, k: 1, l: 3},
+                {h: 2, k: 0, l: 0}, {h: 2, k: 0, l: 1}, {h: 2, k: 0, l: 2},
+                {h: 2, k: 0, l: 3}, {h: 2, k: 1, l: 0}, {h: 2, k: 1, l: 1},
+                {h: 2, k: 1, l: 2}, {h: 2, k: 2, l: 0}, {h: 2, k: 2, l: 1},
+                {h: 3, k: 0, l: 0}, {h: 3, k: 0, l: 1}
+            ],
+            tetragonal: [
+                {h: 0, k: 0, l: 1}, {h: 1, k: 0, l: 0}, {h: 1, k: 0, l: 1},
+                {h: 1, k: 1, l: 0}, {h: 1, k: 1, l: 1}, {h: 1, k: 0, l: 2},
+                {h: 2, k: 0, l: 0}, {h: 2, k: 0, l: 1}, {h: 2, k: 1, l: 0},
+                {h: 2, k: 1, l: 1}, {h: 2, k: 2, l: 0}, {h: 2, k: 0, l: 2},
+                {h: 3, k: 0, l: 0}, {h: 3, k: 0, l: 1}, {h: 3, k: 1, l: 0},
+                {h: 3, k: 1, l: 1}, {h: 3, k: 2, l: 0}, {h: 3, k: 0, l: 2},
+                {h: 4, k: 0, l: 0}, {h: 4, k: 0, l: 1}
+            ]
+        };
+
+        function updateInputFields() {
+            const system = document.getElementById('crystalSystem').value;
+            const cContainer = document.getElementById('cContainer');
+            
+            if (system === 'cubic') {
+                cContainer.style.display = 'none';
+            } else {
+                cContainer.style.display = 'block';
+            }
+        }
+        
+        function calculateDSpacing(a, c, h, k, l, system) {
+            let d = 0;
+            
+            if (system === 'cubic') {
+                d = a / Math.sqrt(h*h + k*k + l*l);
+            } else if (system === 'hexagonal') {
+                d = 1 / Math.sqrt(4/3 * ((h*h + h*k + k*k)/(a*a)) + (l*l)/(c*c));
+            } else if (system === 'tetragonal') {
+                d = 1 / Math.sqrt((h*h + k*k)/(a*a) + (l*l)/(c*c));
+            }
+            
+            return d;
+        }
+        
+        function calculateCommonPlanes() {
+            const system = document.getElementById('crystalSystem').value;
+            const a = parseFloat(document.getElementById('a').value);
+            const c = system === 'cubic' ? a : parseFloat(document.getElementById('c').value);
+            
+            const planes = commonPlanes[system];
+            const results = planes.map(plane => {
+                const d = calculateDSpacing(a, c, plane.h, plane.k, plane.l, system);
+                return {
+                    ...plane,
+                    d: d,
+                    invD: 1/d
+                };
+            });
+            
+            // Sort by decreasing d-spacing
+            results.sort((a, b) => b.d - a.d);
+            
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.innerHTML = `
+                <h3>Common Crystallographic Planes</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Plane (hkl)</th>
+                            <th>d-spacing (Å)</th>
+                            <th>1/d (Å⁻¹)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${results.map(result => `
+                            <tr>
+                                <td>(${result.h}${result.k}${result.l})</td>
+                                <td>${result.d.toFixed(4)}</td>
+                                <td>${result.invD.toFixed(4)}</td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+                <p class="info-text">Planes are sorted by decreasing d-spacing value.</p>
+            `;
+        }
+        
+        // Initialize the page
+        updateInputFields();
+    </script>
+</body>
+</html>
