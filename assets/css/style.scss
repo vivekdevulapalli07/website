@@ -1,24 +1,106 @@
 ---
 ---
 
-// Import theme styles
 @import "{{ site.theme }}";
 
-// Theme-specific overrides
+// Custom variables
+$primary-color: #0066cc;
+$secondary-color: #f8f9fa;
+$text-color: #333;
+$header-height: 60px;
+
+// Global styles
+body {
+    line-height: 1.6;
+    color: $text-color;
+}
+
+// Header improvements
 .site-header {
+    border-top: 5px solid $primary-color;
+    min-height: $header-height;
+    
     .site-title {
         font-size: 1.5rem;
         font-weight: 600;
+        
+        &:hover {
+            text-decoration: none;
+            color: $primary-color;
+        }
     }
 }
 
-.page-content {
-    padding: 2rem 0;
-}
-
+// Content wrapper
 .wrapper {
-    max-width: 800px;
-    padding: 0 1rem;
+    max-width: 960px;
+    padding: 0 20px;
 }
 
-// Add any additional theme-specific overrides here
+// Page title
+.page-title {
+    color: $text-color;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid $primary-color;
+}
+
+// Link styles
+a {
+    color: $primary-color;
+    transition: color 0.2s ease;
+    
+    &:hover {
+        color: darken($primary-color, 15%);
+        text-decoration: none;
+    }
+}
+
+// Footer improvements
+.site-footer {
+    background: $secondary-color;
+    padding: 2rem 0;
+    margin-top: 4rem;
+    
+    .footer-col {
+        margin-bottom: 1rem;
+    }
+    
+    .social-links {
+        text-align: right;
+        
+        @media screen and (max-width: 600px) {
+            text-align: center;
+        }
+    }
+}
+
+// Tools section styling
+.tools-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    margin: 2rem 0;
+    
+    .tool-card {
+        background: white;
+        border-radius: 8px;
+        padding: 1.5rem;
+        box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+        transition: transform 0.2s ease;
+        
+        &:hover {
+            transform: translateY(-3px);
+        }
+        
+        h3 {
+            margin: 0 0 1rem 0;
+            color: $primary-color;
+        }
+        
+        p {
+            margin: 0;
+            color: lighten($text-color, 20%);
+        }
+    }
+}
