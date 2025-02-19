@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html>
 <head>
     <style>
@@ -225,51 +224,69 @@
     </div>
 
     <script>
-        // Material database
-        const materialDatabase = {
-            // Cubic Metals
-            'Al': { system: 'cubic', a: 4.046, c: null },
-            'Cu': { system: 'cubic', a: 3.615, c: null },
-            'Fe': { system: 'cubic', a: 2.866, c: null },
-            'Ni': { system: 'cubic', a: 3.524, c: null },
-            'Au': { system: 'cubic', a: 4.078, c: null },
-            'Ag': { system: 'cubic', a: 4.086, c: null },
-            'W': { system: 'cubic', a: 3.165, c: null },
-            
-            // Hexagonal Metals
-            'Ti': { system: 'hexagonal', a: 2.950, c: 4.686 },
-            'Mg': { system: 'hexagonal', a: 3.209, c: 5.211 },
-            'Zn': { system: 'hexagonal', a: 2.665, c: 4.947 },
-            'Co': { system: 'hexagonal', a: 2.507, c: 4.070 },
-            
-            // Cubic Ceramics
-            'MgO': { system: 'cubic', a: 4.212, c: null },
-            'Al2O3': { system: 'hexagonal', a: 4.785, c: 12.991 }, // α-phase alumina
-            'TiN': { system: 'cubic', a: 4.242, c: null },
-            
-            // Hexagonal Ceramics
-            'AlN': { system: 'hexagonal', a: 3.112, c: 4.982 },
-            'ZnO': { system: 'hexagonal', a: 3.250, c: 5.207 }
-        };
+		// Material database
+		const materialDatabase = {
+			// Cubic Metals
+			'Al': { system: 'cubic', a: 4.046, c: null },
+			'Cu': { system: 'cubic', a: 3.615, c: null },
+			'Fe': { system: 'cubic', a: 2.866, c: null },
+			'Ni': { system: 'cubic', a: 3.524, c: null },
+			'Au': { system: 'cubic', a: 4.078, c: null },
+			'Ag': { system: 'cubic', a: 4.086, c: null },
+			'W': { system: 'cubic', a: 3.165, c: null },
+			'Cr': { system: 'cubic', a: 2.884, c: null },
+			'Mo': { system: 'cubic', a: 3.147, c: null },
+			'Ta': { system: 'cubic', a: 3.306, c: null },
+			'Pb': { system: 'cubic', a: 4.950, c: null },
 
-        // Common planes for different crystal systems
-        const commonPlanes = {
-            cubic: [
-                {h: 1, k: 0, l: 0}, {h: 1, k: 1, l: 0}, {h: 1, k: 1, l: 1},
-                {h: 2, k: 0, l: 0}, {h: 2, k: 1, l: 0}, {h: 2, k: 1, l: 1},
-                {h: 2, k: 2, l: 0}, {h: 2, k: 2, l: 1}, {h: 3, k: 0, l: 0}
-            ],
-            hexagonal: [
-                {h: 0, k: 0, l: 1}, {h: 1, k: 0, l: 0}, {h: 1, k: 0, l: 1},
-                {h: 1, k: 0, l: 2}, {h: 1, k: 1, l: 0}, {h: 1, k: 1, l: 1},
-                {h: 1, k: 1, l: 2}, {h: 2, k: 0, l: 0}, {h: 2, k: 0, l: 1}
-            ],
-            tetragonal: [
-                {h: 0, k: 0, l: 1}, {h: 1, k: 0, l: 0}, {h: 1, k: 0, l: 1},
-                {h: 1, k: 1, l: 0}, {h: 1, k: 1, l: 1}, {h: 1, k: 0, l: 2},
-                {h: 2, k: 0, l: 0}, {h: 2, k: 0, l: 1}, {h: 2, k: 1, l: 0}
-            ]
-        };
+			// Hexagonal Metals
+			'Ti': { system: 'hexagonal', a: 2.950, c: 4.686 },
+			'Mg': { system: 'hexagonal', a: 3.209, c: 5.211 },
+			'Zn': { system: 'hexagonal', a: 2.665, c: 4.947 },
+			'Co': { system: 'hexagonal', a: 2.507, c: 4.070 },
+			'Zr': { system: 'hexagonal', a: 3.231, c: 5.148 },
+			'Be': { system: 'hexagonal', a: 2.286, c: 3.583 },
+
+			// Cubic Ceramics
+			'MgO': { system: 'cubic', a: 4.212, c: null },
+			'Al2O3': { system: 'hexagonal', a: 4.785, c: 12.991 }, // α-phase alumina
+			'TiN': { system: 'cubic', a: 4.242, c: null },
+			'SiC': { system: 'cubic', a: 4.360, c: null }, // Cubic silicon carbide (3C-SiC)
+			'ZrO2': { system: 'cubic', a: 5.140, c: null }, // Cubic zirconia
+			'BaTiO3': { system: 'cubic', a: 4.000, c: null }, // Cubic barium titanate
+			'SrTiO3': { system: 'cubic', a: 3.905, c: null }, // Cubic strontium titanate
+
+			// Hexagonal Ceramics
+			'AlN': { system: 'hexagonal', a: 3.112, c: 4.982 },
+			'ZnO': { system: 'hexagonal', a: 3.250, c: 5.207 },
+			'SiO2': { system: 'hexagonal', a: 4.913, c: 5.405 }, // α-quartz
+			'BN': { system: 'hexagonal', a: 2.504, c: 6.661 }, // Hexagonal boron nitride
+			'Si3N4': { system: 'hexagonal', a: 7.608, c: 2.909 }, // α-phase silicon nitride
+
+			// Tetragonal Ceramics
+			'TiO2': { system: 'tetragonal', a: 4.593, c: 2.959 }, // Rutile phase
+			'PbTiO3': { system: 'tetragonal', a: 3.904, c: 4.152 }, // Tetragonal lead titanate
+			'ZrO2_tetragonal': { system: 'tetragonal', a: 3.640, c: 5.270 } // Tetragonal zirconia
+		};
+
+		// Common planes for different crystal systems
+		const commonPlanes = {
+			cubic: [
+				{h: 1, k: 0, l: 0}, {h: 1, k: 1, l: 0}, {h: 1, k: 1, l: 1},
+				{h: 2, k: 0, l: 0}, {h: 2, k: 1, l: 0}, {h: 2, k: 1, l: 1},
+				{h: 2, k: 2, l: 0}, {h: 2, k: 2, l: 1}, {h: 3, k: 0, l: 0}
+			],
+			hexagonal: [
+				{h: 0, k: 0, l: 1}, {h: 1, k: 0, l: 0}, {h: 1, k: 0, l: 1},
+				{h: 1, k: 0, l: 2}, {h: 1, k: 1, l: 0}, {h: 1, k: 1, l: 1},
+				{h: 1, k: 1, l: 2}, {h: 2, k: 0, l: 0}, {h: 2, k: 0, l: 1}
+			],
+			tetragonal: [
+				{h: 0, k: 0, l: 1}, {h: 1, k: 0, l: 0}, {h: 1, k: 0, l: 1},
+				{h: 1, k: 1, l: 0}, {h: 1, k: 1, l: 1}, {h: 1, k: 0, l: 2},
+				{h: 2, k: 0, l: 0}, {h: 2, k: 0, l: 1}, {h: 2, k: 1, l: 0}
+			]
+		};
 
         function updateMaterialParameters() {
             const materialSelect = document.getElementById('materialSelect');

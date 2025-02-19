@@ -1,6 +1,6 @@
 ---
 layout: page
-title: D-spacing Calculator
+title: d-spacing Calculator
 ---
 
 {% include d-spacing-calc.html %}
