@@ -1,434 +1,386 @@
-<html>
-<head>
-    <style>
-        .calculator {
-            max-width: 800px;
-            margin: 20px auto;
-            padding: 20px;
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-        }
-        
-        .input-group {
-            margin-bottom: 15px;
-        }
-        
-        .input-group label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: 500;
-        }
-        
-        .input-row {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 10px;
-            align-items: flex-end;
-        }
-        
-        input[type="number"] {
-            width: 100px;
-            padding: 8px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-        }
-        
-        select {
-            padding: 8px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            width: 200px;
-        }
-        
-        button {
-            background: #0066cc;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 16px;
-        }
-        
-        button:hover {
-            background: #0052a3;
-        }
-        
-        .results {
-            margin-top: 20px;
-        }
-        
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 10px;
-            background: white;
-        }
-        
-        th, td {
-            padding: 8px;
-            border: 1px solid #ddd;
-            text-align: center;
-        }
-        
-        th {
-            background: #f1f3f5;
-            position: sticky;
-            top: 0;
-        }
-        
-        tbody tr:hover {
-            background: #f8f9fa;
-        }
-        
-        .info-text {
-            color: #666;
-            font-size: 0.9em;
-            margin-top: 10px;
-        }
-
-        .material-select-group {
-            margin-bottom: 20px;
-            padding: 15px;
-            background: #f8f9fa;
-            border-radius: 8px;
-        }
-		
-		        /* New styles for ratio table */
-        .table-container {
-            overflow-x: auto;
-            margin: 20px 0;
-            background: white;
-            border-radius: 4px;
-            box-shadow: 0 1px 4px rgba(0,0,0,0.1);
-        }
-
-        .ratio-table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 0.9em;
-        }
-
-        .ratio-table th,
-        .ratio-table td {
-            padding: 8px;
-            border: 1px solid #ddd;
-            text-align: center;
-        }
-
-        .ratio-table th {
-            background: #f1f3f5;
-            font-weight: 600;
-            position: sticky;
-            top: 0;
-        }
-
-        .ratio-table td.highlight {
-            background: #e3f2fd;
-            font-weight: 500;
-        }
-
-        .table-title {
-            margin: 30px 0 10px 0;
-            color: #333;
-            font-size: 1.2em;
-        }
-
-        .info-text {
-            color: #666;
-            font-size: 0.9em;
-            margin: 10px 0;
-            line-height: 1.4;
-        }
-
-        @media (max-width: 768px) {
-            .table-container {
-                margin: 15px -10px;
-                border-radius: 0;
-            }
-            
-            .ratio-table {
-                font-size: 0.8em;
-            }
-            
-            .ratio-table th,
-            .ratio-table td {
-                padding: 6px;
-            }
-        }
-    </style>
-</head>
-<body>
-    <div class="calculator">
-        <h2>Common Crystallographic Planes Calculator</h2>
-        
-        <div class="material-select-group">
-            <label>Select Material:</label>
-            <select id="materialSelect" onchange="updateMaterialParameters()">
-                <option value="">Custom Parameters</option>
-                <optgroup label="Cubic Metals">
-                    <option value="Al">Aluminum (Al)</option>
-                    <option value="Cu">Copper (Cu)</option>
-                    <option value="Fe">Iron (Fe, BCC)</option>
-                    <option value="Ni">Nickel (Ni)</option>
-                    <option value="Au">Gold (Au)</option>
-                    <option value="Ag">Silver (Ag)</option>
-                    <option value="W">Tungsten (W)</option>
-                </optgroup>
-                <optgroup label="Hexagonal Metals">
-                    <option value="Ti">Titanium (Ti)</option>
-                    <option value="Mg">Magnesium (Mg)</option>
-                    <option value="Zn">Zinc (Zn)</option>
-                    <option value="Co">Cobalt (Co)</option>
-                </optgroup>
-                <optgroup label="Cubic Ceramics">
-                    <option value="MgO">Magnesium Oxide (MgO)</option>
-                    <option value="TiN">Titanium Nitride (TiN)</option>
-                </optgroup>
-                <optgroup label="Hexagonal Ceramics">
-                    <option value="Al2O3">Aluminum Oxide (α-Al₂O₃)</option>
-                    <option value="AlN">Aluminum Nitride (AlN)</option>
-                    <option value="ZnO">Zinc Oxide (ZnO)</option>
-                </optgroup>
-            </select>
-        </div>
-
-        <div class="input-group">
-            <label>Crystal System:</label>
-            <select id="crystalSystem" onchange="updateInputFields()">
-                <option value="cubic">Cubic</option>
-                <option value="hexagonal">Hexagonal</option>
-                <option value="tetragonal">Tetragonal</option>
-            </select>
-        </div>
-        
-        <div class="input-group">
-            <label>Lattice Parameters:</label>
-            <div class="input-row">
-                <div>
-                    <label>a (Å):</label>
-                    <input type="number" id="a" step="0.001" value="3.0">
-                </div>
-                <div id="cContainer" style="display: none;">
-                    <label>c (Å):</label>
-                    <input type="number" id="c" step="0.001" value="4.0">
-                </div>
-            </div>
-        </div>
-        
-        <button onclick="calculateCommonPlanes()">Calculate Common Planes</button>
-        
-        <div class="results" id="results"></div>
+<div class="calculator">
+    <h2>D-spacing Calculator</h2>
+    
+    <div class="material-select-group">
+        <label for="materialSelect">Select Material:</label>
+        <select id="materialSelect" onchange="updateMaterialParameters()">
+            <option value="">Custom Parameters</option>
+            <optgroup label="Cubic Metals">
+                <option value="Al">Aluminum (Al)</option>
+                <option value="Cu">Copper (Cu)</option>
+                <option value="Fe">Iron (Fe, BCC)</option>
+                <option value="Ni">Nickel (Ni)</option>
+                <option value="Au">Gold (Au)</option>
+                <option value="Ag">Silver (Ag)</option>
+                <option value="W">Tungsten (W)</option>
+                <option value="Cr">Chromium (Cr)</option>
+                <option value="Mo">Molybdenum (Mo)</option>
+                <option value="Ta">Tantalum (Ta)</option>
+                <option value="Pb">Lead (Pb)</option>
+            </optgroup>
+            <optgroup label="Hexagonal Metals">
+                <option value="Ti">Titanium (Ti)</option>
+                <option value="Mg">Magnesium (Mg)</option>
+                <option value="Zn">Zinc (Zn)</option>
+                <option value="Co">Cobalt (Co)</option>
+                <option value="Zr">Zirconium (Zr)</option>
+                <option value="Be">Beryllium (Be)</option>
+            </optgroup>
+            <optgroup label="Cubic Ceramics">
+                <option value="MgO">Magnesium Oxide (MgO)</option>
+                <option value="TiN">Titanium Nitride (TiN)</option>
+                <option value="SiC">Silicon Carbide (3C-SiC)</option>
+                <option value="ZrO2">Cubic Zirconia (ZrO₂)</option>
+                <option value="BaTiO3">Barium Titanate (BaTiO₃)</option>
+                <option value="SrTiO3">Strontium Titanate (SrTiO₃)</option>
+            </optgroup>
+            <optgroup label="Hexagonal Ceramics">
+                <option value="Al2O3">Aluminum Oxide (α-Al₂O₃)</option>
+                <option value="AlN">Aluminum Nitride (AlN)</option>
+                <option value="ZnO">Zinc Oxide (ZnO)</option>
+                <option value="SiO2">Silicon Dioxide (α-quartz)</option>
+                <option value="BN">Boron Nitride (BN)</option>
+                <option value="Si3N4">Silicon Nitride (Si₃N₄)</option>
+            </optgroup>
+            <optgroup label="Tetragonal Ceramics">
+                <option value="TiO2">Titanium Dioxide (TiO₂, Rutile)</option>
+                <option value="PbTiO3">Lead Titanate (PbTiO₃)</option>
+                <option value="ZrO2_tetragonal">Tetragonal Zirconia (ZrO₂)</option>
+            </optgroup>
+        </select>
     </div>
 
-    <script>
-		// Material database
-		const materialDatabase = {
-			// Cubic Metals
-			'Al': { system: 'cubic', a: 4.046, c: null },
-			'Cu': { system: 'cubic', a: 3.615, c: null },
-			'Fe': { system: 'cubic', a: 2.866, c: null },
-			'Ni': { system: 'cubic', a: 3.524, c: null },
-			'Au': { system: 'cubic', a: 4.078, c: null },
-			'Ag': { system: 'cubic', a: 4.086, c: null },
-			'W': { system: 'cubic', a: 3.165, c: null },
-			'Cr': { system: 'cubic', a: 2.884, c: null },
-			'Mo': { system: 'cubic', a: 3.147, c: null },
-			'Ta': { system: 'cubic', a: 3.306, c: null },
-			'Pb': { system: 'cubic', a: 4.950, c: null },
+    <div class="input-group">
+        <label>Crystal System:</label>
+        <select id="crystalSystem" onchange="updateInputFields()">
+            <option value="cubic">Cubic</option>
+            <option value="hexagonal">Hexagonal</option>
+            <option value="tetragonal">Tetragonal</option>
+        </select>    
+    </div>
+    
+    <div class="input-group">
+        <label>Lattice Parameters:</label>
+        <div class="input-row">
+            <div>
+                <label>a (Å):</label>
+                <input type="number" id="a" step="0.001" value="3.0">
+            </div>
+            <div id="cContainer" style="display: none;">
+                <label>c (Å):</label>
+                <input type="number" id="c" step="0.001" value="4.0">
+            </div>
+        </div>
+    </div>
+    
+    <button onclick="calculateCommonPlanes()">Calculate Common Planes</button>
+    
+    <div class="results" id="results"></div>
+</div>
 
-			// Hexagonal Metals
-			'Ti': { system: 'hexagonal', a: 2.950, c: 4.686 },
-			'Mg': { system: 'hexagonal', a: 3.209, c: 5.211 },
-			'Zn': { system: 'hexagonal', a: 2.665, c: 4.947 },
-			'Co': { system: 'hexagonal', a: 2.507, c: 4.070 },
-			'Zr': { system: 'hexagonal', a: 3.231, c: 5.148 },
-			'Be': { system: 'hexagonal', a: 2.286, c: 3.583 },
+<script>
+// Material database with crystal structure information
+const materialDatabase = {
+    // Cubic Metals
+    'Al': { system: 'cubic', a: 4.046, c: null },
+    'Cu': { system: 'cubic', a: 3.615, c: null },
+    'Fe': { system: 'cubic', a: 2.866, c: null },
+    'Ni': { system: 'cubic', a: 3.524, c: null },
+    'Au': { system: 'cubic', a: 4.078, c: null },
+    'Ag': { system: 'cubic', a: 4.086, c: null },
+    'W': { system: 'cubic', a: 3.165, c: null },
+    'Cr': { system: 'cubic', a: 2.884, c: null },
+    'Mo': { system: 'cubic', a: 3.147, c: null },
+    'Ta': { system: 'cubic', a: 3.306, c: null },
+    'Pb': { system: 'cubic', a: 4.950, c: null },
 
-			// Cubic Ceramics
-			'MgO': { system: 'cubic', a: 4.212, c: null },
-			'Al2O3': { system: 'hexagonal', a: 4.785, c: 12.991 }, // α-phase alumina
-			'TiN': { system: 'cubic', a: 4.242, c: null },
-			'SiC': { system: 'cubic', a: 4.360, c: null }, // Cubic silicon carbide (3C-SiC)
-			'ZrO2': { system: 'cubic', a: 5.140, c: null }, // Cubic zirconia
-			'BaTiO3': { system: 'cubic', a: 4.000, c: null }, // Cubic barium titanate
-			'SrTiO3': { system: 'cubic', a: 3.905, c: null }, // Cubic strontium titanate
+    // Hexagonal Metals
+    'Ti': { system: 'hexagonal', a: 2.950, c: 4.686 },
+    'Mg': { system: 'hexagonal', a: 3.209, c: 5.211 },
+    'Zn': { system: 'hexagonal', a: 2.665, c: 4.947 },
+    'Co': { system: 'hexagonal', a: 2.507, c: 4.070 },
+    'Zr': { system: 'hexagonal', a: 3.231, c: 5.148 },
+    'Be': { system: 'hexagonal', a: 2.286, c: 3.583 },
 
-			// Hexagonal Ceramics
-			'AlN': { system: 'hexagonal', a: 3.112, c: 4.982 },
-			'ZnO': { system: 'hexagonal', a: 3.250, c: 5.207 },
-			'SiO2': { system: 'hexagonal', a: 4.913, c: 5.405 }, // α-quartz
-			'BN': { system: 'hexagonal', a: 2.504, c: 6.661 }, // Hexagonal boron nitride
-			'Si3N4': { system: 'hexagonal', a: 7.608, c: 2.909 }, // α-phase silicon nitride
+    // Cubic Ceramics
+    'MgO': { system: 'cubic', a: 4.212, c: null },
+    'TiN': { system: 'cubic', a: 4.242, c: null },
+    'SiC': { system: 'cubic', a: 4.360, c: null },
+    'ZrO2': { system: 'cubic', a: 5.140, c: null },
+    'BaTiO3': { system: 'cubic', a: 4.000, c: null },
+    'SrTiO3': { system: 'cubic', a: 3.905, c: null },
 
-			// Tetragonal Ceramics
-			'TiO2': { system: 'tetragonal', a: 4.593, c: 2.959 }, // Rutile phase
-			'PbTiO3': { system: 'tetragonal', a: 3.904, c: 4.152 }, // Tetragonal lead titanate
-			'ZrO2_tetragonal': { system: 'tetragonal', a: 3.640, c: 5.270 } // Tetragonal zirconia
-		};
+    // Hexagonal Ceramics
+    'Al2O3': { system: 'hexagonal', a: 4.785, c: 12.991 },
+    'AlN': { system: 'hexagonal', a: 3.112, c: 4.982 },
+    'ZnO': { system: 'hexagonal', a: 3.250, c: 5.207 },
+    'SiO2': { system: 'hexagonal', a: 4.913, c: 5.405 },
+    'BN': { system: 'hexagonal', a: 2.504, c: 6.661 },
+    'Si3N4': { system: 'hexagonal', a: 7.608, c: 2.909 },
 
-		// Common planes for different crystal systems
-		const commonPlanes = {
-			cubic: [
-				{h: 1, k: 0, l: 0}, {h: 1, k: 1, l: 0}, {h: 1, k: 1, l: 1},
-				{h: 2, k: 0, l: 0}, {h: 2, k: 1, l: 0}, {h: 2, k: 1, l: 1},
-				{h: 2, k: 2, l: 0}, {h: 2, k: 2, l: 1}, {h: 3, k: 0, l: 0}
-			],
-			hexagonal: [
-				{h: 0, k: 0, l: 1}, {h: 1, k: 0, l: 0}, {h: 1, k: 0, l: 1},
-				{h: 1, k: 0, l: 2}, {h: 1, k: 1, l: 0}, {h: 1, k: 1, l: 1},
-				{h: 1, k: 1, l: 2}, {h: 2, k: 0, l: 0}, {h: 2, k: 0, l: 1}
-			],
-			tetragonal: [
-				{h: 0, k: 0, l: 1}, {h: 1, k: 0, l: 0}, {h: 1, k: 0, l: 1},
-				{h: 1, k: 1, l: 0}, {h: 1, k: 1, l: 1}, {h: 1, k: 0, l: 2},
-				{h: 2, k: 0, l: 0}, {h: 2, k: 0, l: 1}, {h: 2, k: 1, l: 0}
-			]
-		};
+    // Tetragonal Ceramics
+    'TiO2': { system: 'tetragonal', a: 4.593, c: 2.959 },
+    'PbTiO3': { system: 'tetragonal', a: 3.904, c: 4.152 },
+    'ZrO2_tetragonal': { system: 'tetragonal', a: 3.640, c: 5.270 }
+};
 
-        function updateMaterialParameters() {
-            const materialSelect = document.getElementById('materialSelect');
-            const selectedMaterial = materialSelect.value;
-            
-            if (selectedMaterial && materialDatabase[selectedMaterial]) {
-                const material = materialDatabase[selectedMaterial];
-                document.getElementById('crystalSystem').value = material.system;
-                document.getElementById('a').value = material.a;
-                if (material.c) {
-                    document.getElementById('c').value = material.c;
-                }
-                updateInputFields();
-            }
+// Common planes for different crystal systems
+const commonPlanes = {
+    cubic: [
+        {h: 1, k: 0, l: 0}, {h: 1, k: 1, l: 0}, {h: 1, k: 1, l: 1},
+        {h: 2, k: 0, l: 0}, {h: 2, k: 1, l: 0}, {h: 2, k: 1, l: 1},
+        {h: 2, k: 2, l: 0}, {h: 2, k: 2, l: 1}, {h: 3, k: 0, l: 0}
+    ],
+    hexagonal: [
+        {h: 0, k: 0, l: 1}, {h: 1, k: 0, l: 0}, {h: 1, k: 0, l: 1},
+        {h: 1, k: 0, l: 2}, {h: 1, k: 1, l: 0}, {h: 1, k: 1, l: 1},
+        {h: 1, k: 1, l: 2}, {h: 2, k: 0, l: 0}, {h: 2, k: 0, l: 1}
+    ],
+    tetragonal: [
+        {h: 0, k: 0, l: 1}, {h: 1, k: 0, l: 0}, {h: 1, k: 0, l: 1},
+        {h: 1, k: 1, l: 0}, {h: 1, k: 1, l: 1}, {h: 1, k: 0, l: 2},
+        {h: 2, k: 0, l: 0}, {h: 2, k: 0, l: 1}, {h: 2, k: 1, l: 0}
+    ]
+};
+
+function updateMaterialParameters() {
+    const materialSelect = document.getElementById('materialSelect');
+    const selectedMaterial = materialSelect.value;
+    
+    if (selectedMaterial && materialDatabase[selectedMaterial]) {
+        const material = materialDatabase[selectedMaterial];
+        document.getElementById('crystalSystem').value = material.system;
+        document.getElementById('a').value = material.a;
+        if (material.c) {
+            document.getElementById('c').value = material.c;
         }
+        updateInputFields();
+    }
+}
 
-        function updateInputFields() {
-            const system = document.getElementById('crystalSystem').value;
-            const cContainer = document.getElementById('cContainer');
-            
-            if (system === 'cubic') {
-                cContainer.style.display = 'none';
-            } else {
-                cContainer.style.display = 'block';
-            }
+function updateInputFields() {
+    const system = document.getElementById('crystalSystem').value;
+    const cContainer = document.getElementById('cContainer');
+    
+    if (system === 'cubic') {
+        cContainer.style.display = 'none';
+    } else {
+        cContainer.style.display = 'block';
+    }
+}
+
+function calculateDSpacing(a, c, h, k, l, system) {
+    let d = 0;
+    
+    if (system === 'cubic') {
+        d = a / Math.sqrt(h*h + k*k + l*l);
+    } else if (system === 'hexagonal') {
+        d = 1 / Math.sqrt(4/3 * ((h*h + h*k + k*k)/(a*a)) + (l*l)/(c*c));
+    } else if (system === 'tetragonal') {
+        d = 1 / Math.sqrt((h*h + k*k)/(a*a) + (l*l)/(c*c));
+    }
+    
+    return d;
+}
+
+function createRatioTable(dSpacings) {
+    const n = dSpacings.length;
+    const ratios = [];
+    
+    // Calculate ratios
+    for (let i = 0; i < n; i++) {
+        ratios[i] = [];
+        for (let j = 0; j < n; j++) {
+            ratios[i][j] = dSpacings[i].d / dSpacings[j].d;
         }
-        
-        function calculateDSpacing(a, c, h, k, l, system) {
-            let d = 0;
-            
-            if (system === 'cubic') {
-                d = a / Math.sqrt(h*h + k*k + l*l);
-            } else if (system === 'hexagonal') {
-                d = 1 / Math.sqrt(4/3 * ((h*h + h*k + k*k)/(a*a)) + (l*l)/(c*c));
-            } else if (system === 'tetragonal') {
-                d = 1 / Math.sqrt((h*h + k*k)/(a*a) + (l*l)/(c*c));
-            }
-            
-            return d;
+    }
+    
+    // Create table HTML
+    let html = '<h3 class="table-title">D-spacing Ratios</h3>';
+    html += '<div class="table-container"><table class="ratio-table">';
+    
+    // Header row
+    html += '<tr><th>Plane</th>';
+    dSpacings.forEach(plane => {
+        html += `<th>(${plane.h}${plane.k}${plane.l})</th>`;
+    });
+    html += '</tr>';
+    
+    // Data rows
+    for (let i = 0; i < n; i++) {
+        html += `<tr><th>(${dSpacings[i].h}${dSpacings[i].k}${dSpacings[i].l})</th>`;
+        for (let j = 0; j < n; j++) {
+            const ratio = ratios[i][j];
+            const isHighlight = Math.abs(ratio - 1) < 0.001;
+            html += `<td class="${isHighlight ? 'highlight' : ''}">${ratio.toFixed(3)}</td>`;
         }
-		
-		
-		        // Add the createRatioTable function
-        function createRatioTable(dSpacings) {
-            const n = dSpacings.length;
-            const ratios = [];
-            
-            // Calculate ratios
-            for (let i = 0; i < n; i++) {
-                ratios[i] = [];
-                for (let j = 0; j < n; j++) {
-                    ratios[i][j] = dSpacings[i].d / dSpacings[j].d;
-                }
-            }
-            
-            // Create table HTML
-            let html = '<h3 class="table-title">D-spacing Ratios</h3>';
-            html += '<div class="table-container"><table class="ratio-table">';
-            
-            // Header row
-            html += '<tr><th>Plane</th>';
-            dSpacings.forEach(plane => {
-                html += `<th>(${plane.h}${plane.k}${plane.l})</th>`;
-            });
-            html += '</tr>';
-            
-            // Data rows
-            for (let i = 0; i < n; i++) {
-                html += `<tr><th>(${dSpacings[i].h}${dSpacings[i].k}${dSpacings[i].l})</th>`;
-                for (let j = 0; j < n; j++) {
-                    const ratio = ratios[i][j];
-                    const isHighlight = Math.abs(ratio - 1) < 0.001;
-                    html += `<td class="${isHighlight ? 'highlight' : ''}">${ratio.toFixed(3)}</td>`;
-                }
-                html += '</tr>';
-            }
-            
-            html += '</table></div>';
-            html += '<p class="info-text">The table shows ratios of d-spacings (d1/d2) between pairs of planes. ' +
-                   'These ratios can be compared with measured spacings in diffraction patterns for plane identification.</p>';
-            
-            return html;
-        }
-		
-        
-        function calculateCommonPlanes() {
-            const system = document.getElementById('crystalSystem').value;
-            const a = parseFloat(document.getElementById('a').value);
-            const c = system === 'cubic' ? a : parseFloat(document.getElementById('c').value);
-            
-            const planes = commonPlanes[system];
-            const results = planes.map(plane => {
-                const d = calculateDSpacing(a, c, plane.h, plane.k, plane.l, system);
-                return {
-                    ...plane,
-                    d: d,
-                    invD: 1/d
-                };
-            });
-            
-            // Sort by decreasing d-spacing
-            results.sort((a, b) => b.d - a.d);
-            
-            const resultsDiv = document.getElementById('results');
-            resultsDiv.innerHTML = `
-                <h3 class="table-title">Common Crystallographic Planes</h3>
-                <div class="table-container">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>${system === 'hexagonal' ? 'Plane (hkil)' : 'Plane (hkl)'}</th>
-                                <th>d-spacing (Å)</th>
-                                <th>1/d (Å⁻¹)</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            ${results.map(result => {
-                                if (system === 'hexagonal') {
-                                    const i = -(result.h + result.k);
-                                    return `
-                                        <tr>
-                                            <td>(${result.h}${result.k}${i}${result.l})</td>
-                                            <td>${result.d.toFixed(4)}</td>
-                                            <td>${result.invD.toFixed(4)}</td>
-                                        </tr>
-                                    `;
-                                } else {
-                                    return `
-                                        <tr>
-                                            <td>(${result.h}${result.k}${result.l})</td>
-                                            <td>${result.d.toFixed(4)}</td>
-                                            <td>${result.invD.toFixed(4)}</td>
-                                        </tr>
-                                    `;
-                                }
-                            }).join('')}
-                        </tbody>
-                    </table>
-                </div>
-                ${createRatioTable(results)}
-            `;
-        }
-    </script>
-</body>
-</html>
+        html += '</tr>';
+    }
+    
+    html += '</table></div>';
+    html += '<p class="info-text">The table shows ratios of d-spacings (d1/d2) between pairs of planes. ' +
+           'These ratios can be compared with measured spacings in diffraction patterns for plane identification.</p>';
+    
+    return html;
+}
+
+function calculateCommonPlanes() {
+    const system = document.getElementById('crystalSystem').value;
+    const a = parseFloat(document.getElementById('a').value);
+    const c = system === 'cubic' ? a : parseFloat(document.getElementById('c').value);
+    
+    const planes = commonPlanes[system];
+    const results = planes.map(plane => {
+        const d = calculateDSpacing(a, c, plane.h, plane.k, plane.l, system);
+        return {
+            ...plane,
+            d: d,
+            invD: 1/d
+        };
+    });
+    
+    // Sort by decreasing d-spacing
+    results.sort((a, b) => b.d - a.d);
+    
+    const resultsDiv = document.getElementById('results');
+    resultsDiv.innerHTML = `
+        <h3 class="table-title">Common Crystallographic Planes</h3>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>${system === 'hexagonal' ? 'Plane (hkil)' : 'Plane (hkl)'}</th>
+                        <th>d-spacing (Å)</th>
+                        <th>1/d (Å⁻¹)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${results.map(result => {
+                        if (system === 'hexagonal') {
+                            const i = -(result.h + result.k);
+                            return `
+                                <tr>
+                                    <td>(${result.h}${result.k}${i}${result.l})</td>
+                                    <td>${result.d.toFixed(4)}</td>
+                                    <td>${result.invD.toFixed(4)}</td>
+                                </tr>
+                            `;
+                        } else {
+                            return `
+                                <tr>
+                                    <td>(${result.h}${result.k}${result.l})</td>
+                                    <td>${result.d.toFixed(4)}</td>
+                                    <td>${result.invD.toFixed(4)}</td>
+                                </tr>
+                            `;
+                        }
+                    }).join('')}
+                </tbody>
+            </table>
+        </div>
+        ${createRatioTable(results)}
+    `;
+}
+
+// Initialize the page
+document.addEventListener('DOMContentLoaded', function() {
+    updateInputFields();
+});
+</script>
+
+<style>
+.calculator {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.input-group {
+    margin-bottom: 15px;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 500;
+}
+
+.input-row {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+    align-items: flex-end;
+}
+
+input[type="number"] {
+    width: 100px;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+select {
+    width: 200px;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+button {
+    background: #0066cc;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.table-container {
+    overflow-x: auto;
+    margin: 20px 0;
+    background: white;
+    border-radius: 4px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+}
+
+.ratio-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9em;
+}
+
+.ratio-table th,
+.ratio-table td {
+    padding: 8px;
+    border: 1px solid #ddd;
+    text-align: center;
+}
+
+.ratio-table th {
+    background: #f1f3f5;
+    font-weight: 600;
+    position: sticky;
+    top: 0;
+}
+
+.ratio-table td.highlight {
+    background: #e3f2fd;
+    font-weight: 500;
+}
+
+.table-title {
+    margin: 30px 0 10px 0;
+    color: #333;
+    font-size: 1.2em;
+}
+
+.info-text {
+    color: #666;
+    font-size: 0.9em;
+    margin: 10px 0;
+    line-height: 1.4;
+}
