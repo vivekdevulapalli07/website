@@ -253,7 +253,7 @@ title: Research
 		
 		// Reset timer
 		if (timer) clearTimeout(timer);
-		timer = setTimeout(() => moveSlide(1), 5000);
+		timer = setTimeout(() => moveSlide(1), 8000);
 	}
 
 	function moveSlide(n) {
