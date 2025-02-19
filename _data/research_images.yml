@@ -1,5 +1,8 @@
 # _data/research_images.yml
 
+- file: ALD_Snap.gif
+  caption: "In-situ TEM tensile testing of multilayer thin films."
+
 - file: Ti_asymmetric_GB.png
   caption: "Atomically resolved HAADF image of an asymmetric grain boundary in Ti showing 'cage' formation due to Fe segregation."
 
