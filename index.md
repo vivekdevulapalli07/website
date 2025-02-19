@@ -6,10 +6,19 @@ title: Research
 <div class="carousel" id="research-carousel">
     <div class="carousel-inner">
         {% for image in site.data.research_images %}
-        <div class="slide" style="display: none;">
-            <img src="{{ site.baseurl }}/assets/images/research/{{ image.file }}" 
-                 alt="{{ image.caption }}"
-                 loading="lazy">
+        <div class="slide">
+            <div class="media-container">
+                {% assign file_extension = image.file | split: '.' | last %}
+                {% if file_extension == 'gif' %}
+                    <video autoplay loop muted playsinline>
+                        <source src="{{ site.baseurl }}/assets/images/research/{{ image.file }}" type="video/gif">
+                    </video>
+                {% else %}
+                    <img src="{{ site.baseurl }}/assets/images/research/{{ image.file }}" 
+                         alt="{{ image.caption }}"
+                         loading="lazy">
+                {% endif %}
+            </div>
             <p class="caption">{{ image.caption }}</p>
         </div>
         {% endfor %}
@@ -43,24 +52,41 @@ title: Research
     max-width: 800px;
     margin: 2rem auto;
     overflow: hidden;
+    aspect-ratio: 16/9;
+    background: #f8f9fa;
+    border-radius: 8px;
 }
 
 .carousel .slide {
-    display: none;
+    position: absolute;
     width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
     padding: 1rem;
     box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .carousel .slide.active {
-    display: block;
-    animation: fadeIn 0.5s ease-in-out;
+    opacity: 1;
+    z-index: 1;
 }
 
-.carousel img {
+.carousel .media-container {
     width: 100%;
-    height: auto;
-    max-height: 500px;
+    height: calc(100% - 60px); /* Reserve space for caption */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.carousel img, 
+.carousel video {
+    max-width: 100%;
+    max-height: 100%;
     object-fit: contain;
     border-radius: 8px;
     box-shadow: 0 2px 10px rgba(0,0,0,0.1);
@@ -120,11 +146,6 @@ title: Research
 
 .carousel-indicators button:hover {
     background: #999;
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
 }
 </style>
 
