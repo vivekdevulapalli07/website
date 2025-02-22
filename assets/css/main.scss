@@ -217,6 +217,59 @@ body {
     }
 }
 
+.thesis-card {
+    background: white;
+    border-radius: 8px;
+    padding: 2rem;
+    margin: 2rem 0;
+    box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+    border-left: 4px solid $primary-color;
+
+    h3 {
+        margin: 0 0 1rem 0;
+        color: $text-color;
+        font-size: 1.4em;
+    }
+
+    .thesis-meta {
+        color: lighten($text-color, 20%);
+        font-size: 1.1em;
+        margin-bottom: 0.5rem;
+    }
+
+    .thesis-supervisors {
+        color: lighten($text-color, 30%);
+        font-style: italic;
+        margin-bottom: 1.5rem;
+    }
+
+    .thesis-links {
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+        flex-wrap: wrap;
+
+        .thesis-download {
+            background: $primary-color;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            text-decoration: none;
+            transition: background 0.2s ease;
+
+            &:hover {
+                background: darken($primary-color, 10%);
+            }
+        }
+
+        .thesis-doi {
+            color: lighten($text-color, 20%);
+            font-size: 0.9em;
+        }
+    }
+}
+
+
 // Blog posts
 .blog-posts {
     margin: 2em 0;
