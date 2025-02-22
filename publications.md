@@ -166,7 +166,7 @@ title: Research output
         </div>
     </div>
 	
-	<h3>Journal Publications</h3>
+	<h3>PhD thesis</h3>
 
 	<div class="thesis-card">
 		<h3>Microstructure and grain boundary evolution in titanium thin films</h3>
