@@ -146,14 +146,14 @@ title: Research output
         </div>
     </div>
 	
-	## PhD Thesis
+	<h3>Journal Publications</h3>
 
 	<div class="thesis-card">
 		<h3>Microstructure and grain boundary evolution in titanium thin films</h3>
-		<p class="thesis-meta">Max-Planck Institut für Eisenforschung, 2022</p>
+		<p class="thesis-meta">Max-Planck Institut für Eisenforschung, Düsseldorf, 2022</p>
 		<p class="thesis-supervisors">Supervisors: Prof. Gerhard Dehm, Dr. Christian Liebscher</p>
 		<div class="thesis-links">
-			<a href="10.5281/zenodo.14909663" class="thesis-download" target="_blank">
+			<a href="https://doi.org/10.5281/zenodo.14909664" class="thesis-download" target="_blank">
 				Download Thesis (PDF)
 			</a>
 			<span class="thesis-doi">DOI: 10.5281/zenodo.14909663</span>
