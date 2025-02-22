@@ -69,7 +69,7 @@ title: Research output
     <div class="publication-item">
         <span class="pub-bullet"></span>
         <div class="pub-content">
-            <a href="https://doi.org/10.1016/j.matchar.2024.114789" class="pub-title">Effect of the scanning strategy on texture of grain-oriented electrical steel (Fe-4wt% Si) processed via laser powder-bed fusion and subsequent thermomechanical processing</a>
+            <a href="https://doi.org/10.1016/j.matchar.2025.114789" class="pub-title">Effect of the scanning strategy on texture of grain-oriented electrical steel (Fe-4wt% Si) processed via laser powder-bed fusion and subsequent thermomechanical processing</a>
             <div class="pub-details">M.S. Lyrio, H.R. Oliveira, M.J.R. Sandim, V. Devulapalli, H.R.Z. Sandim</div>
             <div class="pub-journal">Materials Characterization 2025</div>
         </div>
@@ -78,7 +78,7 @@ title: Research output
 	<div class="publication-item">
 		<span class="pub-bullet"></span>
 		<div class="pub-content">
-			<a href="https://doi.org/10.1088/1361-6528/ad2697" class="pub-title">Elastic limit and relaxation of GaAs/In(Al,Ga)As core/shell nanowires for near-infrared applications</a>
+			<a href="https://doi.org/10.1088/1361-6528/ad9d4a" class="pub-title">Elastic limit and relaxation of GaAs/In(Al,Ga)As core/shell nanowires for near-infrared applications</a>
 			<div class="pub-details">P. Chatzopoulou, D. Hilliard, I.G. Vasileiadis, N. Florini, V. Devulapalli, C.H. Liebscher, L. Lymperakis, P. Komninou, T. Kehagias, E. Dimakis, G.P. Dimitrakopulos</div>
 			<div class="pub-journal">Nanotechnology 36 2024</div>
 		</div>
