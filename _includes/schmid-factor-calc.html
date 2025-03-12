@@ -5,7 +5,7 @@
         <label>Crystal System:</label>
         <select id="crystalSystem" onchange="updateSlipSystems()">
             <option value="cubic">Cubic</option>
-            <option value="hexagonal" disabled>Hexagonal (Coming Soon)</option>
+            <option value="hexagonal">Hexagonal</option>
         </select>    
     </div>
     
@@ -28,7 +28,33 @@
                 <option value="Mo">Molybdenum (Mo)</option>
                 <option value="Ta">Tantalum (Ta)</option>
             </optgroup>
+            <optgroup label="Hexagonal Metals (HCP)">
+                <option value="Ti">Titanium (Ti)</option>
+                <option value="Mg">Magnesium (Mg)</option>
+                <option value="Zn">Zinc (Zn)</option>
+                <option value="Zr">Zirconium (Zr)</option>
+                <option value="Co">Cobalt (Co)</option>
+                <option value="Be">Beryllium (Be)</option>
+            </optgroup>
+            <optgroup label="Hexagonal Ceramics">
+                <option value="Al2O3">Aluminum Oxide (Al₂O₃)</option>
+                <option value="Fe2O3">Iron Oxide (Fe₂O₃)</option>
+            </optgroup>
         </select>
+    </div>
+    
+    <div class="input-group">
+        <label>Lattice Parameters:</label>
+        <div class="input-row">
+            <div>
+                <label>a (Å):</label>
+                <input type="number" id="lattice_a" step="0.001" value="3.615">
+            </div>
+            <div id="cContainer" style="display: none;">
+                <label>c (Å):</label>
+                <input type="number" id="lattice_c" step="0.001" value="5.761">
+            </div>
+        </div>
     </div>
     
     <div class="input-group">
@@ -41,6 +67,10 @@
             <div class="index-group">
                 <label>k</label>
                 <input type="number" id="load_k" value="0">
+            </div>
+            <div class="index-group" id="load_i_container" style="display: none;">
+                <label>i</label>
+                <input type="number" id="load_i" value="-1" disabled>
             </div>
             <div class="index-group">
                 <label>l</label>
@@ -191,22 +221,34 @@ tr:hover {
 </style>
 
 <script>
-// Material database with crystal structure and critical resolved shear stress (CRSS) information
+// Material database with crystal structure, lattice parameters, and critical resolved shear stress (CRSS) information
 const materialDatabase = {
     // FCC Metals
-    'Al': { structure: 'FCC', crss: 7.8 },
-    'Cu': { structure: 'FCC', crss: 10.0 },
-    'Ni': { structure: 'FCC', crss: 15.0 },
-    'Au': { structure: 'FCC', crss: 5.5 },
-    'Ag': { structure: 'FCC', crss: 6.0 },
-    'Pb': { structure: 'FCC', crss: 0.8 },
+    'Al': { structure: 'FCC', crss: 7.8, a: 4.046, c: null, system: 'cubic' },
+    'Cu': { structure: 'FCC', crss: 10.0, a: 3.615, c: null, system: 'cubic' },
+    'Ni': { structure: 'FCC', crss: 15.0, a: 3.524, c: null, system: 'cubic' },
+    'Au': { structure: 'FCC', crss: 5.5, a: 4.078, c: null, system: 'cubic' },
+    'Ag': { structure: 'FCC', crss: 6.0, a: 4.086, c: null, system: 'cubic' },
+    'Pb': { structure: 'FCC', crss: 0.8, a: 4.950, c: null, system: 'cubic' },
     
     // BCC Metals
-    'Fe': { structure: 'BCC', crss: 27.0 },
-    'W': { structure: 'BCC', crss: 210.0 },
-    'Cr': { structure: 'BCC', crss: 46.0 },
-    'Mo': { structure: 'BCC', crss: 95.0 },
-    'Ta': { structure: 'BCC', crss: 50.0 }
+    'Fe': { structure: 'BCC', crss: 27.0, a: 2.866, c: null, system: 'cubic' },
+    'W': { structure: 'BCC', crss: 210.0, a: 3.165, c: null, system: 'cubic' },
+    'Cr': { structure: 'BCC', crss: 46.0, a: 2.884, c: null, system: 'cubic' },
+    'Mo': { structure: 'BCC', crss: 95.0, a: 3.147, c: null, system: 'cubic' },
+    'Ta': { structure: 'BCC', crss: 50.0, a: 3.306, c: null, system: 'cubic' },
+    
+    // HCP Metals
+    'Ti': { structure: 'HCP', crss: 68.0, a: 2.950, c: 4.686, system: 'hexagonal', ca: 1.587 },
+    'Mg': { structure: 'HCP', crss: 0.7, a: 3.209, c: 5.211, system: 'hexagonal', ca: 1.624 },
+    'Zn': { structure: 'HCP', crss: 2.0, a: 2.665, c: 4.947, system: 'hexagonal', ca: 1.856 },
+    'Zr': { structure: 'HCP', crss: 19.0, a: 3.231, c: 5.148, system: 'hexagonal', ca: 1.593 },
+    'Co': { structure: 'HCP', crss: 10.0, a: 2.507, c: 4.070, system: 'hexagonal', ca: 1.623 },
+    'Be': { structure: 'HCP', crss: 0.7, a: 2.286, c: 3.583, system: 'hexagonal', ca: 1.568 },
+    
+    // Hexagonal Ceramics
+    'Al2O3': { structure: 'HCP', crss: 300.0, a: 4.785, c: 12.991, system: 'hexagonal', ca: 2.715 },
+    'Fe2O3': { structure: 'HCP', crss: 210.0, a: 5.038, c: 13.772, system: 'hexagonal', ca: 2.733 }
 };
 
 // Slip systems for different crystal structures
@@ -223,6 +265,12 @@ const slipSystems = {
             [1, 0, 1], [-1, -1, 0], [0, 1, 1],
             [1, 0, 1], [1, 1, 0], [0, -1, -1],
             [1, 0, -1], [1, -1, 0], [0, 1, -1]
+        ],
+        names: [
+            "(111)[10-1]", "(111)[-110]", "(111)[01-1]",
+            "(-111)[101]", "(-111)[-1-10]", "(-111)[011]",
+            "(1-11)[101]", "(1-11)[110]", "(1-11)[0-1-1]",
+            "(11-1)[10-1]", "(11-1)[1-10]", "(11-1)[01-1]"
         ]
     },
     'BCC': {
@@ -242,7 +290,71 @@ const slipSystems = {
             [1, 1, 1], [-1, 1, 1],
             [1, 1, 1], [1, -1, 1],
             [1, 1, 1], [1, 1, -1]
+        ],
+        names: [
+            "(110)[111]", "(110)[-111]",
+            "(-110)[111]", "(-110)[1-11]",
+            "(101)[111]", "(101)[11-1]",
+            "(-101)[111]", "(-101)[-111]",
+            "(011)[111]", "(011)[1-11]",
+            "(0-11)[111]", "(0-11)[11-1]"
         ]
+    },
+    'HCP': {
+        // Basal slip systems: (0001)<11-20>
+        basal: {
+            planes: [
+                [0, 0, 0, 1]
+            ],
+            directions: [
+                [2, -1, -1, 0], [1, 1, -2, 0], [-1, 2, -1, 0]
+            ],
+            names: [
+                "(0001)[2-1-10]", "(0001)[11-20]", "(0001)[-12-10]"
+            ]
+        },
+        // Prismatic slip systems: {10-10}<11-20>
+        prismatic: {
+            planes: [
+                [1, 0, -1, 0], [0, 1, -1, 0], [-1, 1, 0, 0]
+            ],
+            directions: [
+                [2, -1, -1, 0], [1, 1, -2, 0], [-1, 2, -1, 0]
+            ],
+            names: [
+                "(10-10)[2-1-10]", "(01-10)[11-20]", "(-1100)[-12-10]"
+            ]
+        },
+        // Pyramidal <a> slip systems: {10-11}<11-20>
+        pyramidal_a: {
+            planes: [
+                [1, 0, -1, 1], [0, 1, -1, 1], [-1, 1, 0, 1],
+                [-1, 0, 1, 1], [0, -1, 1, 1], [1, -1, 0, 1]
+            ],
+            directions: [
+                [2, -1, -1, 0], [1, 1, -2, 0], [-1, 2, -1, 0],
+                [-2, 1, 1, 0], [-1, -1, 2, 0], [1, -2, 1, 0]
+            ],
+            names: [
+                "(10-11)[2-1-10]", "(01-11)[11-20]", "(-1101)[-12-10]",
+                "(-10-11)[-2110]", "(0-1-11)[-1-120]", "(1-10-1)[1-210]"
+            ]
+        },
+        // Pyramidal <c+a> slip systems: {11-22}<11-23>
+        pyramidal_ca: {
+            planes: [
+                [1, 1, -2, 2], [2, -1, -1, 2], [1, -2, 1, 2],
+                [-1, -1, 2, 2], [-2, 1, 1, 2], [-1, 2, -1, 2]
+            ],
+            directions: [
+                [1, 1, -2, 3], [2, -1, -1, 3], [1, -2, 1, 3],
+                [-1, -1, 2, 3], [-2, 1, 1, 3], [-1, 2, -1, 3]
+            ],
+            names: [
+                "(11-22)[11-23]", "(2-1-12)[2-1-13]", "(1-212)[1-213]",
+                "(-1-122)[-1-123]", "(-2112)[-2113]", "(-12-12)[-12-13]"
+            ]
+        }
     }
 };
 
@@ -251,45 +363,60 @@ function updateMaterialParameters() {
     const selectedMaterial = materialSelect.value;
     
     if (selectedMaterial && materialDatabase[selectedMaterial]) {
-        // Currently, we don't need to update any parameters since we're just using the CRSS
-        // This function can be expanded if we need to add more material-specific parameters
+        const material = materialDatabase[selectedMaterial];
+        
+        // Update crystal system
+        document.getElementById('crystalSystem').value = material.system;
+        
+        // Update lattice parameters
+        document.getElementById('lattice_a').value = material.a;
+        if (material.c) {
+            document.getElementById('lattice_c').value = material.c;
+        }
+        
+        // Update UI based on crystal system
+        updateSlipSystems();
     }
 }
 
 function updateSlipSystems() {
     const crystalSystem = document.getElementById('crystalSystem').value;
-    // This function can be expanded when we add hexagonal support
-}
-
-function normalize(vector) {
-    const magnitude = Math.sqrt(vector[0]*vector[0] + vector[1]*vector[1] + vector[2]*vector[2]);
-    return [vector[0]/magnitude, vector[1]/magnitude, vector[2]/magnitude];
-}
-
-function dotProduct(v1, v2) {
-    return v1[0]*v2[0] + v1[1]*v2[1] + v1[2]*v2[2];
-}
-
-function calculateSchmidFactor(loadDirection, slipPlane, slipDirection) {
-    // Normalize vectors
-    const normalizedLoad = normalize(loadDirection);
-    const normalizedSlipPlane = normalize(slipPlane);
-    const normalizedSlipDirection = normalize(slipDirection);
+    const cContainer = document.getElementById('cContainer');
+    const loadIContainer = document.getElementById('load_i_container');
     
-    // Calculate cosine of angles
-    const cosLambda = Math.abs(dotProduct(normalizedLoad, normalizedSlipDirection));
-    const cosPhi = Math.abs(dotProduct(normalizedLoad, normalizedSlipPlane));
-    
-    // Calculate Schmid factor
-    return cosLambda * cosPhi;
+    if (crystalSystem === 'cubic') {
+        cContainer.style.display = 'none';
+        loadIContainer.style.display = 'none';
+    } else if (crystalSystem === 'hexagonal') {
+        cContainer.style.display = 'block';
+        loadIContainer.style.display = 'block';
+        updateLoadingI();
+    }
+}
+
+function updateLoadingI() {
+    const h = parseFloat(document.getElementById('load_h').value) || 0;
+    const k = parseFloat(document.getElementById('load_k').value) || 0;
+    const i = -(h + k);
+    document.getElementById('load_i').value = i;
+}
+
+da * cosPhi;
 }
 
 function calculateSchmidFactors() {
+    // Get crystal system
+    const crystalSystem = document.getElementById('crystalSystem').value;
+    
     // Get loading direction
     const loadH = parseFloat(document.getElementById('load_h').value);
     const loadK = parseFloat(document.getElementById('load_k').value);
     const loadL = parseFloat(document.getElementById('load_l').value);
-    const loadDirection = [loadH, loadK, loadL];
+    let loadDirection;
+    
+    // Get lattice parameters
+    const a = parseFloat(document.getElementById('lattice_a').value);
+    const c = parseFloat(document.getElementById('lattice_c').value || a);
     
     // Get applied stress
     const appliedStress = parseFloat(document.getElementById('appliedStress').value);
@@ -305,34 +432,90 @@ function calculateSchmidFactors() {
         crss = materialDatabase[selectedMaterial].crss;
     }
     
-    // Get slip systems for the structure
-    const slipPlanes = slipSystems[structure].planes;
-    const slipDirections = slipSystems[structure].directions;
-    
-    // Calculate Schmid factors for each slip system
-    const schmidFactors = [];
-    
-    for (let i = 0; i < slipPlanes.length; i++) {
-        const schmidFactor = calculateSchmidFactor(loadDirection, slipPlanes[i], slipDirections[i]);
-        const resolvedShearStress = schmidFactor * appliedStress;
+    // Setup based on crystal system
+    if (crystalSystem === 'cubic') {
+        loadDirection = [loadH, loadK, loadL];
         
-        schmidFactors.push({
-            index: i,
-            plane: slipPlanes[i],
-            direction: slipDirections[i],
-            schmidFactor: schmidFactor,
-            rss: resolvedShearStress
-        });
+        // Get slip systems for the structure
+        const slipPlanes = slipSystems[structure].planes;
+        const slipDirections = slipSystems[structure].directions;
+        const slipNames = slipSystems[structure].names;
+        
+        // Calculate Schmid factors for each slip system
+        const schmidFactors = [];
+        
+        for (let i = 0; i < slipPlanes.length; i++) {
+            const schmidFactor = calculateSchmidFactorCubic(loadDirection, slipPlanes[i], slipDirections[i]);
+            const resolvedShearStress = schmidFactor * appliedStress;
+            
+            schmidFactors.push({
+                index: i,
+                name: slipNames[i],
+                plane: slipPlanes[i],
+                direction: slipDirections[i],
+                schmidFactor: schmidFactor,
+                rss: resolvedShearStress
+            });
+        }
+        
+        // Sort by Schmid factor (highest first)
+        schmidFactors.sort((a, b) => b.schmidFactor - a.schmidFactor);
+        
+        // Display results
+        displayResults(schmidFactors, loadDirection, structure, crss, selectedMaterial, crystalSystem);
+    } 
+    else if (crystalSystem === 'hexagonal') {
+        // For hexagonal, we use Miller-Bravais indices [hkil]
+        const loadI = -(loadH + loadK);
+        loadDirection = [loadH, loadK, loadI, loadL];
+        
+        // Calculate Schmid factors for different HCP slip systems
+        const allSchmidFactors = [];
+        
+        // Process each HCP slip system category
+        const hcpCategories = ['basal', 'prismatic', 'pyramidal_a', 'pyramidal_ca'];
+        
+        for (const category of hcpCategories) {
+            const planes = slipSystems.HCP[category].planes;
+            const directions = slipSystems.HCP[category].directions;
+            const names = slipSystems.HCP[category].names;
+            
+            for (let i = 0; i < planes.length; i++) {
+                for (let j = 0; j < directions.length; j++) {
+                    // Use same plane with all directions for basal
+                    if (category === 'basal' && i > 0) continue;
+                    
+                    // Ensure we're using matching plane/direction pairs for prismatic and pyramidal
+                    if ((category === 'prismatic' || category.startsWith('pyramidal')) && i !== j % planes.length) {
+                        continue;
+                    }
+                    
+                    const schmidFactor = calculateSchmidFactorHexagonal(loadDirection, planes[i], directions[j], a, c);
+                    const resolvedShearStress = schmidFactor * appliedStress;
+                    
+                    const nameIndex = (category === 'basal') ? j : i;
+                    
+                    allSchmidFactors.push({
+                        category: category,
+                        name: names[nameIndex],
+                        plane: planes[i],
+                        direction: directions[j],
+                        schmidFactor: schmidFactor,
+                        rss: resolvedShearStress
+                    });
+                }
+            }
+        }
+        
+        // Sort by Schmid factor (highest first)
+        allSchmidFactors.sort((a, b) => b.schmidFactor - a.schmidFactor);
+        
+        // Display results
+        displayResults(allSchmidFactors, loadDirection, structure, crss, selectedMaterial, crystalSystem);
     }
-    
-    // Sort by Schmid factor (highest first)
-    schmidFactors.sort((a, b) => b.schmidFactor - a.schmidFactor);
-    
-    // Display results
-    displayResults(schmidFactors, loadDirection, structure, crss, selectedMaterial);
 }
 
-function displayResults(schmidFactors, loadDirection, structure, crss, material) {
+function displayResults(schmidFactors, loadDirection, structure, crss, material, crystalSystem) {
     const tableBody = document.getElementById('schmidTableBody');
     const highestSchmidDiv = document.getElementById('highestSchmid');
     const resultsDiv = document.getElementById('results');
@@ -341,8 +524,12 @@ function displayResults(schmidFactors, loadDirection, structure, crss, material)
     // Clear previous results
     tableBody.innerHTML = '';
     
-    // Set direction text
-    resultDirectionSpan.textContent = `[${loadDirection.join(',')}]`;
+    // Set direction text based on crystal system
+    if (crystalSystem === 'cubic') {
+        resultDirectionSpan.textContent = `[${loadDirection.join(',')}]`;
+    } else if (crystalSystem === 'hexagonal') {
+        resultDirectionSpan.textContent = `[${loadDirection[0]},${loadDirection[1]},${loadDirection[2]},${loadDirection[3]}]`;
+    }
     
     // Add material name if selected
     if (material) {
@@ -350,38 +537,160 @@ function displayResults(schmidFactors, loadDirection, structure, crss, material)
     }
     
     // Add rows to table
+    let lastCategory = '';
+    
     schmidFactors.forEach((system, index) => {
         const row = document.createElement('tr');
         if (index === 0) row.className = 'highest-row';
         
-        row.innerHTML = `
-            <td>${index + 1}</td>
-            <td>(${system.plane.join('')})</td>
-            <td>[${system.direction.join('')}]</td>
-            <td>${system.schmidFactor.toFixed(4)}</td>
-            <td>${system.rss.toFixed(2)}</td>
-        `;
+        // For hexagonal systems, add category headers
+        if (crystalSystem === 'hexagonal' && system.category !== lastCategory) {
+            const categoryRow = document.createElement('tr');
+            categoryRow.className = 'category-row';
+            categoryRow.innerHTML = `
+                <td colspan="5" class="category-header">
+                    ${formatCategoryName(system.category)} Slip Systems
+                </td>
+            `;
+            tableBody.appendChild(categoryRow);
+            lastCategory = system.category;
+        }
+        
+        // For cubic systems
+        if (crystalSystem === 'cubic') {
+            row.innerHTML = `
+                <td>${index + 1}</td>
+                <td>(${system.plane.join('')})</td>
+                <td>[${system.direction.join('')}]</td>
+                <td>${system.schmidFactor.toFixed(4)}</td>
+                <td>${system.rss.toFixed(2)}</td>
+            `;
+        } 
+        // For hexagonal systems
+        else if (crystalSystem === 'hexagonal') {
+            row.innerHTML = `
+                <td>${index + 1}</td>
+                <td>${system.name.split(']')[0]}]</td>
+                <td>${system.name.split(']')[1]}</td>
+                <td>${system.schmidFactor.toFixed(4)}</td>
+                <td>${system.rss.toFixed(2)}</td>
+            `;
+        }
         
         tableBody.appendChild(row);
     });
     
     // Display highest Schmid factor
     const highest = schmidFactors[0];
-    highestSchmidDiv.innerHTML = `
-        <strong>Highest Schmid Factor:</strong> ${highest.schmidFactor.toFixed(4)} for 
-        slip system (${highest.plane.join('')})[${highest.direction.join('')}]
-        <br>
-        <strong>Resolved Shear Stress:</strong> ${highest.rss.toFixed(2)} MPa
-        ${crss ? `<br><strong>Critical RSS (Material):</strong> ${crss} MPa` : ''}
-        ${crss ? `<br><strong>Slip Expected:</strong> ${highest.rss > crss ? 'Yes' : 'No'}` : ''}
-    `;
+    
+    if (crystalSystem === 'cubic') {
+        highestSchmidDiv.innerHTML = `
+            <strong>Highest Schmid Factor:</strong> ${highest.schmidFactor.toFixed(4)} for 
+            slip system ${highest.name || `(${highest.plane.join('')})[${highest.direction.join('')}]`}
+            <br>
+            <strong>Resolved Shear Stress:</strong> ${highest.rss.toFixed(2)} MPa
+            ${crss ? `<br><strong>Critical RSS (Material):</strong> ${crss} MPa` : ''}
+            ${crss ? `<br><strong>Slip Expected:</strong> ${highest.rss > crss ? 'Yes' : 'No'}` : ''}
+        `;
+    } else if (crystalSystem === 'hexagonal') {
+        highestSchmidDiv.innerHTML = `
+            <strong>Highest Schmid Factor:</strong> ${highest.schmidFactor.toFixed(4)} for 
+            slip system ${highest.name} (${formatCategoryName(highest.category)})
+            <br>
+            <strong>Resolved Shear Stress:</strong> ${highest.rss.toFixed(2)} MPa
+            ${crss ? `<br><strong>Critical RSS (Material):</strong> ${crss} MPa` : ''}
+            ${crss ? `<br><strong>Slip Expected:</strong> ${highest.rss > crss ? 'Yes' : 'No'}` : ''}
+        `;
+    }
     
     // Show results
     resultsDiv.style.display = 'block';
 }
 
-// Initialize the page
+function formatCategoryName(category) {
+    switch(category) {
+        case 'basal':
+            return 'Basal';
+        case 'prismatic':
+            return 'Prismatic';
+        case 'pyramidal_a':
+            return 'Pyramidal <a>';
+        case 'pyramidal_ca':
+            return 'Pyramidal <c+a>';
+        default:
+            return category;
+    }
+}
+
+// Initialize and set up event listeners for the page
 document.addEventListener('DOMContentLoaded', function() {
     updateSlipSystems();
+    
+    // Set up event listeners for input changes
+    document.getElementById('load_h').addEventListener('input', function() {
+        const crystalSystem = document.getElementById('crystalSystem').value;
+        if (crystalSystem === 'hexagonal') {
+            updateLoadingI();
+        }
+    });
+    
+    document.getElementById('load_k').addEventListener('input', function() {
+        const crystalSystem = document.getElementById('crystalSystem').value;
+        if (crystalSystem === 'hexagonal') {
+            updateLoadingI();
+        }
+    });
+    
+    // Add a disclaimer about CRSS values
+    const calculator = document.querySelector('.calculator');
+    const disclaimer = document.createElement('div');
+    disclaimer.className = 'disclaimer';
+    disclaimer.innerHTML = `
+        <p><strong>Note:</strong> The Critical Resolved Shear Stress (CRSS) values provided are approximate 
+        values for pure, single-crystal metals at room temperature. Actual values may vary significantly 
+        depending on material purity, microstructure, testing conditions, and other factors.</p>
+    `;
+    calculator.appendChild(disclaimer);
 });
+
+// Add extra styles
+document.head.insertAdjacentHTML('beforeend', `
+<style>
+    .category-header {
+        background-color: #e9ecef;
+        font-weight: bold;
+        text-align: center;
+        padding: 8px 0;
+    }
+    
+    .category-row {
+        background-color: #f8f9fa !important;
+    }
+    
+    .disclaimer {
+        margin-top: 30px;
+        padding: 15px;
+        background-color: #fff3cd;
+        border-left: 4px solid #ffc107;
+        border-radius: 4px;
+        font-size: 0.9em;
+        color: #664d03;
+    }
+    
+    tr.highest-row {
+        background-color: #e6f3ff !important;
+        font-weight: 500;
+    }
+    
+    @media (max-width: 768px) {
+        .indices-input {
+            flex-wrap: wrap;
+        }
+        
+        .input-row {
+            flex-wrap: wrap;
+        }
+    }
+</style>
+`);
 </script>
