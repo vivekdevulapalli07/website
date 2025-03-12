@@ -1,0 +1,387 @@
+<div class="calculator">
+    <h2>Schmid Factor Calculator</h2>
+    
+    <div class="input-group">
+        <label>Crystal System:</label>
+        <select id="crystalSystem" onchange="updateSlipSystems()">
+            <option value="cubic">Cubic</option>
+            <option value="hexagonal" disabled>Hexagonal (Coming Soon)</option>
+        </select>    
+    </div>
+    
+    <div class="material-select-group">
+        <label for="materialSelect">Select Material:</label>
+        <select id="materialSelect" onchange="updateMaterialParameters()">
+            <option value="">Custom Parameters</option>
+            <optgroup label="Cubic Metals (FCC)">
+                <option value="Al">Aluminum (Al)</option>
+                <option value="Cu">Copper (Cu)</option>
+                <option value="Ni">Nickel (Ni)</option>
+                <option value="Au">Gold (Au)</option>
+                <option value="Ag">Silver (Ag)</option>
+                <option value="Pb">Lead (Pb)</option>
+            </optgroup>
+            <optgroup label="Cubic Metals (BCC)">
+                <option value="Fe">Iron (Fe)</option>
+                <option value="W">Tungsten (W)</option>
+                <option value="Cr">Chromium (Cr)</option>
+                <option value="Mo">Molybdenum (Mo)</option>
+                <option value="Ta">Tantalum (Ta)</option>
+            </optgroup>
+        </select>
+    </div>
+    
+    <div class="input-group">
+        <label>Loading Direction (Miller Indices):</label>
+        <div class="indices-input">
+            <div class="index-group">
+                <label>h</label>
+                <input type="number" id="load_h" value="1">
+            </div>
+            <div class="index-group">
+                <label>k</label>
+                <input type="number" id="load_k" value="0">
+            </div>
+            <div class="index-group">
+                <label>l</label>
+                <input type="number" id="load_l" value="0">
+            </div>
+        </div>
+    </div>
+    
+    <div class="input-group">
+        <label>Applied Stress (MPa):</label>
+        <input type="number" id="appliedStress" value="100">
+    </div>
+    
+    <button onclick="calculateSchmidFactors()">Calculate Schmid Factors</button>
+    
+    <div class="results" id="results" style="display: none;">
+        <h3>Schmid Factors for <span id="resultDirection"></span> Loading</h3>
+        <div class="table-container">
+            <table id="schmidTable">
+                <thead>
+                    <tr>
+                        <th>Slip System</th>
+                        <th>Slip Plane</th>
+                        <th>Slip Direction</th>
+                        <th>Schmid Factor</th>
+                        <th>CRSS (MPa)</th>
+                    </tr>
+                </thead>
+                <tbody id="schmidTableBody">
+                    <!-- Results will be inserted here -->
+                </tbody>
+            </table>
+        </div>
+        
+        <div id="highestSchmid" class="highlighted-result">
+            <!-- Highest Schmid factor result will be shown here -->
+        </div>
+    </div>
+</div>
+
+<style>
+.calculator {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.input-group {
+    margin-bottom: 15px;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 500;
+}
+
+.indices-input {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+    align-items: flex-end;
+}
+
+.index-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.index-group label {
+    font-size: 0.8em;
+    margin-bottom: 2px;
+    color: #666;
+}
+
+input[type="number"] {
+    width: 80px;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+select {
+    width: 200px;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+button {
+    background: #0066cc;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+button:hover {
+    background: #0052a3;
+}
+
+.table-container {
+    overflow-x: auto;
+    margin: 20px 0;
+    background: white;
+    border-radius: 4px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+th {
+    background-color: #f1f3f5;
+    font-weight: 600;
+}
+
+tr:hover {
+    background-color: #f8f9fa;
+}
+
+.highlighted-result {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: #e6f3ff;
+    border-left: 4px solid #0066cc;
+    border-radius: 4px;
+}
+
+.highest-row {
+    background-color: #e6f3ff !important;
+    font-weight: 500;
+}
+</style>
+
+<script>
+// Material database with crystal structure and critical resolved shear stress (CRSS) information
+const materialDatabase = {
+    // FCC Metals
+    'Al': { structure: 'FCC', crss: 7.8 },
+    'Cu': { structure: 'FCC', crss: 10.0 },
+    'Ni': { structure: 'FCC', crss: 15.0 },
+    'Au': { structure: 'FCC', crss: 5.5 },
+    'Ag': { structure: 'FCC', crss: 6.0 },
+    'Pb': { structure: 'FCC', crss: 0.8 },
+    
+    // BCC Metals
+    'Fe': { structure: 'BCC', crss: 27.0 },
+    'W': { structure: 'BCC', crss: 210.0 },
+    'Cr': { structure: 'BCC', crss: 46.0 },
+    'Mo': { structure: 'BCC', crss: 95.0 },
+    'Ta': { structure: 'BCC', crss: 50.0 }
+};
+
+// Slip systems for different crystal structures
+const slipSystems = {
+    'FCC': {
+        planes: [
+            [1, 1, 1], [1, 1, 1], [1, 1, 1], 
+            [-1, 1, 1], [-1, 1, 1], [-1, 1, 1],
+            [1, -1, 1], [1, -1, 1], [1, -1, 1],
+            [1, 1, -1], [1, 1, -1], [1, 1, -1]
+        ],
+        directions: [
+            [1, 0, -1], [-1, 1, 0], [0, -1, 1],
+            [1, 0, 1], [-1, -1, 0], [0, 1, 1],
+            [1, 0, 1], [1, 1, 0], [0, -1, -1],
+            [1, 0, -1], [1, -1, 0], [0, 1, -1]
+        ]
+    },
+    'BCC': {
+        // Primary slip systems: {110}<111>
+        planes: [
+            [1, 1, 0], [1, 1, 0],
+            [-1, 1, 0], [-1, 1, 0],
+            [1, 0, 1], [1, 0, 1],
+            [-1, 0, 1], [-1, 0, 1],
+            [0, 1, 1], [0, 1, 1],
+            [0, -1, 1], [0, -1, 1]
+        ],
+        directions: [
+            [1, 1, 1], [-1, 1, 1],
+            [1, 1, 1], [1, -1, 1],
+            [1, 1, 1], [1, 1, -1],
+            [1, 1, 1], [-1, 1, 1],
+            [1, 1, 1], [1, -1, 1],
+            [1, 1, 1], [1, 1, -1]
+        ]
+    }
+};
+
+function updateMaterialParameters() {
+    const materialSelect = document.getElementById('materialSelect');
+    const selectedMaterial = materialSelect.value;
+    
+    if (selectedMaterial && materialDatabase[selectedMaterial]) {
+        // Currently, we don't need to update any parameters since we're just using the CRSS
+        // This function can be expanded if we need to add more material-specific parameters
+    }
+}
+
+function updateSlipSystems() {
+    const crystalSystem = document.getElementById('crystalSystem').value;
+    // This function can be expanded when we add hexagonal support
+}
+
+function normalize(vector) {
+    const magnitude = Math.sqrt(vector[0]*vector[0] + vector[1]*vector[1] + vector[2]*vector[2]);
+    return [vector[0]/magnitude, vector[1]/magnitude, vector[2]/magnitude];
+}
+
+function dotProduct(v1, v2) {
+    return v1[0]*v2[0] + v1[1]*v2[1] + v1[2]*v2[2];
+}
+
+function calculateSchmidFactor(loadDirection, slipPlane, slipDirection) {
+    // Normalize vectors
+    const normalizedLoad = normalize(loadDirection);
+    const normalizedSlipPlane = normalize(slipPlane);
+    const normalizedSlipDirection = normalize(slipDirection);
+    
+    // Calculate cosine of angles
+    const cosLambda = Math.abs(dotProduct(normalizedLoad, normalizedSlipDirection));
+    const cosPhi = Math.abs(dotProduct(normalizedLoad, normalizedSlipPlane));
+    
+    // Calculate Schmid factor
+    return cosLambda * cosPhi;
+}
+
+function calculateSchmidFactors() {
+    // Get loading direction
+    const loadH = parseFloat(document.getElementById('load_h').value);
+    const loadK = parseFloat(document.getElementById('load_k').value);
+    const loadL = parseFloat(document.getElementById('load_l').value);
+    const loadDirection = [loadH, loadK, loadL];
+    
+    // Get applied stress
+    const appliedStress = parseFloat(document.getElementById('appliedStress').value);
+    
+    // Get material and its structure
+    const materialSelect = document.getElementById('materialSelect');
+    const selectedMaterial = materialSelect.value;
+    let structure = 'FCC'; // Default to FCC
+    let crss = 10.0; // Default CRSS value
+    
+    if (selectedMaterial && materialDatabase[selectedMaterial]) {
+        structure = materialDatabase[selectedMaterial].structure;
+        crss = materialDatabase[selectedMaterial].crss;
+    }
+    
+    // Get slip systems for the structure
+    const slipPlanes = slipSystems[structure].planes;
+    const slipDirections = slipSystems[structure].directions;
+    
+    // Calculate Schmid factors for each slip system
+    const schmidFactors = [];
+    
+    for (let i = 0; i < slipPlanes.length; i++) {
+        const schmidFactor = calculateSchmidFactor(loadDirection, slipPlanes[i], slipDirections[i]);
+        const resolvedShearStress = schmidFactor * appliedStress;
+        
+        schmidFactors.push({
+            index: i,
+            plane: slipPlanes[i],
+            direction: slipDirections[i],
+            schmidFactor: schmidFactor,
+            rss: resolvedShearStress
+        });
+    }
+    
+    // Sort by Schmid factor (highest first)
+    schmidFactors.sort((a, b) => b.schmidFactor - a.schmidFactor);
+    
+    // Display results
+    displayResults(schmidFactors, loadDirection, structure, crss, selectedMaterial);
+}
+
+function displayResults(schmidFactors, loadDirection, structure, crss, material) {
+    const tableBody = document.getElementById('schmidTableBody');
+    const highestSchmidDiv = document.getElementById('highestSchmid');
+    const resultsDiv = document.getElementById('results');
+    const resultDirectionSpan = document.getElementById('resultDirection');
+    
+    // Clear previous results
+    tableBody.innerHTML = '';
+    
+    // Set direction text
+    resultDirectionSpan.textContent = `[${loadDirection.join(',')}]`;
+    
+    // Add material name if selected
+    if (material) {
+        resultDirectionSpan.textContent += ` for ${material} (${structure})`;
+    }
+    
+    // Add rows to table
+    schmidFactors.forEach((system, index) => {
+        const row = document.createElement('tr');
+        if (index === 0) row.className = 'highest-row';
+        
+        row.innerHTML = `
+            <td>${index + 1}</td>
+            <td>(${system.plane.join('')})</td>
+            <td>[${system.direction.join('')}]</td>
+            <td>${system.schmidFactor.toFixed(4)}</td>
+            <td>${system.rss.toFixed(2)}</td>
+        `;
+        
+        tableBody.appendChild(row);
+    });
+    
+    // Display highest Schmid factor
+    const highest = schmidFactors[0];
+    highestSchmidDiv.innerHTML = `
+        <strong>Highest Schmid Factor:</strong> ${highest.schmidFactor.toFixed(4)} for 
+        slip system (${highest.plane.join('')})[${highest.direction.join('')}]
+        <br>
+        <strong>Resolved Shear Stress:</strong> ${highest.rss.toFixed(2)} MPa
+        ${crss ? `<br><strong>Critical RSS (Material):</strong> ${crss} MPa` : ''}
+        ${crss ? `<br><strong>Slip Expected:</strong> ${highest.rss > crss ? 'Yes' : 'No'}` : ''}
+    `;
+    
+    // Show results
+    resultsDiv.style.display = 'block';
+}
+
+// Initialize the page
+document.addEventListener('DOMContentLoaded', function() {
+    updateSlipSystems();
+});
+</script>
