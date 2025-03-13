@@ -1,0 +1,383 @@
+<style>
+  .visualization-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 2rem 0;
+    max-width: 100%;
+  }
+  
+  .canvas-wrapper {
+    width: 100%;
+    max-width: 800px;
+    aspect-ratio: 4/3;
+    position: relative;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 1.5rem;
+  }
+  
+  #astigmatism-canvas {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+  
+  .controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: center;
+    max-width: 800px;
+    margin: 0 auto 2rem;
+  }
+  
+  .control-group {
+    display: flex;
+    flex-direction: column;
+    min-width: 250px;
+    background-color: #f8f9fa;
+    padding: 1rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  }
+  
+  .control-group h3 {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
+    color: #333;
+  }
+  
+  .slider-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.7rem;
+  }
+  
+  .slider-container label {
+    flex: 1;
+    font-size: 0.9rem;
+  }
+  
+  .slider-container input {
+    flex: 2;
+  }
+  
+  .slider-value {
+    flex: 0 0 50px;
+    text-align: right;
+    font-size: 0.9rem;
+    color: #666;
+  }
+  
+  .astigmatism-selector {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+  }
+  
+  .astigmatism-button {
+    padding: 0.5rem 1rem;
+    background-color: #e9ecef;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all 0.2s ease;
+  }
+  
+  .astigmatism-button:hover {
+    background-color: #dee2e6;
+  }
+  
+  .astigmatism-button.active {
+    background-color: #0066cc;
+    color: white;
+  }
+  
+  .explanation {
+    max-width: 800px;
+    margin: 0 auto 3rem;
+    line-height: 1.6;
+  }
+  
+  .explanation h2 {
+    margin-top: 2rem;
+    color: #333;
+  }
+  
+  .explanation p {
+    margin-bottom: 1rem;
+  }
+  
+  .formula {
+    display: block;
+    text-align: center;
+    font-style: italic;
+    margin: 1.5rem 0;
+    color: #333;
+  }
+
+  @media (max-width: 768px) {
+    .control-group {
+      min-width: 100%;
+    }
+  }
+</style>
+
+<div class="visualization-container">
+  <div class="canvas-wrapper">
+    <canvas id="astigmatism-canvas"></canvas>
+  </div>
+  
+  <div class="controls">
+    <div class="control-group">
+      <h3>Astigmatism Type</h3>
+      <div class="astigmatism-selector">
+        <button class="astigmatism-button active" data-fold="2">2-fold</button>
+        <button class="astigmatism-button" data-fold="3">3-fold</button>
+        <button class="astigmatism-button" data-fold="4">4-fold</button>
+      </div>
+      
+      <div class="slider-container">
+        <label for="amplitude-slider">Amplitude:</label>
+        <input type="range" id="amplitude-slider" min="0" max="100" value="50">
+        <span id="amplitude-value" class="slider-value">0.5</span>
+      </div>
+      
+      <div class="slider-container">
+        <label for="rotation-slider">Rotation (°):</label>
+        <input type="range" id="rotation-slider" min="0" max="360" value="0">
+        <span id="rotation-value" class="slider-value">0°</span>
+      </div>
+    </div>
+    
+    <div class="control-group">
+      <h3>Visualization Options</h3>
+      <div class="slider-container">
+        <label for="resolution-slider">Resolution:</label>
+        <input type="range" id="resolution-slider" min="20" max="100" value="40">
+        <span id="resolution-value" class="slider-value">40</span>
+      </div>
+      
+      <div class="slider-container">
+        <label for="zoom-slider">Zoom:</label>
+        <input type="range" id="zoom-slider" min="50" max="200" value="100">
+        <span id="zoom-value" class="slider-value">100%</span>
+      </div>
+      
+      <div class="slider-container">
+        <label for="speed-slider">Animation Speed:</label>
+        <input type="range" id="speed-slider" min="0" max="100" value="50">
+        <span id="speed-value" class="slider-value">50%</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="explanation">
+  <h2>Understanding Astigmatism in Electron Microscopy</h2>
+  
+  <p>Astigmatism is an aberration that occurs when electrons traveling in different planes experience different focal lengths. This distortion arises from imperfections in electron lenses and results in directionally dependent blurring of images.</p>
+  
+  <h3>Two-fold Astigmatism (A<sub>1</sub>)</h3>
+  <p>Two-fold (or primary) astigmatism is the most common form, characterized by different focal planes in two perpendicular directions. In the wavefront, it creates an elliptical distortion. The mathematical form in polar coordinates (r, θ) is:</p>
+  <div class="formula">χ(r,θ) = A<sub>1</sub>r<sup>2</sup>cos(2(θ-θ<sub>0</sub>))</div>
+  <p>Where A<sub>1</sub> is the amplitude and θ<sub>0</sub> is the orientation angle. This creates two perpendicular directions with different focal points, causing point objects to appear as ellipses.</p>
+  
+  <h3>Three-fold Astigmatism (A<sub>2</sub>)</h3>
+  <p>Three-fold astigmatism introduces a three-lobed distortion to the wavefront. Unlike two-fold astigmatism, it has threefold rotational symmetry. Its mathematical representation is:</p>
+  <div class="formula">χ(r,θ) = A<sub>2</sub>r<sup>3</sup>cos(3(θ-θ<sub>0</sub>))</div>
+  <p>This aberration generally appears in TEM due to mechanical imperfections in the lens or apertures. It produces a triangular distortion pattern.</p>
+  
+  <h3>Four-fold Astigmatism (A<sub>3</sub>)</h3>
+  <p>Four-fold astigmatism creates a four-lobed pattern in the wavefront distortion, with four-fold symmetry. Its mathematical form is:</p>
+  <div class="formula">χ(r,θ) = A<sub>3</sub>r<sup>4</sup>cos(4(θ-θ<sub>0</sub>))</div>
+  <p>This higher-order aberration is less common but becomes important in high-resolution imaging. It produces a square or four-pointed star distortion pattern.</p>
+  
+  <p>The visualization above demonstrates how each type of astigmatism affects the wavefront. You can adjust the amplitude and orientation angle to see their effects on the resulting wave distortion.</p>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Setup Three.js scene
+  const canvas = document.getElementById('astigmatism-canvas');
+  const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
+  renderer.setPixelRatio(window.devicePixelRatio);
+  renderer.setSize(canvas.clientWidth, canvas.clientHeight);
+  
+  const scene = new THREE.Scene();
+  scene.background = new THREE.Color(0xf0f0f0);
+  
+  const camera = new THREE.PerspectiveCamera(60, canvas.clientWidth / canvas.clientHeight, 0.1, 1000);
+  camera.position.set(0, 0, 2.5);
+  camera.lookAt(0, 0, 0);
+  
+  // Add lighting
+  const ambientLight = new THREE.AmbientLight(0xffffff, 0.4);
+  scene.add(ambientLight);
+  
+  const directionalLight = new THREE.DirectionalLight(0xffffff, 0.6);
+  directionalLight.position.set(1, 1, 1);
+  scene.add(directionalLight);
+  
+  // State variables
+  let astigmatismFold = 2;
+  let amplitude = 0.5;
+  let rotation = 0; // in degrees
+  let resolution = 40;
+  let zoom = 1;
+  let animationSpeed = 0.5;
+  
+  // Create wavefront mesh
+  let wavefrontMesh;
+  let wavefrontGeometry;
+  
+  function createWavefrontMesh() {
+    if (wavefrontMesh) {
+      scene.remove(wavefrontMesh);
+      wavefrontGeometry.dispose();
+    }
+    
+    // Create a plane geometry for the wavefront
+    wavefrontGeometry = new THREE.PlaneGeometry(
+      2 * zoom,
+      2 * zoom,
+      resolution,
+      resolution
+    );
+    
+    const material = new THREE.MeshPhongMaterial({
+      color: 0x2194ce,
+      shininess: 100,
+      wireframe: false,
+      side: THREE.DoubleSide,
+      flatShading: false,
+    });
+    
+    wavefrontMesh = new THREE.Mesh(wavefrontGeometry, material);
+    scene.add(wavefrontMesh);
+    
+    // Apply initial distortion
+    updateWavefrontDistortion();
+  }
+  
+  function updateWavefrontDistortion() {
+    if (!wavefrontMesh) return;
+    
+    const positions = wavefrontGeometry.attributes.position.array;
+    const rotationRad = rotation * Math.PI / 180;
+    
+    for (let i = 0; i < positions.length; i += 3) {
+      const x = positions[i];
+      const y = positions[i + 1];
+      
+      // Convert to polar coordinates
+      const r = Math.sqrt(x * x + y * y);
+      let theta = Math.atan2(y, x) - rotationRad;
+      
+      // Apply astigmatism distortion based on fold number
+      let z = 0;
+      
+      // Base wavefront (sin wave)
+      const time = Date.now() * 0.001 * animationSpeed;
+      const baseWave = 0.2 * Math.sin(5 * r - time);
+      
+      // Apply astigmatism distortion
+      if (r > 0) {
+        if (astigmatismFold === 2) {
+          z = baseWave + amplitude * 0.2 * r * r * Math.cos(2 * theta);
+        } else if (astigmatismFold === 3) {
+          z = baseWave + amplitude * 0.1 * r * r * r * Math.cos(3 * theta);
+        } else if (astigmatismFold === 4) {
+          z = baseWave + amplitude * 0.05 * Math.pow(r, 4) * Math.cos(4 * theta);
+        }
+      }
+      
+      positions[i + 2] = z;
+    }
+    
+    wavefrontGeometry.attributes.position.needsUpdate = true;
+    wavefrontGeometry.computeVertexNormals();
+  }
+  
+  // Handle controls
+  const amplitudeSlider = document.getElementById('amplitude-slider');
+  const amplitudeValue = document.getElementById('amplitude-value');
+  amplitudeSlider.addEventListener('input', function() {
+    amplitude = this.value / 100;
+    amplitudeValue.textContent = amplitude.toFixed(2);
+  });
+  
+  const rotationSlider = document.getElementById('rotation-slider');
+  const rotationValue = document.getElementById('rotation-value');
+  rotationSlider.addEventListener('input', function() {
+    rotation = parseInt(this.value);
+    rotationValue.textContent = `${rotation}°`;
+  });
+  
+  const resolutionSlider = document.getElementById('resolution-slider');
+  const resolutionValue = document.getElementById('resolution-value');
+  resolutionSlider.addEventListener('input', function() {
+    resolution = parseInt(this.value);
+    resolutionValue.textContent = resolution;
+    createWavefrontMesh();
+  });
+  
+  const zoomSlider = document.getElementById('zoom-slider');
+  const zoomValue = document.getElementById('zoom-value');
+  zoomSlider.addEventListener('input', function() {
+    zoom = this.value / 100;
+    zoomValue.textContent = `${this.value}%`;
+    createWavefrontMesh();
+  });
+  
+  const speedSlider = document.getElementById('speed-slider');
+  const speedValue = document.getElementById('speed-value');
+  speedSlider.addEventListener('input', function() {
+    animationSpeed = this.value / 100;
+    speedValue.textContent = `${this.value}%`;
+  });
+  
+  const astigmatismButtons = document.querySelectorAll('.astigmatism-button');
+  astigmatismButtons.forEach(button => {
+    button.addEventListener('click', function() {
+      astigmatismButtons.forEach(b => b.classList.remove('active'));
+      this.classList.add('active');
+      astigmatismFold = parseInt(this.dataset.fold);
+    });
+  });
+  
+  // Animation loop
+  function animate() {
+    requestAnimationFrame(animate);
+    updateWavefrontDistortion();
+    renderer.render(scene, camera);
+  }
+  
+  // Handle window resize
+  function onWindowResize() {
+    const width = canvas.clientWidth;
+    const height = canvas.clientHeight;
+    
+    camera.aspect = width / height;
+    camera.updateProjectionMatrix();
+    renderer.setSize(width, height);
+  }
+  window.addEventListener('resize', onWindowResize);
+  
+  // Initialize
+  createWavefrontMesh();
+  animate();
+  
+  // Set initial UI values
+  amplitudeValue.textContent = amplitude.toFixed(2);
+  rotationValue.textContent = `${rotation}°`;
+  resolutionValue.textContent = resolution;
+  zoomValue.textContent = `${zoomSlider.value}%`;
+  speedValue.textContent = `${speedSlider.value}%`;
+});
