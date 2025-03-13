@@ -1,3 +1,267 @@
+<!-- Aberration Visualisation Tool -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+
+<div class="visualization-container">
+  <div class="tab-container">
+    <div class="tab-nav">
+      <button class="tab-button active" data-tab="wavefront">Wavefront Visualization</button>
+      <button class="tab-button" data-tab="psf">Point Spread Function</button>
+      <button class="tab-button" data-tab="compare">Compare Side-by-Side</button>
+      <button class="tab-button" data-tab="real">Real Examples</button>
+    </div>
+    
+    <div class="tab-content">
+      <!-- Wavefront Tab -->
+      <div class="tab-pane active" id="wavefront-tab">
+        <div class="canvas-container">
+          <div class="canvas-row">
+            <div class="canvas-wrapper">
+              <h3>3D Wavefront</h3>
+              <canvas id="wavefront-3d" class="aberration-canvas"></canvas>
+            </div>
+            <div class="canvas-wrapper">
+              <h3>2D Wavefront Map</h3>
+              <canvas id="wavefront-2d" class="aberration-canvas"></canvas>
+            </div>
+          </div>
+        </div>
+        
+        <div class="controls">
+          <div class="control-group">
+            <h3>Aberration Type</h3>
+            <div class="aberration-selector">
+              <button class="aberration-button active" data-type="astigmatism-2fold">2-fold Astigmatism</button>
+              <button class="aberration-button" data-type="astigmatism-3fold">3-fold Astigmatism</button>
+              <button class="aberration-button" data-type="coma">Coma</button>
+              <button class="aberration-button" data-type="spherical">Spherical</button>
+            </div>
+            
+            <div class="slider-container">
+              <label for="amplitude-slider">Amplitude:</label>
+              <input type="range" id="amplitude-slider" min="0" max="100" value="50">
+              <span id="amplitude-value" class="slider-value">0.5</span>
+            </div>
+            
+            <div class="slider-container" id="rotation-container">
+              <label for="rotation-slider">Rotation (°):</label>
+              <input type="range" id="rotation-slider" min="0" max="360" value="0">
+              <span id="rotation-value" class="slider-value">0°</span>
+            </div>
+          </div>
+          
+          <div class="control-group">
+            <h3>Visualization Options</h3>
+            <div class="slider-container">
+              <label for="resolution-slider">Resolution:</label>
+              <input type="range" id="resolution-slider" min="20" max="80" value="40">
+              <span id="resolution-value" class="slider-value">40</span>
+            </div>
+            
+            <div class="slider-container">
+              <label for="zoom-slider">Zoom:</label>
+              <input type="range" id="zoom-slider" min="50" max="200" value="100">
+              <span id="zoom-value" class="slider-value">100%</span>
+            </div>
+            
+            <div class="slider-container">
+              <label for="animation-slider">Animation:</label>
+              <input type="range" id="animation-slider" min="0" max="100" value="50">
+              <span id="animation-value" class="slider-value">50%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- PSF Tab -->
+      <div class="tab-pane" id="psf-tab">
+        <div class="canvas-container">
+          <div class="canvas-row">
+            <div class="canvas-wrapper">
+              <h3>Point Spread Function</h3>
+              <canvas id="psf-canvas" class="aberration-canvas"></canvas>
+            </div>
+            <div class="canvas-wrapper">
+              <h3>3D Intensity Profile</h3>
+              <canvas id="psf-3d" class="aberration-canvas"></canvas>
+            </div>
+          </div>
+        </div>
+        
+        <div class="controls">
+          <div class="control-group">
+            <h3>Aberration Type</h3>
+            <div class="aberration-selector psf-aberration-selector">
+              <button class="aberration-button active" data-type="astigmatism-2fold">2-fold Astigmatism</button>
+              <button class="aberration-button" data-type="astigmatism-3fold">3-fold Astigmatism</button>
+              <button class="aberration-button" data-type="coma">Coma</button>
+              <button class="aberration-button" data-type="spherical">Spherical</button>
+            </div>
+            
+            <div class="slider-container">
+              <label for="psf-amplitude-slider">Amplitude:</label>
+              <input type="range" id="psf-amplitude-slider" min="0" max="100" value="50">
+              <span id="psf-amplitude-value" class="slider-value">0.5</span>
+            </div>
+            
+            <div class="slider-container" id="psf-rotation-container">
+              <label for="psf-rotation-slider">Rotation (°):</label>
+              <input type="range" id="psf-rotation-slider" min="0" max="360" value="0">
+              <span id="psf-rotation-value" class="slider-value">0°</span>
+            </div>
+          </div>
+          
+          <div class="control-group">
+            <h3>Display Options</h3>
+            <div class="view-selector">
+              <button class="active" data-view="intensity">Intensity</button>
+              <button data-view="phase">Phase</button>
+            </div>
+            
+            <div class="slider-container">
+              <label for="psf-contrast-slider">Contrast:</label>
+              <input type="range" id="psf-contrast-slider" min="0" max="100" value="50">
+              <span id="psf-contrast-value" class="slider-value">50%</span>
+            </div>
+            
+            <div class="slider-container">
+              <label for="psf-brightness-slider">Brightness:</label>
+              <input type="range" id="psf-brightness-slider" min="0" max="100" value="50">
+              <span id="psf-brightness-value" class="slider-value">50%</span>
+            </div>
+            
+            <div class="slider-container">
+              <label for="psf-defocus-slider">Defocus:</label>
+              <input type="range" id="psf-defocus-slider" min="-100" max="100" value="0">
+              <span id="psf-defocus-value" class="slider-value">0</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Compare Tab -->
+      <div class="tab-pane" id="compare-tab">
+        <div class="canvas-container">
+          <div class="canvas-row">
+            <div class="canvas-wrapper">
+              <h3>2-fold Astigmatism</h3>
+              <canvas id="compare-astig2" class="aberration-canvas"></canvas>
+            </div>
+            <div class="canvas-wrapper">
+              <h3>3-fold Astigmatism</h3>
+              <canvas id="compare-astig3" class="aberration-canvas"></canvas>
+            </div>
+          </div>
+          <div class="canvas-row">
+            <div class="canvas-wrapper">
+              <h3>Coma</h3>
+              <canvas id="compare-coma" class="aberration-canvas"></canvas>
+            </div>
+            <div class="canvas-wrapper">
+              <h3>Spherical Aberration</h3>
+              <canvas id="compare-spherical" class="aberration-canvas"></canvas>
+            </div>
+          </div>
+        </div>
+        
+        <div class="controls">
+          <div class="control-group">
+            <h3>Comparison View</h3>
+            <div class="view-selector">
+              <button class="active" data-compare-view="wavefront">Wavefront</button>
+              <button data-compare-view="psf">Point Spread Function</button>
+            </div>
+            
+            <div class="slider-container">
+              <label for="compare-amplitude-slider">Amplitude:</label>
+              <input type="range" id="compare-amplitude-slider" min="0" max="100" value="70">
+              <span id="compare-amplitude-value" class="slider-value">0.7</span>
+            </div>
+            
+            <div class="slider-container">
+              <label for="compare-resolution-slider">Resolution:</label>
+              <input type="range" id="compare-resolution-slider" min="20" max="60" value="40">
+              <span id="compare-resolution-value" class="slider-value">40</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Real Examples Tab -->
+      <div class="tab-pane" id="real-tab">
+        <div class="comparison-container">
+          <h3>Examples of Aberrations in TEM Images</h3>
+          
+          <div class="comparison-row">
+            <div class="comparison-item">
+              <h3>2-fold Astigmatism</h3>
+              <img src="{{ site.baseurl }}/assets/images/aberrations/2fold-astigmatism.jpg" alt="2-fold astigmatism example">
+              <p>Elongation of features along two perpendicular directions. Notice how circular features appear elliptical.</p>
+            </div>
+            <div class="comparison-item">
+              <h3>3-fold Astigmatism</h3>
+              <img src="{{ site.baseurl }}/assets/images/aberrations/3fold-astigmatism.jpg" alt="3-fold astigmatism example">
+              <p>Threefold symmetry distortion that can appear as triangular features or a cloverleaf pattern.</p>
+            </div>
+          </div>
+          
+          <div class="comparison-row">
+            <div class="comparison-item">
+              <h3>Coma</h3>
+              <img src="{{ site.baseurl }}/assets/images/aberrations/coma.jpg" alt="Coma aberration example">
+              <p>Asymmetric tail-like distortion, causing features to have comet-like appearance.</p>
+            </div>
+            <div class="comparison-item">
+              <h3>Spherical Aberration</h3>
+              <img src="{{ site.baseurl }}/assets/images/aberrations/spherical.jpg" alt="Spherical aberration example">
+              <p>Radially symmetric blurring that increases with distance from the center.</p>
+            </div>
+          </div>
+          
+          <div class="comparison-row">
+            <div class="comparison-item">
+              <h3>No Aberration (Reference)</h3>
+              <img src="{{ site.baseurl }}/assets/images/aberrations/no-aberration.jpg" alt="No aberration reference">
+              <p>Perfect imaging condition for comparison.</p>
+            </div>
+            <div class="comparison-item">
+              <h3>Multiple Aberrations</h3>
+              <img src="{{ site.baseurl }}/assets/images/aberrations/multiple-aberrations.jpg" alt="Multiple aberrations example">
+              <p>Real TEM images often contain combinations of different aberrations.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="explanation">
+    <h2>Understanding Electron Microscope Aberrations</h2>
+    
+    <p>Aberrations in electron microscopy cause distortions in the electron wavefront, which lead to degradation of image quality. The interactive visualizations above demonstrate how different types of aberrations affect both the wavefront shape and the resulting image formation (point spread function).</p>
+    
+    <h3>Two-fold Astigmatism (A<sub>1</sub>)</h3>
+    <p>Two-fold (or primary) astigmatism is the most common form, characterized by different focal planes in two perpendicular directions. The mathematical form in polar coordinates (r, θ) is:</p>
+    <div class="formula">χ(r,θ) = A<sub>1</sub>r<sup>2</sup>cos(2(θ-θ<sub>0</sub>))</div>
+    <p>This creates two perpendicular directions with different focal points, causing point objects to appear as ellipses. Two-fold astigmatism is the most common aberration encountered in TEM and can be corrected using stigmator controls.</p>
+    
+    <h3>Three-fold Astigmatism (A<sub>2</sub>)</h3>
+    <p>Three-fold astigmatism introduces a three-lobed distortion to the wavefront with threefold rotational symmetry. Its mathematical representation is:</p>
+    <div class="formula">χ(r,θ) = A<sub>2</sub>r<sup>3</sup>cos(3(θ-θ<sub>0</sub>))</div>
+    <p>This aberration generally appears due to mechanical imperfections in the lens or apertures, producing triangular distortion patterns that are more difficult to correct than two-fold astigmatism.</p>
+    
+    <h3>Coma (B<sub>2</sub>)</h3>
+    <p>Coma is an off-axis aberration that causes asymmetrical distortion. Points appear as comet-like shapes with tails pointing away from the optical axis. The mathematical form is:</p>
+    <div class="formula">χ(r,θ) = B<sub>2</sub>r<sup>3</sup>cos(θ-θ<sub>0</sub>)</div>
+    <p>Coma occurs when the electron beam is not centered on the optical axis or when there's misalignment in the column. It results in directional blurring across the field of view.</p>
+    
+    <h3>Spherical Aberration (C<sub>s</sub>)</h3>
+    <p>Spherical aberration is a radially symmetric aberration where electrons passing through different zones of the lens focus at different points. Its mathematical form is:</p>
+    <div class="formula">χ(r,θ) = C<sub>s</sub>r<sup>4</sup>/4</div>
+    <p>This aberration is intrinsic to round electromagnetic lenses and causes a uniform blurring that increases with distance from the optical axis. Modern aberration-corrected microscopes use multipole correctors to compensate for spherical aberration.</p>
+  </div>
+</div>
+
 <style>
   .visualization-container {
     display: flex;
@@ -7,18 +271,44 @@
     max-width: 100%;
   }
   
-  .canvas-wrapper {
+  .canvas-container {
+    display: flex;
+    flex-direction: column;
     width: 100%;
     max-width: 800px;
-    aspect-ratio: 4/3;
+    margin-bottom: 1.5rem;
+  }
+  
+  .canvas-row {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 1rem;
+  }
+  
+  .canvas-wrapper {
+    width: 48%;
+    aspect-ratio: 1/1;
     position: relative;
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     border-radius: 8px;
     overflow: hidden;
-    margin-bottom: 1.5rem;
+    background-color: #f0f0f0;
   }
   
-  #astigmatism-canvas {
+  .canvas-wrapper h3 {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    margin: 0;
+    font-size: 1rem;
+    background-color: rgba(255,255,255,0.7);
+    padding: 5px 10px;
+    border-radius: 4px;
+    z-index: 10;
+  }
+  
+  .aberration-canvas {
     width: 100%;
     height: 100%;
     display: block;
@@ -50,6 +340,32 @@
     color: #333;
   }
   
+  .aberration-selector {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+  }
+  
+  .aberration-button {
+    padding: 0.5rem 1rem;
+    background-color: #e9ecef;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all 0.2s ease;
+  }
+  
+  .aberration-button:hover {
+    background-color: #dee2e6;
+  }
+  
+  .aberration-button.active {
+    background-color: #0066cc;
+    color: white;
+  }
+  
   .slider-container {
     display: flex;
     align-items: center;
@@ -72,30 +388,68 @@
     color: #666;
   }
   
-  .astigmatism-selector {
+  .view-selector {
     display: flex;
     gap: 0.5rem;
-    flex-wrap: wrap;
     margin-bottom: 1rem;
   }
   
-  .astigmatism-button {
-    padding: 0.5rem 1rem;
+  .view-selector button {
+    flex: 1;
+    padding: 0.5rem;
     background-color: #e9ecef;
     border: none;
     border-radius: 4px;
     cursor: pointer;
     font-size: 0.9rem;
-    transition: all 0.2s ease;
   }
   
-  .astigmatism-button:hover {
-    background-color: #dee2e6;
-  }
-  
-  .astigmatism-button.active {
+  .view-selector button.active {
     background-color: #0066cc;
     color: white;
+  }
+  
+  .comparison-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 2rem;
+    width: 100%;
+    max-width: 800px;
+  }
+  
+  .comparison-row {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 1rem;
+  }
+  
+  .comparison-item {
+    width: 48%;
+    text-align: center;
+    background-color: #f8f9fa;
+    padding: 1rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  }
+  
+  .comparison-item img {
+    max-width: 100%;
+    margin-bottom: 0.5rem;
+    border-radius: 4px;
+  }
+  
+  .comparison-item h3 {
+    margin-top: 0;
+    font-size: 1.1rem;
+    color: #333;
+  }
+  
+  .comparison-item p {
+    font-size: 0.9rem;
+    color: #666;
+    margin-bottom: 0;
   }
   
   .explanation {
@@ -120,264 +474,73 @@
     margin: 1.5rem 0;
     color: #333;
   }
-
+  
+  .tab-container {
+    width: 100%;
+    max-width: 800px;
+    margin: 2rem 0;
+  }
+  
+  .tab-nav {
+    display: flex;
+    border-bottom: 1px solid #dee2e6;
+  }
+  
+  .tab-button {
+    padding: 0.75rem 1.25rem;
+    background-color: transparent;
+    border: none;
+    border-bottom: 3px solid transparent;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 500;
+    color: #666;
+    transition: all 0.2s ease;
+  }
+  
+  .tab-button:hover {
+    color: #333;
+    background-color: #f8f9fa;
+  }
+  
+  .tab-button.active {
+    color: #0066cc;
+    border-bottom-color: #0066cc;
+  }
+  
+  .tab-content {
+    margin-top: 1.5rem;
+  }
+  
+  .tab-pane {
+    display: none;
+  }
+  
+  .tab-pane.active {
+    display: block;
+  }
+  
   @media (max-width: 768px) {
+    .canvas-row {
+      flex-direction: column;
+    }
+    
+    .canvas-wrapper {
+      width: 100%;
+      margin-bottom: 1rem;
+    }
+    
+    .comparison-row {
+      flex-direction: column;
+    }
+    
+    .comparison-item {
+      width: 100%;
+      margin-bottom: 1rem;
+    }
+    
     .control-group {
       min-width: 100%;
     }
   }
-</style>
-
-<div class="visualization-container">
-  <div class="canvas-wrapper">
-    <canvas id="astigmatism-canvas"></canvas>
-  </div>
   
-  <div class="controls">
-    <div class="control-group">
-      <h3>Astigmatism Type</h3>
-      <div class="astigmatism-selector">
-        <button class="astigmatism-button active" data-fold="2">2-fold</button>
-        <button class="astigmatism-button" data-fold="3">3-fold</button>
-        <button class="astigmatism-button" data-fold="4">4-fold</button>
-      </div>
-      
-      <div class="slider-container">
-        <label for="amplitude-slider">Amplitude:</label>
-        <input type="range" id="amplitude-slider" min="0" max="100" value="50">
-        <span id="amplitude-value" class="slider-value">0.5</span>
-      </div>
-      
-      <div class="slider-container">
-        <label for="rotation-slider">Rotation (°):</label>
-        <input type="range" id="rotation-slider" min="0" max="360" value="0">
-        <span id="rotation-value" class="slider-value">0°</span>
-      </div>
-    </div>
-    
-    <div class="control-group">
-      <h3>Visualization Options</h3>
-      <div class="slider-container">
-        <label for="resolution-slider">Resolution:</label>
-        <input type="range" id="resolution-slider" min="20" max="100" value="40">
-        <span id="resolution-value" class="slider-value">40</span>
-      </div>
-      
-      <div class="slider-container">
-        <label for="zoom-slider">Zoom:</label>
-        <input type="range" id="zoom-slider" min="50" max="200" value="100">
-        <span id="zoom-value" class="slider-value">100%</span>
-      </div>
-      
-      <div class="slider-container">
-        <label for="speed-slider">Animation Speed:</label>
-        <input type="range" id="speed-slider" min="0" max="100" value="50">
-        <span id="speed-value" class="slider-value">50%</span>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="explanation">
-  <h2>Understanding Astigmatism in Electron Microscopy</h2>
-  
-  <p>Astigmatism is an aberration that occurs when electrons traveling in different planes experience different focal lengths. This distortion arises from imperfections in electron lenses and results in directionally dependent blurring of images.</p>
-  
-  <h3>Two-fold Astigmatism (A<sub>1</sub>)</h3>
-  <p>Two-fold (or primary) astigmatism is the most common form, characterized by different focal planes in two perpendicular directions. In the wavefront, it creates an elliptical distortion. The mathematical form in polar coordinates (r, θ) is:</p>
-  <div class="formula">χ(r,θ) = A<sub>1</sub>r<sup>2</sup>cos(2(θ-θ<sub>0</sub>))</div>
-  <p>Where A<sub>1</sub> is the amplitude and θ<sub>0</sub> is the orientation angle. This creates two perpendicular directions with different focal points, causing point objects to appear as ellipses.</p>
-  
-  <h3>Three-fold Astigmatism (A<sub>2</sub>)</h3>
-  <p>Three-fold astigmatism introduces a three-lobed distortion to the wavefront. Unlike two-fold astigmatism, it has threefold rotational symmetry. Its mathematical representation is:</p>
-  <div class="formula">χ(r,θ) = A<sub>2</sub>r<sup>3</sup>cos(3(θ-θ<sub>0</sub>))</div>
-  <p>This aberration generally appears in TEM due to mechanical imperfections in the lens or apertures. It produces a triangular distortion pattern.</p>
-  
-  <h3>Four-fold Astigmatism (A<sub>3</sub>)</h3>
-  <p>Four-fold astigmatism creates a four-lobed pattern in the wavefront distortion, with four-fold symmetry. Its mathematical form is:</p>
-  <div class="formula">χ(r,θ) = A<sub>3</sub>r<sup>4</sup>cos(4(θ-θ<sub>0</sub>))</div>
-  <p>This higher-order aberration is less common but becomes important in high-resolution imaging. It produces a square or four-pointed star distortion pattern.</p>
-  
-  <p>The visualization above demonstrates how each type of astigmatism affects the wavefront. You can adjust the amplitude and orientation angle to see their effects on the resulting wave distortion.</p>
-</div>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-  // Setup Three.js scene
-  const canvas = document.getElementById('astigmatism-canvas');
-  const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
-  renderer.setPixelRatio(window.devicePixelRatio);
-  renderer.setSize(canvas.clientWidth, canvas.clientHeight);
-  
-  const scene = new THREE.Scene();
-  scene.background = new THREE.Color(0xf0f0f0);
-  
-  const camera = new THREE.PerspectiveCamera(60, canvas.clientWidth / canvas.clientHeight, 0.1, 1000);
-  camera.position.set(0, 0, 2.5);
-  camera.lookAt(0, 0, 0);
-  
-  // Add lighting
-  const ambientLight = new THREE.AmbientLight(0xffffff, 0.4);
-  scene.add(ambientLight);
-  
-  const directionalLight = new THREE.DirectionalLight(0xffffff, 0.6);
-  directionalLight.position.set(1, 1, 1);
-  scene.add(directionalLight);
-  
-  // State variables
-  let astigmatismFold = 2;
-  let amplitude = 0.5;
-  let rotation = 0; // in degrees
-  let resolution = 40;
-  let zoom = 1;
-  let animationSpeed = 0.5;
-  
-  // Create wavefront mesh
-  let wavefrontMesh;
-  let wavefrontGeometry;
-  
-  function createWavefrontMesh() {
-    if (wavefrontMesh) {
-      scene.remove(wavefrontMesh);
-      wavefrontGeometry.dispose();
-    }
-    
-    // Create a plane geometry for the wavefront
-    wavefrontGeometry = new THREE.PlaneGeometry(
-      2 * zoom,
-      2 * zoom,
-      resolution,
-      resolution
-    );
-    
-    const material = new THREE.MeshPhongMaterial({
-      color: 0x2194ce,
-      shininess: 100,
-      wireframe: false,
-      side: THREE.DoubleSide,
-      flatShading: false,
-    });
-    
-    wavefrontMesh = new THREE.Mesh(wavefrontGeometry, material);
-    scene.add(wavefrontMesh);
-    
-    // Apply initial distortion
-    updateWavefrontDistortion();
-  }
-  
-  function updateWavefrontDistortion() {
-    if (!wavefrontMesh) return;
-    
-    const positions = wavefrontGeometry.attributes.position.array;
-    const rotationRad = rotation * Math.PI / 180;
-    
-    for (let i = 0; i < positions.length; i += 3) {
-      const x = positions[i];
-      const y = positions[i + 1];
-      
-      // Convert to polar coordinates
-      const r = Math.sqrt(x * x + y * y);
-      let theta = Math.atan2(y, x) - rotationRad;
-      
-      // Apply astigmatism distortion based on fold number
-      let z = 0;
-      
-      // Base wavefront (sin wave)
-      const time = Date.now() * 0.001 * animationSpeed;
-      const baseWave = 0.2 * Math.sin(5 * r - time);
-      
-      // Apply astigmatism distortion
-      if (r > 0) {
-        if (astigmatismFold === 2) {
-          z = baseWave + amplitude * 0.2 * r * r * Math.cos(2 * theta);
-        } else if (astigmatismFold === 3) {
-          z = baseWave + amplitude * 0.1 * r * r * r * Math.cos(3 * theta);
-        } else if (astigmatismFold === 4) {
-          z = baseWave + amplitude * 0.05 * Math.pow(r, 4) * Math.cos(4 * theta);
-        }
-      }
-      
-      positions[i + 2] = z;
-    }
-    
-    wavefrontGeometry.attributes.position.needsUpdate = true;
-    wavefrontGeometry.computeVertexNormals();
-  }
-  
-  // Handle controls
-  const amplitudeSlider = document.getElementById('amplitude-slider');
-  const amplitudeValue = document.getElementById('amplitude-value');
-  amplitudeSlider.addEventListener('input', function() {
-    amplitude = this.value / 100;
-    amplitudeValue.textContent = amplitude.toFixed(2);
-  });
-  
-  const rotationSlider = document.getElementById('rotation-slider');
-  const rotationValue = document.getElementById('rotation-value');
-  rotationSlider.addEventListener('input', function() {
-    rotation = parseInt(this.value);
-    rotationValue.textContent = `${rotation}°`;
-  });
-  
-  const resolutionSlider = document.getElementById('resolution-slider');
-  const resolutionValue = document.getElementById('resolution-value');
-  resolutionSlider.addEventListener('input', function() {
-    resolution = parseInt(this.value);
-    resolutionValue.textContent = resolution;
-    createWavefrontMesh();
-  });
-  
-  const zoomSlider = document.getElementById('zoom-slider');
-  const zoomValue = document.getElementById('zoom-value');
-  zoomSlider.addEventListener('input', function() {
-    zoom = this.value / 100;
-    zoomValue.textContent = `${this.value}%`;
-    createWavefrontMesh();
-  });
-  
-  const speedSlider = document.getElementById('speed-slider');
-  const speedValue = document.getElementById('speed-value');
-  speedSlider.addEventListener('input', function() {
-    animationSpeed = this.value / 100;
-    speedValue.textContent = `${this.value}%`;
-  });
-  
-  const astigmatismButtons = document.querySelectorAll('.astigmatism-button');
-  astigmatismButtons.forEach(button => {
-    button.addEventListener('click', function() {
-      astigmatismButtons.forEach(b => b.classList.remove('active'));
-      this.classList.add('active');
-      astigmatismFold = parseInt(this.dataset.fold);
-    });
-  });
-  
-  // Animation loop
-  function animate() {
-    requestAnimationFrame(animate);
-    updateWavefrontDistortion();
-    renderer.render(scene, camera);
-  }
-  
-  // Handle window resize
-  function onWindowResize() {
-    const width = canvas.clientWidth;
-    const height = canvas.clientHeight;
-    
-    camera.aspect = width / height;
-    camera.updateProjectionMatrix();
-    renderer.setSize(width, height);
-  }
-  window.addEventListener('resize', onWindowResize);
-  
-  // Initialize
-  createWavefrontMesh();
-  animate();
-  
-  // Set initial UI values
-  amplitudeValue.textContent = amplitude.toFixed(2);
-  rotationValue.textContent = `${rotation}°`;
-  resolutionValue.textContent = resolution;
-  zoomValue.textContent = `${zoomSlider.value}%`;
-  speedValue.textContent = `${speedSlider.value}%`;
-});
