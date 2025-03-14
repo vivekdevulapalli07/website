@@ -28,10 +28,10 @@
           </a>
 		  
 			<div class="dropdown-content">
+			<a href="{{ '/tools/aberration-visualisation' | relative_url }}">Aberrations Visualisation</a>	
 			<a href="{{ '/tools/d-spacing' | relative_url }}">D-spacing Calculator</a>
 			<a href="{{ '/tools/angle-calculator' | relative_url }}">Angle Calculator</a>
 			<a href="{{ '/tools/schmid-factor' | relative_url }}">Schmid Factor Calculator</a>
-			<a href="{{ '/tools/aberration-visualisation' | relative_url }}">Aberrations Visualisation</a>	
 			<!-- Add more tools here in the future -->
 			</div>
           
@@ -46,6 +46,7 @@
 </header>
 
 <style>
+/* Keep your existing dropdown styles */
 .dropdown {
     position: relative;
     display: inline-block;
@@ -73,17 +74,18 @@
     min-width: 200px;
     box-shadow: 0 2px 10px rgba(0,0,0,0.1);
     border-radius: 4px;
-    z-index: 100;
-    padding: 8px;
+    z-index: 1000; /* Increased from 100 */
+    padding: 4px; /* Reduced from 8px */
     flex-direction: column;
 }
 
 .dropdown-content a {
     color: #333;
-    padding: 12px 16px;
+    padding: 8px 12px; /* Reduced from 12px 16px */
     text-decoration: none;
     display: block;
     font-size: 0.9em;
+    white-space: nowrap; /* Prevent wrapping */
 }
 
 .dropdown-content a:hover {
@@ -96,13 +98,23 @@
 
 @media screen and (max-width: 600px) {
     .dropdown-content {
-        position: static;
-        box-shadow: none;
-        padding-left: 1rem;
+        position: absolute; /* Changed from static */
+        top: 100%;
+        left: 0;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        padding: 4px;
+        width: 100%;
+        z-index: 1000; /* Ensure it's above other content */
     }
     
     .dropdown-content a {
-        padding: 8px 16px;
+        padding: 6px 12px; /* Further reduced padding */
+    }
+    
+    /* Fix for mobile menu display */
+    .site-nav .nav-trigger:checked ~ .trigger {
+        position: relative;
+        z-index: 1000; /* Ensure the entire mobile menu is above other content */
     }
 }
 </style>
