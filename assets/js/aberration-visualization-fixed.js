@@ -1,5 +1,5 @@
-// Fixed Aberration Visualization JavaScript
-// This script implements the interactive aberration visualization tool with improved initialization
+// Aberration Visualization JavaScript with more robust initialization
+// This script implements the interactive aberration visualization tool
 
 // Global state
 window.aberrationState = {
@@ -49,41 +49,131 @@ window.visualizations = {
 document.addEventListener('DOMContentLoaded', function() {
   console.log('DOM loaded, initializing aberration visualization');
   
-  // We'll add a small delay to ensure all elements are fully rendered
+  // Initialize tabs first
+  initTabs();
+  
+  // Initialize the active tab's visualizations with a slight delay to ensure DOM is ready
   setTimeout(function() {
-    // Initialize tabs first
-    initTabs();
+    initActiveTabVisualizations();
     
-    // Initialize the visualizations with a slight delay
-    setTimeout(function() {
-      initVisualizations();
-    }, 200);
+    // Initialize control listeners AFTER visualization
+    initControlListeners();
     
-    // Debug element existence - add this to help diagnose the issue
+    // Set up resize handler
+    window.addEventListener('resize', handleResize);
+    
+    // Debug info
+    console.log('Initialization completed, checking UI elements:');
     debugElements();
-  }, 100);
+  }, 300);
 });
 
 // Debug function to check if key elements exist in the DOM
 function debugElements() {
-  console.log('Debugging elements:');
+  console.log('Button elements:');
   
   // Check aberration buttons
   const aberrationButtons = document.querySelectorAll('.aberration-button');
   console.log('Aberration buttons found:', aberrationButtons.length);
   aberrationButtons.forEach((btn, i) => {
-    console.log(`Button ${i}:`, btn.textContent, 'data-type:', btn.getAttribute('data-type'));
+    console.log(`Button ${i}: ${btn.textContent}, data-type: ${btn.getAttribute('data-type')}`);
   });
   
   // Check sliders
   console.log('Amplitude slider exists:', document.getElementById('amplitude-slider') !== null);
-  console.log('PSF amplitude slider exists:', document.getElementById('psf-amplitude-slider') !== null);
   console.log('Rotation slider exists:', document.getElementById('rotation-slider') !== null);
   
   // Check canvas elements
   console.log('Wavefront 3D canvas exists:', document.getElementById('wavefront-3d') !== null);
   console.log('Wavefront 2D canvas exists:', document.getElementById('wavefront-2d') !== null);
   console.log('PSF canvas exists:', document.getElementById('psf-canvas') !== null);
+}
+
+// Handle window resize events
+function handleResize() {
+  const activeTab = document.querySelector('.tab-pane.active');
+  if (!activeTab) return;
+  
+  if (activeTab.id === 'wavefront-tab') {
+    // Resize wavefront visualizations
+    if (window.visualizations.wavefront3D.renderer) {
+      const canvas = document.getElementById('wavefront-3d');
+      if (canvas) {
+        ensureCanvasDimensions(canvas);
+        window.visualizations.wavefront3D.renderer.setSize(canvas.width, canvas.height);
+        window.visualizations.wavefront3D.camera.aspect = canvas.width / canvas.height;
+        window.visualizations.wavefront3D.camera.updateProjectionMatrix();
+      }
+    }
+    
+    if (window.visualizations.wavefront2D.canvas) {
+      ensureCanvasDimensions(window.visualizations.wavefront2D.canvas);
+      updateWavefront2D();
+    }
+  } else if (activeTab.id === 'psf-tab') {
+    // Resize PSF visualizations
+    if (window.visualizations.psf.canvas) {
+      ensureCanvasDimensions(window.visualizations.psf.canvas);
+      updatePSF();
+    }
+    
+    if (window.visualizations.psf3D.renderer) {
+      const canvas = document.getElementById('psf-3d');
+      if (canvas) {
+        ensureCanvasDimensions(canvas);
+        window.visualizations.psf3D.renderer.setSize(canvas.width, canvas.height);
+        window.visualizations.psf3D.camera.aspect = canvas.width / canvas.height;
+        window.visualizations.psf3D.camera.updateProjectionMatrix();
+      }
+    }
+  } else if (activeTab.id === 'compare-tab') {
+    // Resize comparison canvases
+    initCompareCanvases();
+  }
+}
+
+// Initialize visualizations for the active tab only
+function initActiveTabVisualizations() {
+  const activeTab = document.querySelector('.tab-pane.active');
+  if (!activeTab) {
+    console.error('No active tab found!');
+    return;
+  }
+  
+  console.log('Initializing visualizations for active tab:', activeTab.id);
+  
+  // Check if Three.js is available
+  if (typeof THREE === 'undefined') {
+    console.log('Three.js not found, loading dynamically');
+    loadThreeJS().then(() => {
+      console.log('Three.js loaded');
+      initTabSpecificVisualizations(activeTab.id);
+    }).catch(error => {
+      console.error('Failed to load Three.js:', error);
+      displayErrorMessage();
+    });
+  } else {
+    console.log('Three.js already available');
+    initTabSpecificVisualizations(activeTab.id);
+  }
+}
+
+// Initialize visualizations specific to the active tab
+function initTabSpecificVisualizations(tabId) {
+  console.log('Initializing visualizations for tab:', tabId);
+  
+  switch (tabId) {
+    case 'wavefront-tab':
+      initWavefrontVisualizations();
+      break;
+    case 'psf-tab':
+      initPSFCanvases();
+      initPSFVisualizations();
+      break;
+    case 'compare-tab':
+      initCompareCanvases();
+      break;
+  }
 }
 
 // Initialize tab functionality
@@ -101,7 +191,7 @@ function initTabs() {
   }
   
   tabButtons.forEach(button => {
-    button.addEventListener('click', function() {
+    button.addEventListener('click', function(e) {
       // Remove active class from all buttons and panes
       tabButtons.forEach(btn => btn.classList.remove('active'));
       tabPanes.forEach(pane => pane.classList.remove('active'));
@@ -115,66 +205,20 @@ function initTabs() {
         targetPane.classList.add('active');
         console.log(`Activated tab: ${tabId}`);
         
-        // Important: trigger a resize event to make sure canvases are properly sized
-        window.dispatchEvent(new Event('resize'));
+        // Initialize visualizations for this tab if needed
+        initTabSpecificVisualizations(targetPane.id);
         
-        // Initialize canvases specific to this tab
-        if (tabId === 'psf') {
-          setTimeout(() => {
-            initPSFCanvases();
-            updatePSF();
-          }, 100);
-        } else if (tabId === 'compare') {
-          setTimeout(() => {
-            initCompareCanvases();
-          }, 100);
-        } else if (tabId === 'wavefront') {
-          setTimeout(() => {
-            if (window.visualizations.wavefront3D.renderer) {
-              window.visualizations.wavefront3D.renderer.setSize(
-                window.visualizations.wavefront3D.renderer.domElement.clientWidth,
-                window.visualizations.wavefront3D.renderer.domElement.clientHeight
-              );
-            }
-            if (window.visualizations.wavefront2D.canvas) {
-              ensureCanvasDimensions(window.visualizations.wavefront2D.canvas);
-              updateWavefront2D();
-            }
-          }, 100);
-        }
+        // Trigger resize event
+        setTimeout(() => {
+          handleResize();
+        }, 50);
       } else {
         console.error(`Tab pane with id ${tabId}-tab not found!`);
       }
+      
+      e.preventDefault();
     });
   });
-}
-
-// Initialize all visualizations
-function initVisualizations() {
-  console.log('Initializing visualizations');
-  
-  // Check if Three.js is available
-  if (typeof THREE === 'undefined') {
-    console.log('Three.js not found, loading dynamically');
-    loadThreeJS().then(() => {
-      console.log('Three.js loaded');
-      initWavefrontVisualizations();
-      initPSFVisualizations();
-      
-      // Make sure to initialize control listeners AFTER visualization
-      initControlListeners();
-    }).catch(error => {
-      console.error('Failed to load Three.js:', error);
-      displayErrorMessage();
-    });
-  } else {
-    console.log('Three.js already available');
-    initWavefrontVisualizations();
-    initPSFVisualizations();
-    
-    // Make sure to initialize control listeners AFTER visualization
-    initControlListeners();
-  }
 }
 
 // Function to load Three.js dynamically
@@ -224,19 +268,38 @@ function displayErrorMessage() {
 function initControlListeners() {
   console.log('Setting up control listeners');
   
-  // Improved aberration type selectors with error handling
-  const aberrationButtons = document.querySelectorAll('.aberration-button');
-  console.log('Found aberration buttons:', aberrationButtons.length);
-  
-  if (aberrationButtons.length === 0) {
-    console.error('Aberration buttons not found. Check your HTML structure.');
+  // Aberration type selectors - direct DOM approach instead of querySelectorAll
+  const aberrationSelectors = document.querySelectorAll('.aberration-selector');
+  if (aberrationSelectors.length === 0) {
+    console.error('No aberration selectors found!');
   }
   
-  aberrationButtons.forEach(button => {
-    console.log('Adding click listener to button:', button.textContent);
-    
+  // Get all buttons from all selectors
+  let allButtons = [];
+  aberrationSelectors.forEach(selector => {
+    const buttons = selector.querySelectorAll('.aberration-button');
+    buttons.forEach(btn => allButtons.push(btn));
+  });
+  
+  console.log('Found aberration buttons:', allButtons.length);
+  
+  // Remove existing event listeners (if possible) to avoid duplicates
+  allButtons.forEach(button => {
+    const newButton = button.cloneNode(true);
+    button.parentNode.replaceChild(newButton, button);
+  });
+  
+  // Re-get all buttons after replacement
+  allButtons = [];
+  aberrationSelectors.forEach(selector => {
+    const buttons = selector.querySelectorAll('.aberration-button');
+    buttons.forEach(btn => allButtons.push(btn));
+  });
+  
+  // Add new event listeners
+  allButtons.forEach(button => {
     button.addEventListener('click', function(e) {
-      console.log('Button clicked:', this.textContent);
+      console.log('Aberration button clicked:', this.textContent);
       
       const aberrationType = this.getAttribute('data-type');
       if (!aberrationType) {
@@ -247,15 +310,13 @@ function initControlListeners() {
       console.log('Setting aberration type to:', aberrationType);
       window.aberrationState.currentAberration = aberrationType;
       
-      // Update all aberration button sets
-      document.querySelectorAll('.aberration-selector').forEach(selector => {
-        selector.querySelectorAll('.aberration-button').forEach(btn => {
-          if (btn.getAttribute('data-type') === aberrationType) {
-            btn.classList.add('active');
-          } else {
-            btn.classList.remove('active');
-          }
-        });
+      // Visual update of all buttons
+      allButtons.forEach(btn => {
+        if (btn.getAttribute('data-type') === aberrationType) {
+          btn.classList.add('active');
+        } else {
+          btn.classList.remove('active');
+        }
       });
       
       // Show/hide rotation controls based on aberration type
@@ -269,19 +330,22 @@ function initControlListeners() {
       // Update visualizations
       updateVisualizations();
       
-      // Prevent default behavior
       e.preventDefault();
+      e.stopPropagation(); // Prevent event bubbling
+      
+      // Debug current state
+      console.log('Current state after update:', { ...window.aberrationState });
     });
   });
   
-  // Amplitude sliders with added debugging
+  // Amplitude sliders
   const amplitudeSlider = document.getElementById('amplitude-slider');
   const psfAmplitudeSlider = document.getElementById('psf-amplitude-slider');
   const amplitudeValue = document.getElementById('amplitude-value');
   const psfAmplitudeValue = document.getElementById('psf-amplitude-value');
   
   if (amplitudeSlider && amplitudeValue) {
-    console.log('Found amplitude slider and value elements');
+    console.log('Setting up amplitude slider');
     
     // Sync initial values if PSF slider exists
     if (psfAmplitudeSlider) {
@@ -289,8 +353,7 @@ function initControlListeners() {
     }
     
     amplitudeSlider.addEventListener('input', function() {
-      console.log('Amplitude slider changed to:', this.value);
-      window.aberrationState.currentAmplitude = parseInt(this.value) / 100;
+      window.aberrationState.currentAmplitude = parseFloat(this.value) / 100;
       amplitudeValue.textContent = window.aberrationState.currentAmplitude.toFixed(1);
       
       if (psfAmplitudeSlider && psfAmplitudeValue) {
@@ -303,8 +366,7 @@ function initControlListeners() {
     
     if (psfAmplitudeSlider && psfAmplitudeValue) {
       psfAmplitudeSlider.addEventListener('input', function() {
-        console.log('PSF amplitude slider changed to:', this.value);
-        window.aberrationState.currentAmplitude = parseInt(this.value) / 100;
+        window.aberrationState.currentAmplitude = parseFloat(this.value) / 100;
         psfAmplitudeValue.textContent = window.aberrationState.currentAmplitude.toFixed(1);
         
         if (amplitudeSlider && amplitudeValue) {
@@ -316,9 +378,7 @@ function initControlListeners() {
       });
     }
   } else {
-    console.error('Amplitude slider or value element not found:');
-    console.error('- amplitudeSlider:', amplitudeSlider);
-    console.error('- amplitudeValue:', amplitudeValue);
+    console.warn('Amplitude slider or value element not found');
   }
   
   // Rotation sliders
@@ -328,7 +388,7 @@ function initControlListeners() {
   const psfRotationValue = document.getElementById('psf-rotation-value');
   
   if (rotationSlider && rotationValue) {
-    console.log('Found rotation slider and value elements');
+    console.log('Setting up rotation slider');
     
     // Sync initial values if PSF slider exists
     if (psfRotationSlider) {
@@ -336,7 +396,6 @@ function initControlListeners() {
     }
     
     rotationSlider.addEventListener('input', function() {
-      console.log('Rotation slider changed to:', this.value);
       window.aberrationState.currentRotation = parseInt(this.value);
       rotationValue.textContent = window.aberrationState.currentRotation + '°';
       
@@ -350,7 +409,6 @@ function initControlListeners() {
     
     if (psfRotationSlider && psfRotationValue) {
       psfRotationSlider.addEventListener('input', function() {
-        console.log('PSF rotation slider changed to:', this.value);
         window.aberrationState.currentRotation = parseInt(this.value);
         psfRotationValue.textContent = window.aberrationState.currentRotation + '°';
         
@@ -363,7 +421,7 @@ function initControlListeners() {
       });
     }
   } else {
-    console.error('Rotation slider or value element not found');
+    console.warn('Rotation slider or value element not found');
   }
   
   // Resolution slider
@@ -374,8 +432,11 @@ function initControlListeners() {
     resolutionSlider.addEventListener('input', function() {
       window.aberrationState.resolution = parseInt(this.value);
       resolutionValue.textContent = window.aberrationState.resolution;
-      createWavefront3DMesh();
-      if (window.visualizations.psf3D.mesh) {
+      
+      const activeTab = document.querySelector('.tab-pane.active');
+      if (activeTab && activeTab.id === 'wavefront-tab') {
+        createWavefront3DMesh();
+      } else if (activeTab && activeTab.id === 'psf-tab' && window.visualizations.psf3D.mesh) {
         createPSF3DMesh();
       }
     });
@@ -396,12 +457,14 @@ function initControlListeners() {
   // Compare tab controls
   const compareViewButtons = document.querySelectorAll('[data-compare-view]');
   compareViewButtons.forEach(button => {
-    button.addEventListener('click', function() {
+    button.addEventListener('click', function(e) {
       compareViewButtons.forEach(btn => btn.classList.remove('active'));
       this.classList.add('active');
       
       // Update comparison canvases
       updateCompareCanvases();
+      
+      e.preventDefault();
     });
   });
   
@@ -433,8 +496,8 @@ function initWavefrontVisualizations() {
   // Ensure canvas has proper dimensions
   ensureCanvasDimensions(canvas3D);
   
-  const width = canvas3D.clientWidth;
-  const height = canvas3D.clientHeight;
+  const width = canvas3D.clientWidth || canvas3D.width;
+  const height = canvas3D.clientHeight || canvas3D.height;
   console.log(`Canvas dimensions: ${width}x${height}`);
   
   // Create Three.js scene
@@ -586,21 +649,38 @@ function initCompareCanvases() {
   });
 }
 
-// Ensure canvas has proper dimensions
+// Ensure canvas has proper dimensions with improved error handling
 function ensureCanvasDimensions(canvas) {
-  if (!canvas) return;
+  if (!canvas) {
+    console.error('Cannot size null canvas');
+    return;
+  }
   
   const container = canvas.parentElement;
-  if (container) {
-    const width = container.clientWidth;
-    const height = container.clientHeight || width; // Square if height not defined
-    
-    // Only update if dimensions have changed
-    if (canvas.width !== width || canvas.height !== height) {
-      canvas.width = width;
-      canvas.height = height;
-      console.log(`Canvas ${canvas.id} sized to ${width}x${height}`);
-    }
+  if (!container) {
+    console.error(`Canvas ${canvas.id} has no parent element`);
+    // Set default size
+    canvas.width = canvas.width || 300;
+    canvas.height = canvas.height || 300;
+    return;
+  }
+  
+  // Force container to have dimensions if needed
+  if (container.clientWidth === 0 || container.clientHeight === 0) {
+    console.warn(`Container for canvas ${canvas.id} has zero dimension, using default size`);
+    canvas.width = canvas.width || 300;
+    canvas.height = canvas.height || 300;
+    return;
+  }
+  
+  const width = container.clientWidth;
+  const height = container.clientHeight || width; // Square if height not defined
+  
+  // Only update if dimensions have changed
+  if (canvas.width !== width || canvas.height !== height) {
+    canvas.width = width;
+    canvas.height = height;
+    console.log(`Canvas ${canvas.id} sized to ${width}x${height}`);
   }
 }
 
@@ -959,15 +1039,34 @@ function updateVisualizations() {
               'amplitude:', window.aberrationState.currentAmplitude,
               'rotation:', window.aberrationState.currentRotation);
   
-  updateWavefront3D();
-  updateWavefront2D();
-  updatePSF();
+  const activeTab = document.querySelector('.tab-pane.active');
+  if (!activeTab) {
+    console.error('No active tab found for visualization update');
+    return;
+  }
+  
+  console.log('Active tab ID:', activeTab.id);
+  
+  // Update only visualizations for the active tab
+  if (activeTab.id === 'wavefront-tab') {
+    updateWavefront3D();
+    updateWavefront2D();
+  } else if (activeTab.id === 'psf-tab') {
+    updatePSF();
+  } else if (activeTab.id === 'compare-tab') {
+    updateCompareCanvases();
+  }
 }
 
 // Update 3D wavefront
 function updateWavefront3D() {
   const wavefront3D = window.visualizations.wavefront3D;
-  if (!wavefront3D.mesh) return;
+  if (!wavefront3D.mesh) {
+    console.error('No 3D wavefront mesh exists');
+    // Try to create it if missing
+    createWavefront3DMesh();
+    return;
+  }
   
   // Update mesh vertices
   updateWavefront3DMeshVertices(wavefront3D.mesh.geometry);
