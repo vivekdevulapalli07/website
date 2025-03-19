@@ -1194,9 +1194,10 @@ function createCubicUnitCell() {
 }
 
 // Create a hexagonal unit cell
+
 function createHexagonalUnitCell() {
     const a = 1.0; // Base size
-    const c = 1.63 * a; // Typical c/a ratio for HCP
+    const c = 1.633 * a; // Ideal c/a ratio for HCP
     
     // Clear any existing mesh
     while (unitCell.children.length > 0) {
@@ -1217,7 +1218,7 @@ function createHexagonalUnitCell() {
         corners.push([x, y, c/2]);
     }
     
-    // Create edges
+    // Create edges for the unit cell
     const material = new THREE.LineBasicMaterial({ color: 0xcccccc, linewidth: 2 });
     
     // Bottom face
@@ -1250,9 +1251,9 @@ function createHexagonalUnitCell() {
         unitCell.add(line);
     }
     
-    // Add corner vertices (these aren't actual atoms in HCP)
-    const cornerSphereGeometry = new THREE.SphereGeometry(0.04, 16, 16);
-    const cornerMaterial = new THREE.MeshBasicMaterial({ color: 0x333333 });
+    // Add very small vertices at the corners (not atoms, just visual guides)
+    const cornerSphereGeometry = new THREE.SphereGeometry(0.02, 16, 16);
+    const cornerMaterial = new THREE.MeshBasicMaterial({ color: 0x999999 });
     
     corners.forEach(corner => {
         const sphere = new THREE.Mesh(cornerSphereGeometry, cornerMaterial);
@@ -1260,115 +1261,135 @@ function createHexagonalUnitCell() {
         unitCell.add(sphere);
     });
     
-    // Add HCP atoms with complete ABAB stacking pattern
-    const atomGeometry = new THREE.SphereGeometry(0.1, 24, 24);
+    // Create atom geometry and material
+    const atomGeometry = new THREE.SphereGeometry(0.15, 24, 24);
     const atomMaterial = new THREE.MeshPhongMaterial({ 
         color: 0x0088ff,
         specular: 0x444444,
         shininess: 60
     });
     
-    // Atoms in the conventional HCP unit cell (fractional coordinates)
-    const atomPositions = [
-        // Basal plane at z=0 (A layer)
-        [0, 0, 0],                 // (0, 0, 0)
-        [1/3, 2/3, 0],             // (1/3, 2/3, 0)
-        [2/3, 1/3, 0],             // (2/3, 1/3, 0)
-        
-        // Middle plane at z=1/2 (B layer)
-        [0, 0, 1/2],               // (0, 0, 1/2)
-        [1/3, 2/3, 1/2],           // (1/3, 2/3, 1/2)
-        [2/3, 1/3, 1/2],           // (2/3, 1/3, 1/2)
-        
-        // Top plane at z=1 (A layer again)
-        [0, 0, 1],                 // (0, 0, 1) 
-        [1/3, 2/3, 1],             // (1/3, 2/3, 1)
-        [2/3, 1/3, 1]              // (2/3, 1/3, 1)
-    ];
-    
-    // Convert fractional coordinates to cartesian
-    atomPositions.forEach(pos => {
-        // Convert hexagonal fractional coordinates to cartesian
-        // For hexagonal system:
-        // x = a * (u + v/2)
-        // y = a * (√3/2 * v)
-        // z = c * w
-        const u = pos[0], v = pos[1], w = pos[2];
-        
-        const x = a * (u + v/2);
-        const y = a * (Math.sqrt(3)/2 * v);
-        const z = c * (w - 0.5); // Shift to center the cell at origin
-        
-        const atom = new THREE.Mesh(atomGeometry, atomMaterial);
-        atom.position.set(x, y, z);
-        unitCell.add(atom);
-    });
-    
-    // Add bonds between atoms to show structure connectivity
+    // Bond material
     const bondMaterial = new THREE.MeshPhongMaterial({ 
         color: 0x888888, 
         transparent: true,
-        opacity: 0.6
+        opacity: 0.4
     });
     
-    // Helper function to create a cylinder bond between atoms
-    function createBond(pos1, pos2, radius = 0.03) {
-        // Convert fractional coordinates to cartesian for both positions
-        const convert = (pos) => {
-            const u = pos[0], v = pos[1], w = pos[2];
-            const x = a * (u + v/2);
-            const y = a * (Math.sqrt(3)/2 * v);
-            const z = c * (w - 0.5);
-            return new THREE.Vector3(x, y, z);
-        };
-        
-        const start = convert(pos1);
-        const end = convert(pos2);
-        
-        // Calculate the midpoint
-        const direction = new THREE.Vector3().subVectors(end, start);
+    // Helper function to create atoms
+    function createAtom(position) {
+        const atom = new THREE.Mesh(atomGeometry, atomMaterial);
+        atom.position.copy(position);
+        unitCell.add(atom);
+        return atom;
+    }
+    
+    // Helper function to create bonds between atoms
+    function createBond(atom1Pos, atom2Pos, radius = 0.05) {
+        const direction = new THREE.Vector3().subVectors(atom2Pos, atom1Pos);
         const length = direction.length();
         
-        // Create cylinder geometry
         const bondGeometry = new THREE.CylinderGeometry(radius, radius, length, 8);
         const bond = new THREE.Mesh(bondGeometry, bondMaterial);
         
-        // Position and orient the bond
-        bond.position.copy(start);
-        bond.position.lerp(end, 0.5);
+        // Position bond at midpoint
+        bond.position.copy(atom1Pos);
+        bond.position.lerp(atom2Pos, 0.5);
+        
+        // Orient bond
         bond.setRotationFromQuaternion(
             new THREE.Quaternion().setFromUnitVectors(
                 new THREE.Vector3(0, 1, 0),
-                direction.clone().normalize()
+                direction.normalize()
             )
         );
         
         unitCell.add(bond);
     }
     
-    // Add bonds in basal plane (z = 0)
-    createBond([0, 0, 0], [1/3, 2/3, 0]);
-    createBond([0, 0, 0], [2/3, 1/3, 0]);
-    createBond([1/3, 2/3, 0], [2/3, 1/3, 0]);
+    // Create atoms according to the HCP conventional unit cell as shown in the schematic
+    // A layer - bottom (z = -c/2)
+    const bottomAtoms = [];
     
-    // Add bonds in middle plane (z = 1/2)
-    createBond([0, 0, 1/2], [1/3, 2/3, 1/2]);
-    createBond([0, 0, 1/2], [2/3, 1/3, 1/2]);
-    createBond([1/3, 2/3, 1/2], [2/3, 1/3, 1/2]);
+    // Corner atoms (6)
+    for (let i = 0; i < 6; i++) {
+        const angle = (i * Math.PI) / 3;
+        const x = a * Math.cos(angle);
+        const y = a * Math.sin(angle);
+        const pos = new THREE.Vector3(x, y, -c/2);
+        bottomAtoms.push(createAtom(pos));
+    }
     
-    // Add bonds in top plane (z = 1)
-    createBond([0, 0, 1], [1/3, 2/3, 1]);
-    createBond([0, 0, 1], [2/3, 1/3, 1]);
-    createBond([1/3, 2/3, 1], [2/3, 1/3, 1]);
+    // Center atom (1)
+    const bottomCenter = createAtom(new THREE.Vector3(0, 0, -c/2));
+    bottomAtoms.push(bottomCenter);
     
-    // Add bonds between planes (z = 0 to z = 1/2, and z = 1/2 to z = 1)
-    createBond([0, 0, 0], [0, 0, 1/2]);
-    createBond([1/3, 2/3, 0], [1/3, 2/3, 1/2]);
-    createBond([2/3, 1/3, 0], [2/3, 1/3, 1/2]);
+    // Middle layer (B layer) - at z = 0
+    const middleAtoms = [];
     
-    createBond([0, 0, 1/2], [0, 0, 1]);
-    createBond([1/3, 2/3, 1/2], [1/3, 2/3, 1]);
-    createBond([2/3, 1/3, 1/2], [2/3, 1/3, 1]);
+    // Middle layer atoms - 3 atoms at positions creating the B-layer
+    // These are positioned at 1/3 and 2/3 of the hexagon sides
+    for (let i = 0; i < 3; i++) {
+        const angle1 = (i * 2 * Math.PI) / 3;
+        const angle2 = angle1 + (2 * Math.PI) / 3;
+        
+        const x1 = (a/2) * Math.cos(angle1);
+        const y1 = (a/2) * Math.sin(angle1);
+        const pos1 = new THREE.Vector3(x1, y1, 0);
+        middleAtoms.push(createAtom(pos1));
+        
+        const x2 = (a/2) * Math.cos(angle2);
+        const y2 = (a/2) * Math.sin(angle2);
+        const pos2 = new THREE.Vector3(x2, y2, 0);
+        middleAtoms.push(createAtom(pos2));
+    }
+    
+    // A layer - top (z = c/2)
+    const topAtoms = [];
+    
+    // Corner atoms (6)
+    for (let i = 0; i < 6; i++) {
+        const angle = (i * Math.PI) / 3;
+        const x = a * Math.cos(angle);
+        const y = a * Math.sin(angle);
+        const pos = new THREE.Vector3(x, y, c/2);
+        topAtoms.push(createAtom(pos));
+    }
+    
+    // Center atom (1)
+    const topCenter = createAtom(new THREE.Vector3(0, 0, c/2));
+    topAtoms.push(topCenter);
+    
+    // Create bonds for better visualization
+    // Bonds in bottom layer
+    for (let i = 0; i < 6; i++) {
+        createBond(bottomAtoms[i].position, bottomAtoms[(i+1)%6].position);
+        createBond(bottomAtoms[i].position, bottomCenter.position);
+    }
+    
+    // Bonds in top layer
+    for (let i = 0; i < 6; i++) {
+        createBond(topAtoms[i].position, topAtoms[(i+1)%6].position);
+        createBond(topAtoms[i].position, topCenter.position);
+    }
+    
+    // Bonds connecting layers
+    for (let i = 0; i < middleAtoms.length; i++) {
+        // Connect to closest atoms in top and bottom layers
+        for (let j = 0; j < topAtoms.length; j++) {
+            const distance = middleAtoms[i].position.distanceTo(topAtoms[j].position);
+            if (distance < a * 0.9) {
+                createBond(middleAtoms[i].position, topAtoms[j].position);
+            }
+        }
+        
+        for (let j = 0; j < bottomAtoms.length; j++) {
+            const distance = middleAtoms[i].position.distanceTo(bottomAtoms[j].position);
+            if (distance < a * 0.9) {
+                createBond(middleAtoms[i].position, bottomAtoms[j].position);
+            }
+        }
+    }
     
     // Add coordinate axes
     createCoordinateAxes();
