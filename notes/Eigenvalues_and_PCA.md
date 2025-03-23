@@ -1,7 +1,6 @@
 ---
 layout: note
 title: "Eigenvalues and PCA: A Quick Reference"
-title: "New Note"
 ---
 
 # Eigenvalues and Principal Component Analysis
