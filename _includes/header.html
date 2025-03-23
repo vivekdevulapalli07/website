@@ -19,7 +19,13 @@
            href="{{ '/' | relative_url }}">Research</a>
         <a class="page-link {% if page.url == '/publications/' %}active{% endif %}" 
            href="{{ '/publications' | relative_url }}">Publications</a>
-        <div class="dropdown">
+		<a class="page-link {% if page.url contains '/notes/' %}active{% endif %}" 
+		   href="{{ '/notes' | relative_url }}">Notes</a>
+			{% if page.url contains '/notes/' %}
+		  <a class="page-link new-note-button" 
+			 href="https://github.com/{{site.github.username}}/website/new/main/notes?filename=new-note.md&value=---%0Alayout%3A%20note%0Atitle%3A%20%22New%20Note%22%0Atags%3A%20%5Breference%5D%0A---%0A%0A%23%20New%20Note%0A%0ABrief%20description%20of%20what%20this%20note%20covers.%0A%0A%23%23%20Key%20Points%0A%0A-%20Point%201%0A-%20Point%202%0A-%20Point%203%0A%0A%23%23%20Details%0A%0AContent%20goes%20here...%0A%0A%23%23%20Examples%0A%0A%60%60%60python%0A%23%20Example%20code%0Aprint(%22Hello%20world%22)%0A%60%60%60%0A%0A%23%23%20References%0A%0A-%20Source%201%0A-%20Source%202" target="_blank">+ New Note</a>
+			{% endif %}
+		<div class="dropdown">
           <a class="page-link dropdown-trigger {% if page.url contains '/tools/' %}active{% endif %}">
             Interactive Tools
             <svg class="dropdown-arrow" width="10" height="5" viewBox="0 0 10 5">

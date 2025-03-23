@@ -41,3 +41,12 @@ defaults:
       path: "assets/images"
     values:
       image: true
+      
+# Instead of using a collection, use regular pages with a specific layout
+defaults:
+  - scope:
+      path: "notes"
+      type: "pages"
+    values:
+      layout: "note"
+      is_note: true

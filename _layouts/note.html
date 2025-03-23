@@ -1,0 +1,43 @@
+---
+layout: default
+---
+
+<article class="note">
+  <header class="note-header">
+    <h1 class="note-title">{{ page.title }}</h1>
+    
+    <div class="note-meta">
+      {% if page.tags %}
+        <div class="note-tags">
+          {% for tag in page.tags %}
+            <span class="note-tag">{{ tag }}</span>
+          {% endfor %}
+        </div>
+      {% endif %}
+      
+      <div class="note-actions">
+        <a href="https://github.com/{{site.github.username}}/website/edit/main/{{ page.path }}" class="edit-link" target="_blank">Edit this note</a>
+      </div>
+    </div>
+  </header>
+
+  <div class="note-content">
+    {{ content }}
+  </div>
+  
+  <script type="text/javascript" id="MathJax-script" async
+    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+  </script>
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']],
+        processEscapes: true
+      },
+      options: {
+        skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+      }
+    };
+  </script>
+</article>
