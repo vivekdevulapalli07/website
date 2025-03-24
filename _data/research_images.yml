@@ -4,16 +4,16 @@
   caption: "In-situ TEM tensile testing of multilayer thin films."
 
 - file: Ti_asymmetric_GB.png
-  caption: "Atomically resolved HAADF image of an asymmetric grain boundary in Ti showing 'cage' formation due to Fe segregation."
-
-- file: Film_anneal.png
-  caption: "Annealing to Ti thin film depicting the grwoth of one grain orientation at the expense of another."
-
+  caption: "Atomically resolved HAADF STEM image of an asymmetric grain boundary in Ti showing GB phase transitioning due to Fe segregation."
+  
+- file: NP_tensile_test.png
+  caption: "TEM image of a nanoparticle in a metal matrix showing void elongation along the tensile axis and twin planes confined around the nanoparticle."
+  
 - file: Ti_GB_circuit.png
   caption: "Burgers circuit drawn around a pure Ti grain boundary to measure the defect content in it."
 
 - file: Ti_sapphire.jpeg
-  caption: "HRTEM image of the Ti thin film / Sapphire substrate interface used to find out the orientation relationship."
+  caption: "HRTEM image of the Ti thin film /sapphire substrate interface used to find out the orientation relationship between them."
 
 - file: Fe_seg_side.png
   caption: "Atom probe tomography of Fe segregation at Ti grain boundary."
