@@ -3,12 +3,6 @@ layout: note
 title: "Eigenvalues and PCA: A Quick Reference"
 ---
 
-# Eigenvalues and Principal Component Analysis
-
-This note provides a quick reference for eigenvalue calculation and Principal Component Analysis (PCA).
-
-## Eigenvalues and Eigenvectors
-
 An eigenvector of a square matrix $A$ is a non-zero vector $v$ such that when multiplied by $A$, the result is a scalar multiple of $v$:
 
 $$
