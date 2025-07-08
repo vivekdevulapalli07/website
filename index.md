@@ -125,54 +125,57 @@ title: Research
 		padding: 0 1rem;
 	}
 
-	/* Blog Posts Styles */
-	.blog-posts {
+	/* Research Overview Section */
+	.research-overview {
 		max-width: 800px;
 		margin: 4rem auto 2rem;
 		padding: 0 1rem;
+		text-align: center;
 	}
 
-	.post-preview {
-		margin-bottom: 2rem;
-		padding-bottom: 2rem;
-		border-bottom: 1px solid #eee;
-	}
-
-	.post-preview:last-child {
-		border-bottom: none;
-	}
-
-	.post-preview h2 {
-		margin-bottom: 0.5rem;
-	}
-
-	.post-preview h2 a {
+	.research-overview h2 {
 		color: #333;
-		text-decoration: none;
+		margin-bottom: 1.5rem;
 	}
 
-	.post-preview h2 a:hover {
-		color: #0066cc;
-	}
-
-	.post-meta {
-		color: #666;
-		font-size: 0.9rem;
+	.research-overview p {
+		font-size: 1.1rem;
+		line-height: 1.7;
+		color: #555;
 		margin-bottom: 1rem;
 	}
 
-	.read-more {
-		display: inline-block;
-		margin-top: 1rem;
-		color: #0066cc;
-		text-decoration: none;
+	.research-highlights {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+		gap: 2rem;
+		margin: 3rem auto;
+		max-width: 800px;
 	}
 
-	.read-more:hover {
-		text-decoration: underline;
+	.highlight-card {
+		background: white;
+		padding: 1.5rem;
+		border-radius: 8px;
+		box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+		transition: transform 0.2s ease;
+	}
+
+	.highlight-card:hover {
+		transform: translateY(-3px);
+	}
+
+	.highlight-card h3 {
+		color: #0066cc;
+		margin-bottom: 1rem;
+	}
+
+	.highlight-card p {
+		color: #666;
+		font-size: 0.95rem;
+		line-height: 1.6;
 	}
 </style>
-
 
 <!-- Research Carousel -->
 <div class="carousel" id="research-carousel">
@@ -210,19 +213,35 @@ title: Research
 	</div>
 </div>
 
-<!-- Blog Posts Section -->
-<div class="blog-posts">
-	<h2>Recent Research Updates</h2>
-	{% for post in site.posts %}
-		<article class="post-preview">
-			<h2>
-				<a href="{{ post.url | relative_url }}">{{ post.title }}</a>
-			</h2>
-			<p class="post-meta">{{ post.date | date: "%B %d, %Y" }}</p>
-			{{ post.excerpt }}
-			<a href="{{ post.url | relative_url }}" class="read-more">Read More</a>
-		</article>
-	{% endfor %}
+<!-- Research Overview Section -->
+<div class="research-overview">
+	<h2>Research Focus</h2>
+	<p>My research focuses on understanding materials behavior at the atomic scale using advanced electron microscopy techniques. I specialize in aberration-corrected STEM, in-situ TEM testing, and multidimensional characterization to connect structure and properties across different length scales.</p>
+	
+	<p>Currently at EMPA, I investigate deformation mechanics of metals and multilayer thin films using in-situ tensile testing, while developing new methodologies for real-time observation of nanoscale phenomena.</p>
+</div>
+
+<!-- Research Highlights -->
+<div class="research-highlights">
+	<div class="highlight-card">
+		<h3>Advanced Electron Microscopy</h3>
+		<p>Aberration-corrected STEM imaging, analytical techniques, and STEM simulations for atomic-scale material characterization.</p>
+	</div>
+	
+	<div class="highlight-card">
+		<h3>In-situ TEM Testing</h3>
+		<p>Real-time observation of deformation mechanisms in metals and multilayer thin films using specialized TEM holders.</p>
+	</div>
+	
+	<div class="highlight-card">
+		<h3>Grain Boundary Engineering</h3>
+		<p>Understanding grain boundary structure, segregation phenomena, and their impact on material properties.</p>
+	</div>
+	
+	<div class="highlight-card">
+		<h3>Multiscale Characterization</h3>
+		<p>Connecting atomic structure and composition to macroscopic properties through comprehensive material analysis.</p>
+	</div>
 </div>
 
 <script>

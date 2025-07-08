@@ -42,7 +42,7 @@ defaults:
     values:
       image: true
       
-# Instead of using a collection, use regular pages with a specific layout
+# Notes configuration - use regular pages with note layout
 defaults:
   - scope:
       path: "notes"
@@ -50,6 +50,11 @@ defaults:
     values:
       layout: "note"
       is_note: true
+
+# Exclude posts directory and related files
+exclude:
+  - _posts/
+  - _drafts/
 
 github:
   username: vivekdevulapalli07
