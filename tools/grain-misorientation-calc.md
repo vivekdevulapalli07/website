@@ -1,3 +1,8 @@
+---
+layout: page
+title: Grain Misorientation Calculator
+---
+
 <div class="calculator">
     <h2>Grain Misorientation Calculator</h2>
     <p class="description">Calculate the misorientation angle between two grain orientations given in Euler angles (Bunge convention: φ₁, Φ, φ₂).</p>
