@@ -20,10 +20,10 @@ title: About Me
         <p>
             <a href="{{ site.baseurl }}/assets/Devulapalli_CV.pdf" target="_blank" class="profile-link">CV</a> | 
             <a href="https://scholar.google.com/citations?user=TE3lrxoAAAAJ&hl=en" target="_blank" class="profile-link">Google Scholar</a> | 
+            <a href="https://www.linkedin.com/in/vivek-devulapalli-stem/" target="_blank" class="profile-link">LinkedIn</a> | 
             <a href="https://orcid.org/0000-0002-1743-3246" target="_blank" class="profile-link">ORCID</a> | 
-            <a href="https://www.linkedin.com/in/vivek-devulapalli-stem/" target="_blank" class="profile-link">LinkedIn</a>
+            <a href="https://www.webofscience.com/wos/author/record/ORK-3875-2025" target="_blank" class="profile-link">Web of Science</a>
         </p>
-        <p style="font-size: 0.9rem; margin-top: 1rem; font-style: italic;">For a complete list of my publications, please refer to <a href="https://scholar.google.com/citations?user=TE3lrxoAAAAJ&hl=en" target="_blank" class="profile-link">Google Scholar</a> or <a href="https://orcid.org/0000-0002-1743-3246" target="_blank" class="profile-link">ORCID</a>.</p>
     </div>
 </div>
 
