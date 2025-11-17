@@ -7,12 +7,7 @@ url: "https://vivekdevulapalli07.github.io" # the base hostname & protocol
 # Theme settings
 theme: minima
 
-# Navigation
-header_pages:
-  - index.md
-  - tools/index.md
-  - notes/index.md
-  - about.md
+# Navigation is managed in _includes/header.html with custom dropdown for Interactive Tools
 
 # Build settings
 markdown: kramdown
