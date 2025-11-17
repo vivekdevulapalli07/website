@@ -3,50 +3,16 @@ layout: page
 title: Research output
 ---
 
+<div style="max-width: 800px; margin: 2rem auto; text-align: center;">
+    <p style="font-size: 1.1rem; line-height: 1.6;">
+        For a complete list of my publications, please refer to 
+        <a href="https://scholar.google.com/citations?user=TE3lrxoAAAAJ&hl=en" target="_blank" style="color: #0066cc; text-decoration: none;">Google Scholar</a> 
+        or 
+        <a href="https://orcid.org/0000-0002-1743-3246" target="_blank" style="color: #0066cc; text-decoration: none;">ORCID</a>.
+    </p>
+</div>
+
 <style>
-.publications-list {
-    max-width: 800px;
-    margin: 2rem auto;
-}
-
-.publication-item {
-    display: flex;
-    align-items: baseline;
-    margin-bottom: 1.5rem;
-    position: relative;
-}
-
-.pub-bullet {
-    flex-shrink: 0;
-    width: 6px;
-    height: 6px;
-    background-color: #333;
-    border-radius: 50%;
-    margin-right: 1rem;
-    margin-top: 0.7rem;
-}
-
-.pub-content {
-    flex: 1;
-}
-
-.pub-title {
-    color: #0066cc;
-    text-decoration: none;
-    font-size: 1rem;
-    display: block;
-    margin-bottom: 0.25rem;
-}
-
-.pub-title:hover {
-    text-decoration: underline;
-}
-
-.pub-details {
-    font-size: 1rem;
-    margin-bottom: 0.25rem;
-}
-
 .pub-journal {
     font-size: 1rem;
 }

@@ -18,9 +18,41 @@ title: About Me
         <p><strong>Email:</strong> <a href="mailto:vivek.devulapalli@empa.ch">vivek.devulapalli@empa.ch</a></p>
         <p><strong>Office:</strong> Feuerwerkstraase 39, Thun 3602</p>
         <p>
+            <a href="{{ site.baseurl }}/assets/Devulapalli_CV.pdf" target="_blank" class="profile-link">CV</a> | 
             <a href="https://scholar.google.com/citations?user=TE3lrxoAAAAJ&hl=en" target="_blank" class="profile-link">Google Scholar</a> | 
+            <a href="https://orcid.org/0000-0002-1743-3246" target="_blank" class="profile-link">ORCID</a> | 
             <a href="https://www.linkedin.com/in/vivek-devulapalli-stem/" target="_blank" class="profile-link">LinkedIn</a>
         </p>
+        <p style="font-size: 0.9rem; margin-top: 1rem; font-style: italic;">For a complete list of my publications, please refer to <a href="https://scholar.google.com/citations?user=TE3lrxoAAAAJ&hl=en" target="_blank" class="profile-link">Google Scholar</a> or <a href="https://orcid.org/0000-0002-1743-3246" target="_blank" class="profile-link">ORCID</a>.</p>
+    </div>
+</div>
+
+<div class="work-experience-section">
+    <h2>Work Experience</h2>
+    <div class="education-timeline">
+        <div class="education-item">
+            <div class="education-year">March 2024 – Present</div>
+            <div class="education-content">
+                <h3>Postdoctoral Researcher</h3>
+                <h4>Empa - Swiss Federal Laboratories for Materials Science and Technology, Thun, Switzerland</h4>
+                <ul>
+                    <li>Advanced Materials Processing, Laboratory for Mechanics of Materials and Nanostructures</li>
+                    <li>Focus: Deformation mechanics of metals and multilayer thin films using in situ tensile testing</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="education-item">
+            <div class="education-year">2022 – 2024</div>
+            <div class="education-content">
+                <h3>Postdoctoral Researcher</h3>
+                <h4>Max-Planck Institut für Eisenforschung, Düsseldorf, Germany</h4>
+                <ul>
+                    <li>Advanced transmission electron microscopy group</li>
+                    <li>Electron microscopy-based study of hydrogen embrittlement in additively manufactured compositionally complex alloys</li>
+                </ul>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -34,7 +66,7 @@ title: About Me
                 <h4>Max-Planck Institut für Eisenforschung, Düsseldorf, Germany</h4>
                 <ul>
                     <li>Advanced transmission electron microscopy group, Department of structure and nano-/ micromechanics of materials</li>
-                    <li>Thesis: Microstructure and grain boundary evolution in titanium thin films</li>
+                    <li>Thesis: <a href="https://doi.org/10.5281/zenodo.14909664" target="_blank" class="profile-link">Microstructure and grain boundary evolution in titanium thin films</a></li>
                     <li>Supervisor: Prof. Gerhard Dehm, Group leader: Dr. Christian Liebscher</li>
                 </ul>
             </div>
