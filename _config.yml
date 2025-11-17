@@ -9,8 +9,9 @@ theme: minima
 
 # Navigation
 header_pages:
-  - publications.md
-  - education.md
+  - index.md
+  - tools/index.md
+  - notes/index.md
   - about.md
 
 # Build settings
@@ -29,6 +30,10 @@ minima:
       user_url: "https://www.linkedin.com/in/vivek-devulapalli-stem/"
     - platform: google_scholar
       user_url: "https://scholar.google.com/citations?user=TE3lrxoAAAAJ&hl=en"
+    - platform: orcid
+      user_url: "https://orcid.org/0000-0002-1743-3246"
+    - platform: web_of_science
+      user_url: "https://www.webofscience.com/wos/author/record/ORK-3875-2025"
 
 # SASS configuration
 sass:
