@@ -9,6 +9,11 @@ permalink: /proposal/eysf-2026/
     <p class="subtitle">Empa Young Scientist Fellowship Proposal 2026</p>
 </div>
 
+<div class="proposal-image-container">
+    <img src="{{ site.baseurl }}/assets/images/proposal-overview.png" alt="Project Overview - A/A Nanolaminates Testing" class="proposal-overview-image">
+    <p class="image-caption"><strong>Key project ideas:</strong> Generate a library of A/A thin films using the 'Swiss cluster' and mechanically test them at nanoscale</p>
+</div>
+
 ## Why This Project Matters
 
 Amorphous/amorphous (A/A) nanolaminates are **everywhere**—from transistors in your smartphone to antireflective coatings on your glasses. This represents a **multi-billion dollar commercial market**. Yet, despite their widespread use, we have limited understanding of how these materials deform and fail at the nanoscale.
@@ -238,6 +243,28 @@ If you have questions about this research or are interested in collaboration opp
     color: white;
     margin-bottom: 1.5rem;
     font-size: 1.1em;
+}
+
+.proposal-image-container {
+    margin: 2rem auto 3rem;
+    text-align: center;
+    max-width: 100%;
+}
+
+.proposal-overview-image {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    margin-bottom: 1rem;
+}
+
+.image-caption {
+    color: #555;
+    font-size: 0.95em;
+    font-style: italic;
+    margin: 0.5rem 0 0 0;
+    line-height: 1.5;
 }
 
 .download-button {
