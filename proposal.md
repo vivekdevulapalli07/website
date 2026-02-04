@@ -1,52 +1,54 @@
 ---
 layout: page
-title: Research Proposal
+title: Empa Young Scientist Fellowship 2026
+permalink: /proposal/eysf-2026/
 ---
 
 <div class="proposal-header">
-    <h1>Understanding Deformation Mechanisms in Nanocrystalline Metals</h1>
-    <p class="subtitle">Empa Young Scientist Fellowship Proposal</p>
+    <h1>Nanoscale Mechanics of Amorphous/Amorphous Nanolaminates</h1>
+    <p class="subtitle">Empa Young Scientist Fellowship Proposal 2026</p>
 </div>
 
-## Project Overview
+## Why This Project Matters
 
-My research proposal focuses on understanding **nanoscale deformation mechanisms in nanocrystalline metals** using advanced in situ transmission electron microscopy (TEM) techniques. The goal is to bridge the gap between atomic-scale observations and macroscopic mechanical behavior.
+Amorphous/amorphous (A/A) nanolaminates are **everywhere**—from transistors in your smartphone to antireflective coatings on your glasses. This represents a **multi-billion dollar commercial market**. Yet, despite their widespread use, we have limited understanding of how these materials deform and fail at the nanoscale.
 
-### Key Research Questions
+**The Problem:** Without understanding deformation mechanisms, we cannot predict failure, optimize design, or develop next-generation materials.
 
-- **How do grain boundaries influence deformation at the nanoscale?**
-  - Investigation of grain boundary sliding, rotation, and stress accommodation
-  - Direct observation of dislocation-grain boundary interactions
+**The Solution:** This project will use cutting-edge **in situ TEM with 4D-STEM** to directly observe and quantify nanoscale deformation mechanisms in real-time.
 
-- **What mechanisms control strength and ductility in nanocrystalline metals?**
-  - Understanding the transition from dislocation-mediated to grain boundary-mediated plasticity
-  - Quantifying the role of grain size on mechanical properties
+## Key Research Questions
 
-- **Can we predict mechanical behavior from microstructural features?**
-  - Developing structure-property relationships using machine learning
-  - Creating predictive models for material design
+- **How do A/A interfaces accommodate strain without crystalline defects like dislocations?**
+  - What mechanisms operate when traditional plasticity is absent?
+  
+- **What causes failure in commercially relevant A/A nanolaminates?**
+  - Critical insights for reliability and lifetime prediction
+  
+- **Can we design tougher A/A systems by understanding interface mechanics?**
+  - Structure-property relationships for material optimization
 
-### Research Approach
+## Research Approach
 
 <div class="methodology">
     <div class="method-item">
-        <h4>🔬 In Situ TEM Testing</h4>
-        <p>Real-time observation of deformation mechanisms under controlled loading conditions</p>
+        <h4>🔬 In Situ TEM Mechanics</h4>
+        <p>Direct observation of deformation and failure mechanisms under controlled loading</p>
     </div>
     
     <div class="method-item">
-        <h4>🎯 Advanced Characterization</h4>
-        <p>High-resolution STEM imaging and analytical techniques (EELS, EDS) for atomic-scale analysis</p>
+        <h4>🎯 4D-STEM Analysis</h4>
+        <p>Quantifying local strain fields and structural evolution at nanometer resolution</p>
     </div>
     
     <div class="method-item">
-        <h4>💻 Computational Modeling</h4>
-        <p>Molecular dynamics simulations and machine learning to complement experimental observations</p>
+        <h4>📊 Failure Analysis</h4>
+        <p>Identifying critical mechanisms for commercially relevant A/A systems</p>
     </div>
     
     <div class="method-item">
-        <h4>📊 Quantitative Analysis</h4>
-        <p>Statistical analysis of deformation events and microstructural evolution</p>
+        <h4>💡 Design Guidelines</h4>
+        <p>Developing structure-property relationships for material optimization</p>
     </div>
 </div>
 
@@ -57,11 +59,11 @@ My research proposal focuses on understanding **nanoscale deformation mechanisms
 <details>
 <summary><strong>Why does this research matter?</strong></summary>
 <div class="faq-answer">
-<p>Nanocrystalline metals offer exceptional strength, but their limited ductility restricts practical applications. Understanding deformation mechanisms at the nanoscale is crucial for:</p>
+<p>A/A nanolaminates are ubiquitous in technology—from microelectronics to optical coatings—representing a multi-billion dollar market. Yet their mechanical behavior remains poorly understood:</p>
 <ul>
-    <li><strong>Material Design:</strong> Developing next-generation structural materials with optimized strength-ductility combinations</li>
-    <li><strong>Industry Applications:</strong> Enabling lightweight, high-performance components for aerospace, automotive, and energy sectors</li>
-    <li><strong>Fundamental Science:</strong> Bridging the knowledge gap between atomic-scale processes and bulk material behavior</li>
+    <li><strong>Commercial Impact:</strong> Understanding failure mechanisms enables reliability predictions and extends device lifetimes</li>
+    <li><strong>Material Innovation:</strong> Knowledge of deformation mechanisms guides design of tougher, more resilient A/A systems</li>
+    <li><strong>Scientific Gap:</strong> No dislocations, no grains—how do these materials deform? This project will provide answers</li>
 </ul>
 </div>
 </details>
@@ -69,11 +71,10 @@ My research proposal focuses on understanding **nanoscale deformation mechanisms
 <details>
 <summary><strong>What makes this approach unique?</strong></summary>
 <div class="faq-answer">
-<p>This research combines cutting-edge experimental and computational techniques:</p>
 <ul>
-    <li><strong>Direct observation:</strong> In situ TEM allows real-time visualization of deformation mechanisms that are impossible to capture with conventional techniques</li>
-    <li><strong>Multi-scale analysis:</strong> Connecting atomic-scale observations with mesoscale behavior through integrated experimental-computational approach</li>
-    <li><strong>Quantitative insights:</strong> Statistical analysis of hundreds of deformation events provides robust data for model validation</li>
+    <li><strong>In situ + 4D-STEM:</strong> First time combination of real-time deformation with nanoscale strain mapping in A/A systems</li>
+    <li><strong>Commercially relevant materials:</strong> Focus on real industrial systems, not just model materials</li>
+    <li><strong>Direct mechanism identification:</strong> Move beyond post-mortem analysis to observe deformation as it happens</li>
 </ul>
 </div>
 </details>
@@ -81,51 +82,24 @@ My research proposal focuses on understanding **nanoscale deformation mechanisms
 <details>
 <summary><strong>What are the expected outcomes?</strong></summary>
 <div class="faq-answer">
-<p>The project will deliver:</p>
 <ul>
-    <li><strong>Scientific Publications:</strong> High-impact papers in leading materials science journals</li>
-    <li><strong>Predictive Models:</strong> Machine learning-based tools for predicting mechanical behavior from microstructure</li>
-    <li><strong>Design Guidelines:</strong> Structure-property relationships for engineering nanocrystalline metals</li>
-    <li><strong>Open Data:</strong> Publicly available datasets for the research community</li>
+    <li><strong>Deformation mechanism maps</strong> for A/A nanolaminates</li>
+    <li><strong>Failure prediction criteria</strong> for commercial systems</li>
+    <li><strong>Design guidelines</strong> for next-generation tough A/A materials</li>
+    <li><strong>High-impact publications</strong> and openly shared data</li>
 </ul>
 </div>
 </details>
 
 <details>
-<summary><strong>How does this align with Empa's research priorities?</strong></summary>
+<summary><strong>Why fund this project?</strong></summary>
 <div class="faq-answer">
-<p>This project strongly aligns with Empa's mission:</p>
 <ul>
-    <li><strong>Advanced Manufacturing:</strong> Developing knowledge for next-generation structural materials</li>
-    <li><strong>Sustainability:</strong> Lightweight materials enable energy-efficient transportation</li>
-    <li><strong>Technology Transfer:</strong> Insights directly applicable to industrial material development</li>
-    <li><strong>Excellence in Microscopy:</strong> Leveraging Empa's world-class TEM facilities</li>
-</ul>
-</div>
-</details>
-
-<details>
-<summary><strong>What expertise do I bring to this project?</strong></summary>
-<div class="faq-answer">
-<p>My background uniquely positions me for this research:</p>
-<ul>
-    <li><strong>Expert in Advanced Microscopy:</strong> Extensive experience with aberration-corrected STEM and in situ techniques</li>
-    <li><strong>Multiscale Characterization:</strong> Proven track record of connecting atomic-scale observations to material properties</li>
-    <li><strong>Computational Skills:</strong> Experience with STEM simulations and data analysis</li>
-    <li><strong>Track Record:</strong> Multiple publications in high-impact journals demonstrating research excellence</li>
-</ul>
-</div>
-</details>
-
-<details>
-<summary><strong>What is the timeline for this project?</strong></summary>
-<div class="faq-answer">
-<p>The 2-year project is structured in phases:</p>
-<ul>
-    <li><strong>Months 1-6:</strong> Sample preparation, experimental setup, and initial in situ tests</li>
-    <li><strong>Months 7-12:</strong> Systematic deformation studies across different grain sizes and conditions</li>
-    <li><strong>Months 13-18:</strong> Advanced characterization, data analysis, and model development</li>
-    <li><strong>Months 19-24:</strong> Validation, publication preparation, and dissemination</li>
+    <li><strong>High commercial relevance:</strong> Directly impacts multi-billion dollar industries</li>
+    <li><strong>Critical knowledge gap:</strong> Filling an important void in understanding industrially-important materials</li>
+    <li><strong>Novel methodology:</strong> First-of-its-kind combination of in situ TEM and 4D-STEM for A/A systems</li>
+    <li><strong>Practical outcomes:</strong> Failure analysis tools and design guidelines, not just academic papers</li>
+    <li><strong>Leverages Empa strengths:</strong> World-class TEM facilities and expertise in mechanical testing</li>
 </ul>
 </div>
 </details>

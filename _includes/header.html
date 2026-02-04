@@ -17,10 +17,21 @@
       <div class="trigger">
         <a class="page-link {% if page.url == '/' or page.url == '/research/' %}active{% endif %}" 
            href="{{ '/' | relative_url }}">Research</a>
-		<a class="page-link {% if page.url == '/proposal/' %}active{% endif %}" 
-		   href="{{ '/proposal' | relative_url }}">Proposal</a>
 		<a class="page-link {% if page.url contains '/notes/' %}active{% endif %}" 
 		   href="{{ '/notes' | relative_url }}">Notes</a>
+		<div class="dropdown">
+          <a class="page-link dropdown-trigger {% if page.url contains '/proposal' %}active{% endif %}">
+            Proposals
+            <svg class="dropdown-arrow" width="10" height="5" viewBox="0 0 5">
+              <path d="M0 0l5 5 5-5z" fill="currentColor"/>
+            </svg>
+          </a>
+		  
+			<div class="dropdown-content">
+			<a href="{{ '/proposal/eysf-2026' | relative_url }}">Empa Young Scientist Fellowship 2026</a>
+			</div>
+          
+        </div>
 		<div class="dropdown">
           <a class="page-link dropdown-trigger {% if page.url contains '/tools/' %}active{% endif %}">
             Interactive Tools
