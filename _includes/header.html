@@ -17,6 +17,8 @@
       <div class="trigger">
         <a class="page-link {% if page.url == '/' or page.url == '/research/' %}active{% endif %}" 
            href="{{ '/' | relative_url }}">Research</a>
+		<a class="page-link {% if page.url == '/proposal/' %}active{% endif %}" 
+		   href="{{ '/proposal' | relative_url }}">Proposal</a>
 		<a class="page-link {% if page.url contains '/notes/' %}active{% endif %}" 
 		   href="{{ '/notes' | relative_url }}">Notes</a>
 		<div class="dropdown">
