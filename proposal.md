@@ -10,7 +10,7 @@ permalink: /proposal/eysf-2026/
 </div>
 
 <div class="proposal-image-container">
-    <img src="{{ site.baseurl }}/assets/images/proposal-overview.png" alt="Project Overview - A/A Nanolaminates Testing" class="proposal-overview-image">
+    <img src="{{ '/assets/images/proposal-overview.png' | relative_url }}" alt="Project Overview - A/A Nanolaminates Testing" class="proposal-overview-image">
     <p class="image-caption"><strong>Key project ideas:</strong> Generate a library of A/A thin films using the 'Swiss cluster' and mechanically test them at nanoscale</p>
 </div>
 
