@@ -680,10 +680,13 @@ function hexPlaneToCartesian(hkil, a, c) {
         (a1[0] * a2[1] - a1[1] * a2[0]) / det
     ];
 
+    const hPrime = 2 * h + k;
+    const kPrime = h + 2 * k;
+
     return [
-        h * b1[0] + k * b2[0] + l * b3[0],
-        h * b1[1] + k * b2[1] + l * b3[1],
-        h * b1[2] + k * b2[2] + l * b3[2]
+        hPrime * b1[0] + kPrime * b2[0] + l * b3[0],
+        hPrime * b1[1] + kPrime * b2[1] + l * b3[1],
+        hPrime * b1[2] + kPrime * b2[2] + l * b3[2]
     ];
 }
 
