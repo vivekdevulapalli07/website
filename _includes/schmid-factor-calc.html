@@ -608,7 +608,7 @@ function millerBravaisToMiller(hkil) {
 // Calculate Schmid factor for hexagonal systems
 function calculateSchmidFactorHexagonal(loadDirection, slipPlane, slipDirection, a, c) {
     // Convert loading direction from Miller-Bravais [hkil] to Cartesian coordinates
-    const loadCart = hexToCartesian(loadDirection, a, c);
+    const loadCart = hexDirectionToCartesian(loadDirection, a, c);
     
     // Convert slip plane from Miller-Bravais (hkil) to Cartesian coordinates
     const planeCart = hexPlaneToCartesian(slipPlane, a, c);
@@ -629,44 +629,62 @@ function calculateSchmidFactorHexagonal(loadDirection, slipPlane, slipDirection,
     return cosLambda * cosPhi;
 }
 
-// Convert hexagonal Miller-Bravais indices [hkil] to Cartesian coordinates [x,y,z]
-function hexToCartesian(hkil, a, c) {
-    // For loading direction
-    const x = a * (hkil[0] + hkil[1]/2);
-    const y = a * (Math.sqrt(3)/2 * hkil[1]);
-    const z = c * hkil[3];
-    
-    return [x, y, z];
+// Build hexagonal lattice basis vectors in Cartesian coordinates
+function getHexLatticeBasis(a, c) {
+    const a1 = [a, 0, 0];
+    const a2 = [a / 2, (Math.sqrt(3) / 2) * a, 0];
+    const a3 = [-a / 2, (Math.sqrt(3) / 2) * a, 0];
+    const cVec = [0, 0, c];
+    return { a1, a2, a3, cVec };
+}
+
+// Convert hexagonal Miller-Bravais direction [u v t w] to Cartesian coordinates [x,y,z]
+function hexDirectionToCartesian(hkil, a, c) {
+    const u = hkil[0];
+    const v = hkil[1];
+    const t = hkil[2];
+    const w = hkil[3];
+
+    const { a1, a2, a3, cVec } = getHexLatticeBasis(a, c);
+    return [
+        u * a1[0] + v * a2[0] + t * a3[0] + w * cVec[0],
+        u * a1[1] + v * a2[1] + t * a3[1] + w * cVec[1],
+        u * a1[2] + v * a2[2] + t * a3[2] + w * cVec[2]
+    ];
 }
 
 // Convert hexagonal plane normal (hkil) to Cartesian coordinates [x,y,z]
 function hexPlaneToCartesian(hkil, a, c) {
-    // For plane normal, we use reciprocal basis vectors
     const h = hkil[0];
     const k = hkil[1];
-    const i = hkil[2]; // i = -(h+k)
     const l = hkil[3];
-    
-    const x = (2*h + k) / (3*a);
-    const y = (Math.sqrt(3) * k) / (3*a);
-    const z = l / c;
-    
-    return [x, y, z];
-}
 
-// Convert hexagonal direction [hkil] to Cartesian coordinates [x,y,z]
-function hexDirectionToCartesian(hkil, a, c) {
-    // For direction
-    const h = hkil[0];
-    const k = hkil[1];
-    const i = hkil[2]; // i = -(h+k)
-    const l = hkil[3];
-    
-    const x = a * (h - i/2);
-    const y = a * (Math.sqrt(3)/2 * (k - i/2));
-    const z = c * l;
-    
-    return [x, y, z];
+    const { a1, a2, cVec } = getHexLatticeBasis(a, c);
+    const det = a1[0] * (a2[1] * cVec[2] - a2[2] * cVec[1])
+        - a1[1] * (a2[0] * cVec[2] - a2[2] * cVec[0])
+        + a1[2] * (a2[0] * cVec[1] - a2[1] * cVec[0]);
+
+    const b1 = [
+        (a2[1] * cVec[2] - a2[2] * cVec[1]) / det,
+        (a2[2] * cVec[0] - a2[0] * cVec[2]) / det,
+        (a2[0] * cVec[1] - a2[1] * cVec[0]) / det
+    ];
+    const b2 = [
+        (cVec[1] * a1[2] - cVec[2] * a1[1]) / det,
+        (cVec[2] * a1[0] - cVec[0] * a1[2]) / det,
+        (cVec[0] * a1[1] - cVec[1] * a1[0]) / det
+    ];
+    const b3 = [
+        (a1[1] * a2[2] - a1[2] * a2[1]) / det,
+        (a1[2] * a2[0] - a1[0] * a2[2]) / det,
+        (a1[0] * a2[1] - a1[1] * a2[0]) / det
+    ];
+
+    return [
+        h * b1[0] + k * b2[0] + l * b3[0],
+        h * b1[1] + k * b2[1] + l * b3[1],
+        h * b1[2] + k * b2[2] + l * b3[2]
+    ];
 }
 
 function calculateSchmidFactors() {
