@@ -632,8 +632,8 @@ function calculateSchmidFactorHexagonal(loadDirection, slipPlane, slipDirection,
 // Build hexagonal lattice basis vectors in Cartesian coordinates
 function getHexLatticeBasis(a, c) {
     const a1 = [a, 0, 0];
-    const a2 = [a / 2, (Math.sqrt(3) / 2) * a, 0];
-    const a3 = [-a / 2, (Math.sqrt(3) / 2) * a, 0];
+    const a2 = [-a / 2, (Math.sqrt(3) / 2) * a, 0];
+    const a3 = [-a / 2, (-Math.sqrt(3) / 2) * a, 0];
     const cVec = [0, 0, c];
     return { a1, a2, a3, cVec };
 }
