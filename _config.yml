@@ -42,15 +42,6 @@ defaults:
     values:
       image: true
       
-# Notes configuration - use regular pages with note layout
-defaults:
-  - scope:
-      path: "notes"
-      type: "pages"
-    values:
-      layout: "note"
-      is_note: true
-
 # Exclude posts directory and related files
 exclude:
   - _posts/

@@ -6,7 +6,7 @@ permalink: /proposal/eysf-2026/
 
 <div class="proposal-header">
     <h1>Nanoscale Mechanics of Amorphous/Amorphous Nanolaminates</h1>
-    <p class="subtitle">Empa Young Scientist Fellowship Proposal 2026</p>
+    <p class="subtitle">Empa Young Scientist Fellowship 2026 — Awarded (CHF 270,000), PI</p>
 </div>
 
 <div class="proposal-image-container">
@@ -96,39 +96,7 @@ Amorphous/amorphous (A/A) nanolaminates are **everywhere**—from transistors in
 </div>
 </details>
 
-<details>
-<summary><strong>Why fund this project?</strong></summary>
-<div class="faq-answer">
-<ul>
-    <li><strong>High commercial relevance:</strong> Directly impacts multi-billion dollar industries</li>
-    <li><strong>Critical knowledge gap:</strong> Filling an important void in understanding industrially-important materials</li>
-    <li><strong>Novel methodology:</strong> First-of-its-kind combination of in situ TEM and 4D-STEM for A/A systems</li>
-    <li><strong>Practical outcomes:</strong> Failure analysis tools and design guidelines, not just academic papers</li>
-    <li><strong>Leverages Empa strengths:</strong> World-class TEM facilities and expertise in mechanical testing</li>
-</ul>
 </div>
-</details>
-
-</div>
-
-## My Commitment
-
-This research proposal represents ideas I'm deeply passionate about and committed to executing. If funded, I will:
-
-- **Share Regular Updates:** Document progress, challenges, and discoveries through this website
-- **Publish Openly:** Make findings accessible through high-quality publications and open data
-- **Engage the Community:** Present results at conferences and collaborate with other researchers
-- **Demonstrate Impact:** Show how fundamental research translates to practical applications
-
-This page will evolve into a project hub where I'll share:
-- Experimental results and insights
-- Videos and animations of deformation mechanisms
-- Data visualizations and analysis tools
-- Publications and presentations
-
-## Why This Matters to Me
-
-Understanding how materials deform at the nanoscale has been a central theme throughout my career. This project combines my expertise in advanced microscopy with my passion for connecting atomic-scale observations to real-world material behavior. I'm committed to making this research open, accessible, and impactful.
 
 ## Contact
 

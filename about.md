@@ -5,18 +5,18 @@ title: About Me
 
 <div class="profile-container">
     <div class="profile">
-        <img src="{{ site.baseurl }}/assets/images/profile_pic.jpeg" alt="Vivek Devulapalli">
+        <img src="{{ site.baseurl }}/assets/images/Vivek_CV_picture.jpg" alt="Vivek Devulapalli">
         <div>
             <h1>Vivek Devulapalli</h1>
             <h2>Postdoctoral Researcher at EMPA</h2>
             <p>I'm an early-career postdoctoral researcher with a strong materials science background, specializing in advanced electron microscopy. I investigate materials ranging from metals to semiconductors, using aberration-corrected STEM to connect atomic structure and composition to properties across scales.</p> 
-            <p>My work includes multidimensional imaging, analytical techniques, and STEM simulations for in-depth material characterization. I'm passionate about open science and science communication. Currently, I am working on studying deformation mechanics of metals and multilayer thin films using in situ tensile testing.</p>
+            <p>My work includes multidimensional imaging, analytical techniques, and STEM simulations for in-depth material characterization. I'm passionate about open science and science communication. As of 2026, I lead the <a href="{{ site.baseurl }}/proposal/eysf-2026/" class="profile-link">Empa Young Scientist Fellowship</a> project, studying nanoscale deformation mechanics in amorphous oxide multilayer coatings, alongside my ongoing work on deformation mechanics of metals and multilayer thin films using in situ tensile testing.</p>
         </div>
     </div>
 
     <div class="contact-brief">
         <p><strong>Email:</strong> <a href="mailto:vivek.devulapalli@empa.ch">vivek.devulapalli@empa.ch</a></p>
-        <p><strong>Office:</strong> Feuerwerkstraase 39, Thun 3602</p>
+        <p><strong>Office:</strong> Nunenenstrasse 38, Thun 3600</p>
         <p>
             <a href="{{ site.baseurl }}/assets/Devulapalli_CV.pdf" target="_blank" class="profile-link">CV</a> | 
             <a href="https://scholar.google.com/citations?user=TE3lrxoAAAAJ&hl=en" target="_blank" class="profile-link">Google Scholar</a> | 
@@ -31,13 +31,27 @@ title: About Me
     <h2>Work Experience</h2>
     <div class="education-timeline">
         <div class="education-item">
-            <div class="education-year">March 2024 – Present</div>
+            <div class="education-year">2026 – Present</div>
             <div class="education-content">
                 <h3>Postdoctoral Researcher</h3>
                 <h4>Empa - Swiss Federal Laboratories for Materials Science and Technology, Thun, Switzerland</h4>
                 <ul>
-                    <li>Advanced Materials Processing, Laboratory for Mechanics of Materials and Nanostructures</li>
-                    <li>Focus: Deformation mechanics of metals and multilayer thin films using in situ tensile testing</li>
+                    <li>Laboratory for Mechanics of Materials and Nanostructures</li>
+                    <li><strong>Empa Young Scientist Fellowship (CHF 270,000):</strong> First major grant as PI — <a href="{{ site.baseurl }}/proposal/eysf-2026/" class="profile-link">Mapping nanoscale deformation mechanics in amorphous oxide multilayer coatings (MOSAIC)</a></li>
+                    <li>Group leads: Prof. Johann Michler, Dr. Xavier Maeder</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="education-item">
+            <div class="education-year">2024 – 2026</div>
+            <div class="education-content">
+                <h3>Postdoctoral Researcher</h3>
+                <h4>Empa - Swiss Federal Laboratories for Materials Science and Technology, Thun, Switzerland</h4>
+                <ul>
+                    <li>Laboratory for Mechanics of Materials and Nanostructures</li>
+                    <li>Project: In-situ TEM tensile testing of crystalline-amorphous nanolayered materials</li>
+                    <li>Supervisors: Prof. Johann Michler, Dr. Xavier Maeder</li>
                 </ul>
             </div>
         </div>

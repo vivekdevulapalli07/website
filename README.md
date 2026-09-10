@@ -18,7 +18,6 @@ Visit the site at: [https://vivekdevulapalli07.github.io/website/](https://vivek
   - Schmid Factor Calculator
   - Aberration Visualisation
   - Grain Misorientation Calculator
-- **Research Notes** (`notes/`) - Technical references and personal notes
 - **About** (`about.md`) - Professional profile, CV, work experience, and education
 
 ## 🚀 Running Locally
@@ -55,7 +54,6 @@ Key configuration is in `_config.yml`:
 
 ## 📄 Adding Content
 - **New tool**: Add a markdown file in `tools/` and update the dropdown in `header.html`
-- **New note**: Create a markdown file in `notes/` with layout: `note`
 - **Update profile**: Edit `about.md`
 
 ## 📧 Contact

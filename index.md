@@ -41,7 +41,8 @@ title: Research
 		justify-content: center;
 	}
 
-	.carousel img {
+	.carousel img,
+	.carousel video {
 		max-width: 100%;
 		max-height: 100%;
 		object-fit: contain;
@@ -183,8 +184,13 @@ title: Research
 		{% for image in site.data.research_images %}
 			<div class="slide">
 				<div class="media-container">
-					{% assign file_extension = image.file | split: '.' | last %}
-					{% if file_extension == 'gif' %}
+					{% assign file_extension = image.file | split: '.' | last | downcase %}
+					{% if file_extension == 'mp4' %}
+						<video controls muted loop playsinline preload="none"
+							   poster="{{ site.baseurl }}/assets/images/research/{{ image.poster }}">
+							<source src="{{ site.baseurl }}/assets/images/research/{{ image.file }}" type="video/mp4">
+						</video>
+					{% elsif file_extension == 'gif' %}
 						<img src="{{ site.baseurl }}/assets/images/research/{{ image.file }}" 
 							 alt="{{ image.caption }}"
 							 class="gif-image"
@@ -248,6 +254,15 @@ title: Research
 	let slideIndex = 1;
 	let timer = null;
 
+	function scheduleAutoAdvance() {
+		if (timer) clearTimeout(timer);
+		const activeSlide = document.querySelector('.slide.active');
+		const activeVideo = activeSlide && activeSlide.querySelector('video');
+		// Don't auto-advance away from a video that's currently playing
+		if (activeVideo && !activeVideo.paused) return;
+		timer = setTimeout(() => moveSlide(1), 8000);
+	}
+
 	function showSlides(n) {
 		const slides = document.querySelectorAll('.slide');
 		const indicators = document.querySelectorAll('.carousel-indicators button');
@@ -260,6 +275,9 @@ title: Research
 		slides.forEach(slide => {
 			slide.style.display = 'none';
 			slide.classList.remove('active');
+			// Pause and rewind any video on slides we're leaving
+			const video = slide.querySelector('video');
+			if (video) video.pause();
 		});
 		
 		indicators.forEach(indicator => {
@@ -270,9 +288,7 @@ title: Research
 		slides[slideIndex - 1].classList.add('active');
 		indicators[slideIndex - 1].classList.add('active');
 		
-		// Reset timer
-		if (timer) clearTimeout(timer);
-		timer = setTimeout(() => moveSlide(1), 8000);
+		scheduleAutoAdvance();
 	}
 
 	function moveSlide(n) {
@@ -287,6 +303,13 @@ title: Research
 	document.addEventListener('DOMContentLoaded', function() {
 		if (document.querySelector('.carousel')) {
 			showSlides(slideIndex);
+
+			// Pause auto-advance while a video is playing; resume when it stops
+			document.querySelectorAll('.slide video').forEach(video => {
+				video.addEventListener('play', () => { if (timer) clearTimeout(timer); });
+				video.addEventListener('pause', scheduleAutoAdvance);
+				video.addEventListener('ended', scheduleAutoAdvance);
+			});
 		}
 	});
 </script>

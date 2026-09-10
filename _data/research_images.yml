@@ -1,7 +1,16 @@
 # _data/research_images.yml
 
-- file: ALD_Snap.gif
-  caption: "In-situ TEM tensile testing of multilayer thin films."
+- file: ALD_snap.mp4
+  poster: ALD_snap_poster.jpg
+  caption: "In-situ TEM tensile testing of an ALD multilayer thin film."
+
+- file: CuAl_60nm.mp4
+  poster: CuAl_60nm_poster.jpg
+  caption: "In-situ TEM tensile testing of a Cu-Al nanolaminate with amorphous Al2O3 interlayers."
+
+- file: Dislocations_crack_tip.mp4
+  poster: Dislocations_crack_tip_poster.jpg
+  caption: "In-situ TEM observation of dislocation activity at a crack tip."
 
 - file: Ti_asymmetric_GB.png
   caption: "Atomically resolved HAADF STEM image of an asymmetric grain boundary in Ti showing GB phase transitioning due to Fe segregation."
