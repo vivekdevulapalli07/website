@@ -126,6 +126,64 @@ title: Research
 		padding: 0 1rem;
 	}
 
+	/* On phones a fixed 16:9 box leaves ~110px for the image, so let each
+	   slide size to its content instead (the script hides inactive slides). */
+	@media (max-width: 600px) {
+		.carousel {
+			aspect-ratio: auto;
+			margin: 1rem auto;
+		}
+
+		.carousel .slide {
+			position: relative;
+			padding: 0.5rem 0.5rem 2rem;
+		}
+
+		.carousel .slide:not(.active) {
+			display: none;
+		}
+
+		.carousel .media-container {
+			height: auto;
+		}
+
+		.carousel img,
+		.carousel video {
+			width: 100%;
+			max-height: 70vh;
+		}
+
+		.carousel-control {
+			top: 40%;
+			width: 36px;
+			height: 36px;
+			padding: 0;
+			font-size: 16px;
+		}
+
+		.carousel-control.prev {
+			left: 0.5rem;
+		}
+
+		.carousel-control.next {
+			right: 0.5rem;
+		}
+
+		.carousel-indicators {
+			bottom: 0.75rem;
+		}
+
+		.caption {
+			margin-top: 0.5rem;
+			font-size: 0.85rem;
+		}
+
+		.research-overview {
+			margin-top: 2rem;
+			padding: 0;
+		}
+	}
+
 	/* Research Overview Section */
 	.research-overview {
 		max-width: 800px;
