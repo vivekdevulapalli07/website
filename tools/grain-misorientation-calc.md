@@ -182,7 +182,7 @@ select {
 }
 
 button {
-    background: #0066cc;
+    background: #0c4466;
     color: white;
     border: none;
     padding: 12px 24px;
@@ -194,7 +194,7 @@ button {
 }
 
 button:hover {
-    background: #0052a3;
+    background: #082f47;
 }
 
 .results {
@@ -202,12 +202,12 @@ button:hover {
     padding: 20px;
     background: #f0f8ff;
     border-radius: 8px;
-    border-left: 4px solid #0066cc;
+    border-left: 4px solid #0c4466;
 }
 
 .results h3 {
     margin-top: 0;
-    color: #0066cc;
+    color: #0c4466;
 }
 
 .result-item {

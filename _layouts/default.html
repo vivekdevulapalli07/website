@@ -5,6 +5,9 @@
   </head>
   <body>
     {%- include header.html -%}
+    {%- if page.title and page.banner != false -%}
+      {%- include page-banner.html -%}
+    {%- endif -%}
     <main class="page-content" aria-label="Content">
       <div class="wrapper">
         {{ content }}

@@ -1,30 +1,26 @@
 ---
 layout: page
-title: About Me
+title: CV
+eyebrow: Curriculum vitae
+headline: Vivek Devulapalli
+subtitle: Postdoctoral Researcher, Laboratory for Mechanics of Materials and Nanostructures, Empa
+banner_links:
+  - label: Download CV (PDF)
+    url: /assets/Devulapalli_CV.pdf
+  - label: Google Scholar
+    url: https://scholar.google.com/citations?user=TE3lrxoAAAAJ&hl=en
+  - label: ORCID
+    url: https://orcid.org/0000-0002-1743-3246
 ---
 
-<div class="profile-container">
-    <div class="profile">
-        <img src="{{ site.baseurl }}/assets/images/Vivek_CV_picture.jpg" alt="Vivek Devulapalli">
-        <div>
-            <h1>Vivek Devulapalli</h1>
-            <h2>Postdoctoral Researcher at EMPA</h2>
-            <p>I'm an early-career postdoctoral researcher with a strong materials science background, specializing in advanced electron microscopy. I investigate materials ranging from metals to semiconductors, using aberration-corrected STEM to connect atomic structure and composition to properties across scales.</p> 
-            <p>My work includes multidimensional imaging, analytical techniques, and STEM simulations for in-depth material characterization. I'm passionate about open science and science communication. As of 2026, I lead the <a href="{{ site.baseurl }}/proposal/eysf-2026/" class="profile-link">Empa Young Scientist Fellowship</a> project, studying nanoscale deformation mechanics in amorphous oxide multilayer coatings, alongside my ongoing work on deformation mechanics of metals and multilayer thin films using in situ tensile testing.</p>
-        </div>
-    </div>
-
-    <div class="contact-brief">
-        <p><strong>Email:</strong> <a href="mailto:vivek.devulapalli@empa.ch">vivek.devulapalli@empa.ch</a></p>
-        <p><strong>Office:</strong> Nunenenstrasse 38, Thun 3600</p>
-        <p>
-            <a href="{{ site.baseurl }}/assets/Devulapalli_CV.pdf" target="_blank" class="profile-link">CV</a> | 
-            <a href="https://scholar.google.com/citations?user=TE3lrxoAAAAJ&hl=en" target="_blank" class="profile-link">Google Scholar</a> | 
-            <a href="https://www.linkedin.com/in/vivek-devulapalli-stem/" target="_blank" class="profile-link">LinkedIn</a> | 
-            <a href="https://orcid.org/0000-0002-1743-3246" target="_blank" class="profile-link">ORCID</a> | 
-            <a href="https://www.webofscience.com/wos/author/record/ORK-3875-2025" target="_blank" class="profile-link">Web of Science</a>
-        </p>
-    </div>
+<div class="contact-brief">
+    <p><strong>Email:</strong> <a href="mailto:vivek.devulapalli@empa.ch">vivek.devulapalli@empa.ch</a></p>
+    <p><strong>Office:</strong> Nunenenstrasse 38, Thun 3600</p>
+    <p><strong>Profiles:</strong>
+        <a href="https://www.linkedin.com/in/vivek-devulapalli-stem/" target="_blank" class="profile-link">LinkedIn</a> ·
+        <a href="https://www.webofscience.com/wos/author/record/ORK-3875-2025" target="_blank" class="profile-link">Web of Science</a> ·
+        <a href="https://github.com/vivekdevulapalli07" target="_blank" class="profile-link">GitHub</a>
+    </p>
 </div>
 
 <div class="work-experience-section">

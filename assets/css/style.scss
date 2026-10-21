@@ -1,29 +1,82 @@
 ---
 ---
 
-@import "{{ site.theme }}";
+// Palette and type. Set before importing minima so its defaults pick them up.
+$navy: #0c4466;
+$navy-deep: #082f47;
+$link-hover: #1d6fa3;
+$mint: #d5f2dd;
+$mint-wash: #eef8f1;
+$ink: #14202b;
+$text-color: #2b3440;
+$muted: #5c6773;
+$line: #dde3e8;
+$tint: #f3f6f8;
+$brand-color: $navy;
+$background-color: #ffffff;
+$base-font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+$serif: "Source Serif 4", Georgia, "Times New Roman", serif;
+$max-width: 1040px;
 
-// Custom variables
-$primary-color: #0066cc;
-$secondary-color: #f8f9fa;
-$text-color: #333;
-$header-height: 60px;
-$max-width: 800px;
-$font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+@import "{{ site.theme }}";
 
 // Global styles
 body {
-    font-family: $font-family;
-    line-height: 1.6;
+    font-family: $base-font-family;
+    font-size: 16px;
+    line-height: 1.65;
     margin: 0;
     padding: 0;
     color: $text-color;
+    background: $background-color;
+    -webkit-font-smoothing: antialiased;
 }
 
-.content {
+h1, h2, h3 {
+    font-family: $serif;
+    font-weight: 600;
+    color: $ink;
+    line-height: 1.25;
+}
+
+h4 {
+    color: $ink;
+    font-weight: 600;
+}
+
+.post-content {
+    h2 {
+        font-size: 1.6rem;
+        margin: 2.5rem 0 1rem;
+    }
+
+    h3 {
+        font-size: 1.25rem;
+    }
+
+    h4 {
+        font-size: 1.05rem;
+    }
+}
+
+a,
+a:visited {
+    color: $navy;
+    text-underline-offset: 2px;
+    transition: color 0.15s ease;
+}
+
+a:hover {
+    color: $link-hover;
+}
+
+.wrapper {
     max-width: $max-width;
-    margin: 0 auto;
-    padding: 2rem;
+    padding: 0 24px;
+}
+
+.page-content {
+    padding: 3rem 0 4rem;
 }
 
 // Header & navigation
@@ -33,20 +86,17 @@ body {
 .site-header {
     position: relative;
     z-index: 100;
-    border-top: 5px solid $primary-color;
-    background: $secondary-color;
-    padding: 0.75rem 0;
-    border-bottom: 1px solid darken($secondary-color, 10%);
-    margin-bottom: 2rem;
+    background: $navy;
+    border: 0;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    padding: 0;
     min-height: 0;
 
     .wrapper {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        max-width: $max-width;
-        margin: 0 auto;
-        padding: 0 1rem;
+        min-height: 64px;
 
         // Minima's clearfix would otherwise act as a third flex item and
         // pull the nav away from the right edge
@@ -55,19 +105,22 @@ body {
         }
     }
 
-    .site-title {
+    .site-title,
+    .site-title:visited {
         float: none;
-        font-size: 1.5rem;
+        margin: 0;
+        font-family: $serif;
+        font-size: 1.35rem;
         font-weight: 600;
         line-height: 1.3;
         letter-spacing: normal;
-        color: $text-color;
+        color: #fff;
         text-decoration: none;
+    }
 
-        &:hover {
-            text-decoration: none;
-            color: $primary-color;
-        }
+    .site-title:hover {
+        color: $mint;
+        text-decoration: none;
     }
 }
 
@@ -92,28 +145,41 @@ body {
     }
 
     .page-link {
+        position: relative;
         display: inline-flex;
         align-items: center;
-        gap: 4px;
-        color: $text-color;
+        gap: 5px;
+        color: rgba(255,255,255,0.82);
+        font-size: 0.95rem;
+        font-weight: 500;
         text-decoration: none;
-        padding: 0.5rem 0.75rem;
+        padding: 0.5rem 0.8rem;
         margin: 0;
         border-radius: 4px;
-        transition: all 0.2s ease;
+        transition: color 0.15s ease, background-color 0.15s ease;
 
         &:not(:last-child) {
             margin-right: 0;
         }
 
         &:hover {
-            background: darken($secondary-color, 5%);
-            color: $primary-color;
+            background: rgba(255,255,255,0.08);
+            color: #fff;
         }
 
         &.active {
-            color: $primary-color;
-            font-weight: 500;
+            color: #fff;
+
+            &::after {
+                content: '';
+                position: absolute;
+                left: 0.8rem;
+                right: 0.8rem;
+                bottom: 0.1rem;
+                height: 2px;
+                border-radius: 1px;
+                background: $mint;
+            }
         }
     }
 }
@@ -136,27 +202,28 @@ body {
     position: absolute;
     top: 100%;
     left: 0;
-    min-width: 220px;
+    min-width: 230px;
     background: white;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+    box-shadow: 0 8px 24px rgba(8,47,71,0.18);
     border-radius: 6px;
-    padding: 0.25rem;
+    padding: 0.35rem;
     z-index: 1000;
 
-    a {
+    a,
+    a:visited {
         display: block;
-        color: $text-color;
-        padding: 0.45rem 0.75rem;
+        color: $ink;
+        padding: 0.5rem 0.75rem;
         font-size: 0.9em;
         line-height: 1.4;
         white-space: nowrap;
         border-radius: 4px;
         text-decoration: none;
+    }
 
-        &:hover {
-            background: $secondary-color;
-            color: $primary-color;
-        }
+    a:hover {
+        background: $tint;
+        color: $navy;
     }
 }
 
@@ -174,11 +241,12 @@ body {
 // Mobile: hamburger menu with dropdown items listed inline (no hover on touch)
 @media screen and (max-width: 768px) {
     .site-header {
-        padding: 0.5rem 0;
-        margin-bottom: 1.25rem;
+        .wrapper {
+            min-height: 56px;
+        }
 
         .site-title {
-            font-size: 1.25rem;
+            font-size: 1.2rem;
         }
     }
 
@@ -202,7 +270,7 @@ body {
             line-height: 0;
 
             svg {
-                fill: $text-color;
+                fill: #fff;
             }
         }
 
@@ -215,9 +283,9 @@ body {
             flex-direction: column;
             align-items: stretch;
             gap: 0;
-            background: $secondary-color;
-            border-bottom: 1px solid darken($secondary-color, 10%);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.08);
+            background: $navy;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            box-shadow: 0 8px 16px rgba(8,47,71,0.25);
             padding: 0.25rem 1rem 0.75rem;
         }
 
@@ -228,6 +296,15 @@ body {
         .page-link {
             display: flex;
             padding: 0.65rem 0.5rem;
+
+            &.active::after {
+                left: 0;
+                right: auto;
+                top: 0.65rem;
+                bottom: 0.65rem;
+                width: 2px;
+                height: auto;
+            }
         }
     }
 
@@ -248,144 +325,406 @@ body {
         box-shadow: none;
         padding: 0 0 0.25rem 1rem;
 
-        a {
+        a,
+        a:visited {
             white-space: normal;
             padding: 0.6rem 0.5rem;
             font-size: 0.95em;
+            color: rgba(255,255,255,0.75);
+        }
+
+        a:hover {
+            background: rgba(255,255,255,0.08);
+            color: #fff;
         }
     }
+}
 
-    .content {
-        padding: 1rem;
+// Page banner: navy band with the page title, and an atomic-resolution
+// HAADF image of a Ti grain boundary fading in from the right
+.page-banner {
+    position: relative;
+    overflow: hidden;
+    background: $navy-deep;
+    background: linear-gradient(100deg, $navy-deep 0%, $navy 65%);
+    color: #fff;
+    padding: 2.75rem 0 2.5rem;
+
+    .wrapper {
+        position: relative;
     }
 }
 
-// Content wrapper
-.wrapper {
-    max-width: 960px;
-    padding: 0 20px;
+.page-banner__image {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 60%;
+    background-size: cover;
+    background-position: left center;
+    opacity: 0.4;
+    mix-blend-mode: screen;
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, #000 50%);
+    mask-image: linear-gradient(to right, transparent 0%, #000 50%);
 }
 
-// Page title
-.page-title {
-    color: $text-color;
-    margin-bottom: 2rem;
-    padding-bottom: 1rem;
-    border-bottom: 2px solid $primary-color;
+.page-banner__eyebrow {
+    margin: 0 0 0.6rem;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: $mint;
 }
 
-// Link styles
-a {
-    color: $primary-color;
-    transition: color 0.2s ease;
-    
-    &:hover {
-        color: darken($primary-color, 15%);
-        text-decoration: none;
-    }
+.page-banner__title {
+    max-width: 20em;
+    margin: 0;
+    font-size: 2.1rem;
+    line-height: 1.2;
+    color: #fff;
 }
 
-// Footer improvements
-.site-footer {
-    background: $secondary-color;
-    padding: 2rem 0;
-    margin-top: 4rem;
-    text-align: center;
-    border-top: 1px solid darken($secondary-color, 10%);
-    
-    .footer-col {
-        margin-bottom: 1rem;
-    }
-    
-    .social-links {
-        text-align: right;
-        margin-bottom: 1rem;
-
-        a {
-            color: $primary-color;
-            text-decoration: none;
-            margin: 0 0.5rem;
-            padding: 0.5rem 1rem;
-            border-radius: 4px;
-            transition: all 0.2s ease;
-
-            &:hover {
-                background: darken($secondary-color, 5%);
-            }
-        }
-        
-        @media screen and (max-width: 600px) {
-            text-align: center;
-        }
-    }
-    
-    p {
-        margin: 0;
-        color: lighten($text-color, 20%);
-    }
+.page-banner__subtitle {
+    max-width: 36em;
+    margin: 0.75rem 0 0;
+    font-size: 1.05rem;
+    color: rgba(255,255,255,0.82);
 }
 
-// Profile and About page styles
-.profile-container {
-    max-width: 800px;
-    margin: 0 auto 2rem;
-}
-
-.profile {
+.page-banner__links {
     display: flex;
-    gap: 2rem;
-    align-items: flex-start;
-    margin-bottom: 2rem;
-    
-    img {
-        width: 200px;
-        height: 200px;
-        border-radius: 50%;
-        object-fit: cover;
-        box-shadow: 0 2px 15px rgba(0,0,0,0.1);
-    }
-    
-    div {
-        flex: 1;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin: 1.6rem 0 0;
+}
+
+.banner-button,
+.banner-button:visited {
+    display: inline-block;
+    padding: 0.5rem 1.1rem;
+    border: 1px solid rgba(255,255,255,0.45);
+    border-radius: 4px;
+    color: #fff;
+    font-size: 0.92rem;
+    font-weight: 500;
+    text-decoration: none;
+    transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.banner-button:hover {
+    background: rgba(255,255,255,0.1);
+    border-color: #fff;
+    color: #fff;
+}
+
+.banner-button--primary,
+.banner-button--primary:visited {
+    background: $mint;
+    border-color: $mint;
+    color: $navy-deep;
+}
+
+.banner-button--primary:hover {
+    background: #fff;
+    border-color: #fff;
+    color: $navy-deep;
+}
+
+.page-banner--large {
+    padding: 4.5rem 0 4rem;
+
+    .page-banner__title {
+        font-size: 3rem;
+        line-height: 1.1;
     }
 
-    h1 {
-        margin: 0 0 0.25rem 0;
-        color: $text-color;
+    .page-banner__subtitle {
+        font-size: 1.15rem;
     }
 
-    h2 {
-        margin: 0 0 1rem 0;
-        color: #666;
-        font-weight: 500;
+    .page-banner__image {
+        width: 66%;
+        opacity: 0.5;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .page-banner {
+        padding: 2rem 0 1.85rem;
+    }
+
+    .page-banner__title {
+        font-size: 1.6rem;
+    }
+
+    .page-banner__image {
+        width: 100%;
+        opacity: 0.22;
+    }
+
+    .page-banner--large {
+        padding: 2.75rem 0 2.5rem;
+
+        .page-banner__title {
+            font-size: 2.2rem;
+        }
+
+        .page-banner__subtitle {
+            font-size: 1.02rem;
+        }
+
+        .page-banner__image {
+            width: 100%;
+            opacity: 0.3;
+        }
+    }
+}
+
+// Section headings with a short navy rule
+.section-heading,
+.post-content .section-heading,
+.work-experience-section h2,
+.education-section h2 {
+    position: relative;
+    font-size: 1.5rem;
+    margin: 0 0 1.5rem;
+    padding-bottom: 0.6rem;
+    border-bottom: 1px solid $line;
+
+    &::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        bottom: -1px;
+        width: 48px;
+        height: 2px;
+        background: $navy;
+    }
+}
+
+.section-intro {
+    max-width: 46em;
+    color: $muted;
+}
+
+// Home: bio with a sidebar of interests and contact details
+.bio {
+    display: grid;
+    grid-template-columns: 240px minmax(0, 1fr);
+    gap: 3.5rem;
+    align-items: start;
+}
+
+.bio__photo {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 6px;
+}
+
+.side-heading,
+.post-content .side-heading {
+    margin: 2rem 0 0.6rem;
+    font-family: $base-font-family;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: $muted;
+}
+
+.interest-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+
+    li {
+        margin: 0;
+        padding: 0.45rem 0;
+        border-bottom: 1px solid $line;
+        font-size: 0.93rem;
+        color: $ink;
+    }
+}
+
+.side-text {
+    margin: 0;
+    font-size: 0.93rem;
+    color: $muted;
+    overflow-wrap: anywhere;
+}
+
+.bio__main {
+    .lead {
+        font-size: 1.15rem;
+        line-height: 1.6;
+        color: $ink;
+    }
+}
+
+.callout {
+    margin: 2rem 0 2.75rem;
+    padding: 1.35rem 1.6rem;
+    background: $mint-wash;
+    border-left: 3px solid $navy;
+    border-radius: 0 6px 6px 0;
+
+    p {
+        margin: 0 0 0.5rem;
+        font-size: 0.95rem;
+        color: $muted;
+    }
+
+    h3,
+    .post-content & h3 {
+        margin: 0 0 0.4rem;
         font-size: 1.2rem;
     }
-    
-    p {
-        margin-bottom: 1rem;
-        line-height: 1.6;
+
+    a {
+        font-weight: 500;
+    }
+
+    p:last-child {
+        margin-bottom: 0;
     }
 }
 
-.contact-brief {
-    background-color: $secondary-color;
-    padding: 1.5rem;
-    border-radius: 8px;
-    margin-bottom: 2rem;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-    
+.callout__label,
+.callout p.callout__label {
+    margin: 0 0 0.4rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: $navy;
+}
+
+.facts {
+    display: grid;
+    grid-template-columns: 4rem minmax(0, 1fr);
+    column-gap: 1.25rem;
+    row-gap: 1rem;
+    margin: 0;
+
+    dt {
+        font-weight: 600;
+        color: $navy;
+        font-variant-numeric: tabular-nums;
+    }
+
+    dd {
+        margin: 0;
+        color: $ink;
+    }
+
+    .facts__where {
+        display: block;
+        font-size: 0.92rem;
+        color: $muted;
+    }
+}
+
+.home-section {
+    margin-top: 4.5rem;
+}
+
+.focus-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 2.5rem;
+    margin-top: 1.5rem;
+}
+
+.focus-item {
+    padding: 1.25rem 0 1.5rem;
+    border-top: 1px solid $line;
+
+    h3,
+    .post-content & h3 {
+        margin: 0.15rem 0 0.4rem;
+        font-size: 1.15rem;
+    }
+
     p {
-        margin: 0.5rem 0;
+        margin: 0;
+        font-size: 0.95rem;
+        color: $muted;
+    }
+}
+
+.focus-item__num {
+    font-family: $serif;
+    font-size: 0.95rem;
+    color: $navy;
+    opacity: 0.6;
+}
+
+@media screen and (max-width: 768px) {
+    .bio {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 2rem;
+    }
+
+    .bio__side {
+        display: grid;
+        grid-template-columns: 120px minmax(0, 1fr);
+        column-gap: 1.25rem;
+        align-items: start;
+    }
+
+    .bio__photo {
+        grid-row: span 2;
+    }
+
+    .bio__side .side-heading:first-of-type {
+        margin-top: 0;
+    }
+
+    .bio__side .interest-list,
+    .bio__side .side-heading,
+    .bio__side .side-text {
+        grid-column: 2;
+    }
+
+    .bio__side .side-heading ~ .side-heading,
+    .bio__side .side-heading ~ .side-text {
+        grid-column: 1 / -1;
+    }
+
+    .focus-grid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .home-section {
+        margin-top: 3.5rem;
+    }
+}
+
+// CV page
+.contact-brief {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 2.5rem;
+    margin: 0 0 3rem;
+    padding: 1.25rem 1.5rem;
+    background: $tint;
+    border-radius: 6px;
+
+    p {
+        margin: 0;
     }
 }
 
 .profile-link {
-    color: $primary-color;
+    color: $navy;
     text-decoration: none;
-    transition: color 0.2s;
-    
+    transition: color 0.15s;
+
     &:hover {
-        color: darken($primary-color, 15%);
+        color: $link-hover;
         text-decoration: underline;
     }
 }
@@ -393,25 +732,7 @@ a {
 // Work Experience and Education sections
 .work-experience-section,
 .education-section {
-    max-width: 800px;
-    margin: 0 auto;
-    margin-bottom: 3rem;
-    
-    h2 {
-        margin-bottom: 1.5rem;
-        position: relative;
-        padding-bottom: 0.5rem;
-        
-        &:after {
-            content: '';
-            position: absolute;
-            left: 0;
-            bottom: 0;
-            width: 50px;
-            height: 3px;
-            background-color: $primary-color;
-        }
-    }
+    margin: 0 0 3.5rem;
 }
 
 .education-timeline {
@@ -420,51 +741,52 @@ a {
 
 .education-item {
     display: flex;
-    margin-bottom: 2rem;
     position: relative;
 }
 
 .education-year {
-    flex: 0 0 150px;
-    font-weight: 600;
-    color: #555;
+    flex: 0 0 140px;
     padding-right: 20px;
+    font-weight: 600;
+    color: $navy;
+    font-variant-numeric: tabular-nums;
 }
 
 .education-content {
     flex: 1;
-    border-left: 3px solid $primary-color;
-    padding-left: 20px;
     position: relative;
-    
+    padding: 0 0 2rem 1.5rem;
+    border-left: 2px solid $line;
+
     &::before {
         content: '';
         position: absolute;
-        left: -9px;
-        top: 0;
-        width: 15px;
-        height: 15px;
+        left: -7px;
+        top: 0.35rem;
+        width: 12px;
+        height: 12px;
+        box-sizing: border-box;
         border-radius: 50%;
-        background: $primary-color;
+        border: 2px solid $navy;
+        background: #fff;
     }
-    
+
     h3 {
-        margin: 0 0 5px 0;
-        color: #24292e;
-        font-size: 1.2em;
+        margin: 0 0 4px;
+        font-size: 1.15rem;
     }
 
     h4 {
-        margin: 0 0 10px 0;
-        color: #586069;
-        font-size: 1em;
+        margin: 0 0 10px;
+        font-size: 0.97rem;
         font-weight: 500;
+        color: $muted;
     }
 
     ul {
         margin: 0;
         padding-left: 20px;
-        color: #444;
+        color: $text-color;
     }
 
     li {
@@ -472,201 +794,107 @@ a {
     }
 }
 
-// Publications and thesis
-.thesis-card {
-    background: white;
-    border-radius: 8px;
-    padding: 2rem;
-    margin: 2rem 0;
-    box-shadow: 0 2px 15px rgba(0,0,0,0.1);
-    border-left: 4px solid $primary-color;
-
-    h3 {
-        margin: 0 0 1rem 0;
-        color: $text-color;
-        font-size: 1.4em;
-    }
-
-    .thesis-meta {
-        color: lighten($text-color, 20%);
-        font-size: 1.1em;
-        margin-bottom: 0.5rem;
-    }
-
-    .thesis-supervisors {
-        color: lighten($text-color, 30%);
-        font-style: italic;
-        margin-bottom: 1.5rem;
-    }
-
-    .thesis-links {
-        display: flex;
-        gap: 1rem;
-        align-items: center;
-        flex-wrap: wrap;
-
-        .thesis-download {
-            background: $primary-color;
-            color: white;
-            padding: 0.5rem 1rem;
-            border-radius: 4px;
-            text-decoration: none;
-            transition: background 0.2s ease;
-
-            &:hover {
-                background: darken($primary-color, 10%);
-            }
-        }
-
-        .thesis-doi {
-            color: lighten($text-color, 20%);
-            font-size: 0.9em;
-        }
-    }
-}
-
-// Blog posts
-.blog-posts {
-    margin: 2em 0;
-    
-    .post-preview {
-        margin-bottom: 2em;
-        padding-bottom: 1em;
-        border-bottom: 1px solid #eee;
-        
-        h2 {
-            margin-bottom: 0.5em;
-            
-            a {
-                color: $text-color;
-                text-decoration: none;
-                
-                &:hover {
-                    color: $primary-color;
-                }
-            }
-        }
-        
-        .post-meta {
-            color: lighten($text-color, 20%);
-            font-size: 0.9em;
-            margin-bottom: 1em;
-        }
-        
-        .read-more {
-            display: inline-block;
-            margin-top: 1em;
-            color: $primary-color;
-            text-decoration: none;
-            
-            &:hover {
-                text-decoration: underline;
-            }
-        }
-    }
-}
-
-// Contact section
-.contact {
-    background: $secondary-color;
-    padding: 2rem;
-    border-radius: 8px;
-    margin-top: 1rem;
-    max-width: $max-width;
-    margin: 0 auto;
-
-    h2 {
-        color: $text-color;
-        margin-bottom: 1.5rem;
-    }
-
-    p {
-        margin: 0.5rem 0;
-    }
-
-    a {
-        color: $primary-color;
-        text-decoration: none;
-        
-        &:hover {
-            text-decoration: underline;
-        }
-    }
+.education-item:first-child .education-content::before {
+    background: $navy;
 }
 
 // Footer
 .site-footer {
-    background: $secondary-color;
-    padding: 2rem 0;
-    margin-top: 4rem;
-    
-    .footer-col {
-        margin-bottom: 1rem;
+    margin-top: 0;
+    padding: 3rem 0 0;
+    border: 0;
+    background: $navy-deep;
+    color: rgba(255,255,255,0.72);
+    font-size: 0.92rem;
+
+    p {
+        margin: 0 0 0.5rem;
     }
-    
-    .social-links {
-        text-align: right;
-        
-        @media screen and (max-width: 600px) {
-            text-align: center;
-        }
+
+    a,
+    a:visited {
+        color: rgba(255,255,255,0.88);
+        text-decoration: none;
+    }
+
+    a:hover {
+        color: $mint;
+        text-decoration: underline;
     }
 }
 
-// Tools section styling
-.tools-grid {
+.footer-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-template-columns: 1.4fr 1.2fr 1fr;
     gap: 2rem;
-    margin: 2rem 0;
-    
-    .tool-card {
-        background: white;
-        border-radius: 8px;
-        padding: 1.5rem;
-        box-shadow: 0 2px 15px rgba(0,0,0,0.1);
-        transition: transform 0.2s ease;
-        
-        &:hover {
-            transform: translateY(-3px);
-        }
-        
-        h3 {
-            margin: 0 0 1rem 0;
-            color: $primary-color;
-        }
-        
-        p {
-            margin: 0;
-            color: lighten($text-color, 20%);
-        }
+    padding-bottom: 2rem;
+}
+
+.footer-name {
+    font-family: $serif;
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: #fff;
+}
+
+.footer-heading {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: $mint;
+}
+
+.footer-links {
+    list-style: none;
+    margin: 0;
+
+    li {
+        margin-bottom: 0.3rem;
+    }
+}
+
+.footer-bottom {
+    padding-top: 1.25rem;
+    padding-bottom: 1.5rem;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    font-size: 0.85rem;
+    color: rgba(255,255,255,0.5);
+
+    p {
+        margin: 0;
     }
 }
 
 // Responsive adjustments
 @media (max-width: 768px) {
-    .profile {
-        flex-direction: column;
-        align-items: center;
-        text-align: center;
-        
-        img {
-            width: 180px;
-            height: 180px;
-            margin-bottom: 1rem;
-        }
+    .page-content {
+        padding: 2rem 0 3rem;
     }
-    
+
     .education-item {
         flex-direction: column;
     }
-    
+
+    // In a column, the 140px flex-basis would become height
     .education-year {
+        flex: none;
         margin-bottom: 0.5rem;
         padding-right: 0;
     }
-    
+
     .education-content {
-        margin-left: 10px;
+        margin-left: 6px;
+    }
+
+    .footer-grid {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 1.25rem;
+    }
+}
+
+@media (max-width: 600px) {
+    .wrapper {
+        padding: 0 16px;
     }
 }

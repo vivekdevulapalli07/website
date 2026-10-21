@@ -9,3 +9,4 @@ Welcome to the interactive tools section. Here you'll find various calculators a
 - [Angle Calculator](/website/tools/angle-calculator) - Calculate angles between crystallographic planes
 - [Schmid Factor Calculator](/website/tools/schmid-factor) - Calculate Schmid factors and resolved shear stress for slip systems
 - [Aberration Visualisation](/website/tools/aberration-visualisation) - Interactive aberration explorer: how defocus, astigmatism, coma, spherical and chromatic aberration shape the electron probe, with live FFT-computed probes, CTF and a simulated Si ⟨110⟩ STEM image
+- [Grain Misorientation Calculator](/website/tools/grain-misorientation-calc) - Calculate the misorientation angle between two grain orientations from Euler angles

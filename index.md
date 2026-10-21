@@ -1,18 +1,29 @@
 ---
 layout: page
 title: Research
+banner: large
+headline: Vivek Devulapalli
+eyebrow: Postdoctoral Researcher · Empa, Thun
+subtitle: I use aberration-corrected and in situ electron microscopy to connect atomic structure to how metals and thin films deform and fail.
+banner_links:
+  - label: Download CV
+    url: /assets/Devulapalli_CV.pdf
+  - label: Google Scholar
+    url: https://scholar.google.com/citations?user=TE3lrxoAAAAJ&hl=en
+  - label: Email
+    url: mailto:vivek.devulapalli@empa.ch
 ---
 
 <style>
 	/* Carousel Styles */
 	.carousel {
 		position: relative;
-		max-width: 800px;
-		margin: 2rem auto;
+		max-width: 860px;
+		margin: 0 auto;
 		overflow: hidden;
 		aspect-ratio: 16/9;
-		background: #f8f9fa;
-		border-radius: 8px;
+		background: #f3f6f8;
+		border-radius: 6px;
 	}
 
 	.carousel .slide {
@@ -62,7 +73,7 @@ title: Research
 		position: absolute;
 		top: 50%;
 		transform: translateY(-50%);
-		background: rgba(0,0,0,0.5);
+		background: rgba(8,47,71,0.6);
 		color: white;
 		padding: 1rem;
 		border: none;
@@ -78,7 +89,7 @@ title: Research
 	}
 
 	.carousel-control:hover {
-		background: rgba(0,0,0,0.7);
+		background: rgba(8,47,71,0.85);
 	}
 
 	.carousel-control.prev {
@@ -105,23 +116,23 @@ title: Research
 		height: 10px;
 		border-radius: 50%;
 		border: none;
-		background: #ccc;
+		background: #c5ced6;
 		cursor: pointer;
 		padding: 0;
 	}
 
 	.carousel-indicators button.active {
-		background: #666;
+		background: #0c4466;
 	}
 
 	.carousel-indicators button:hover {
-		background: #999;
+		background: #5c6773;
 	}
 
 	.caption {
 		text-align: center;
 		margin-top: 1rem;
-		color: #333;
+		color: #5c6773;
 		font-size: 0.9rem;
 		padding: 0 1rem;
 	}
@@ -177,66 +188,58 @@ title: Research
 			margin-top: 0.5rem;
 			font-size: 0.85rem;
 		}
-
-		.research-overview {
-			margin-top: 2rem;
-			padding: 0;
-		}
-	}
-
-	/* Research Overview Section */
-	.research-overview {
-		max-width: 800px;
-		margin: 4rem auto 2rem;
-		padding: 0 1rem;
-		text-align: center;
-	}
-
-	.research-overview h2 {
-		color: #333;
-		margin-bottom: 1.5rem;
-	}
-
-	.research-overview p {
-		font-size: 1.1rem;
-		line-height: 1.7;
-		color: #555;
-		margin-bottom: 1rem;
-	}
-
-	.research-highlights {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-		gap: 2rem;
-		margin: 3rem auto;
-		max-width: 800px;
-	}
-
-	.highlight-card {
-		background: white;
-		padding: 1.5rem;
-		border-radius: 8px;
-		box-shadow: 0 2px 15px rgba(0,0,0,0.1);
-		transition: transform 0.2s ease;
-	}
-
-	.highlight-card:hover {
-		transform: translateY(-3px);
-	}
-
-	.highlight-card h3 {
-		color: #0066cc;
-		margin-bottom: 1rem;
-	}
-
-	.highlight-card p {
-		color: #666;
-		font-size: 0.95rem;
-		line-height: 1.6;
 	}
 </style>
 
-<!-- Research Carousel -->
+<section class="bio">
+	<aside class="bio__side">
+		<img class="bio__photo" src="{{ site.baseurl }}/assets/images/Vivek_CV_picture.jpg" alt="Portrait of Vivek Devulapalli">
+
+		<h2 class="side-heading">Research interests</h2>
+		<ul class="interest-list">
+			<li>Aberration-corrected STEM</li>
+			<li>In situ TEM mechanical testing</li>
+			<li>4D-STEM</li>
+			<li>Grain boundaries &amp; segregation</li>
+			<li>Metallic &amp; amorphous multilayers</li>
+			<li>Hydrogen embrittlement</li>
+			<li>Correlative microscopy &amp; APT</li>
+			<li>STEM image simulation</li>
+		</ul>
+
+		<h2 class="side-heading">Contact</h2>
+		<p class="side-text">
+			<a href="mailto:vivek.devulapalli@empa.ch">vivek.devulapalli@empa.ch</a><br>
+			Laboratory for Mechanics of Materials and Nanostructures, Empa, Thun
+		</p>
+	</aside>
+
+	<div class="bio__main">
+		<h2 class="section-heading">About</h2>
+		<p class="lead">I'm a materials scientist specializing in advanced electron microscopy. I study materials ranging from metals to semiconductors, using aberration-corrected STEM to connect atomic structure and composition to properties across length scales.</p>
+		<p>My work combines multidimensional imaging, analytical techniques and STEM simulations for in-depth materials characterization. At Empa I investigate the deformation mechanics of metals and multilayer thin films with in situ TEM tensile testing, and develop methods for observing nanoscale phenomena in real time. Before that, I was a PhD student and postdoc at the Max-Planck-Institut für Eisenforschung in Düsseldorf. I care about open science and science communication.</p>
+
+		<div class="callout">
+			<p class="callout__label">Current fellowship</p>
+			<h3>Mapping nanoscale deformation mechanics in amorphous oxide multilayer coatings (MOSAIC)</h3>
+			<p>Empa Young Scientist Fellowship 2026 · Principal investigator · CHF 270,000</p>
+			<p><a href="{{ site.baseurl }}/proposal/eysf-2026/">Read about the project &rarr;</a></p>
+		</div>
+
+		<h2 class="section-heading">Education</h2>
+		<dl class="facts">
+			<dt>2022</dt>
+			<dd>Ph.D. · <em>Microstructure and grain boundary evolution in titanium thin films</em><span class="facts__where">Max-Planck-Institut für Eisenforschung, Düsseldorf</span></dd>
+			<dt>2018</dt>
+			<dd>M.Tech., Metallurgical and Materials Engineering<span class="facts__where">Indian Institute of Technology Madras</span></dd>
+			<dt>2016</dt>
+			<dd>B.Tech., Metallurgical Engineering<span class="facts__where">National Institute of Technology Raipur</span></dd>
+		</dl>
+	</div>
+</section>
+
+<section class="home-section">
+	<h2 class="section-heading">Research highlights</h2>
 <div class="carousel" id="research-carousel">
 	<div class="carousel-inner">
 		{% for image in site.data.research_images %}
@@ -277,36 +280,38 @@ title: Research
 	</div>
 </div>
 
-<!-- Research Overview Section -->
-<div class="research-overview">
-	<h2>Research Focus</h2>
-	<p>My research focuses on understanding materials behavior at the atomic scale using advanced electron microscopy techniques. I specialize in aberration-corrected STEM, in-situ TEM testing, and multidimensional characterization to connect structure and properties across different length scales.</p>
-	
-	<p>Currently at EMPA, I investigate deformation mechanics of metals and multilayer thin films using in-situ tensile testing, while developing new methodologies for real-time observation of nanoscale phenomena.</p>
-</div>
+</section>
 
-<!-- Research Highlights -->
-<div class="research-highlights">
-	<div class="highlight-card">
-		<h3>Advanced Electron Microscopy</h3>
-		<p>Aberration-corrected STEM imaging, analytical techniques, and STEM simulations for atomic-scale material characterization.</p>
+<section class="home-section">
+	<h2 class="section-heading">Research focus</h2>
+	<p class="section-intro">I study how materials behave at the atomic scale, combining aberration-corrected STEM, in situ TEM testing and multidimensional characterization to connect structure and properties across length scales.</p>
+
+	<div class="focus-grid">
+		<div class="focus-item">
+			<span class="focus-item__num">01</span>
+			<h3>Advanced electron microscopy</h3>
+			<p>Aberration-corrected STEM imaging, analytical techniques and STEM simulations for atomic-scale characterization.</p>
+		</div>
+
+		<div class="focus-item">
+			<span class="focus-item__num">02</span>
+			<h3>In situ TEM testing</h3>
+			<p>Real-time observation of deformation mechanisms in metals and multilayer thin films using specialized TEM holders.</p>
+		</div>
+
+		<div class="focus-item">
+			<span class="focus-item__num">03</span>
+			<h3>Grain boundary engineering</h3>
+			<p>Grain boundary structure, segregation phenomena and their impact on material properties.</p>
+		</div>
+
+		<div class="focus-item">
+			<span class="focus-item__num">04</span>
+			<h3>Multiscale characterization</h3>
+			<p>Connecting atomic structure and composition to macroscopic properties through comprehensive materials analysis.</p>
+		</div>
 	</div>
-	
-	<div class="highlight-card">
-		<h3>In-situ TEM Testing</h3>
-		<p>Real-time observation of deformation mechanisms in metals and multilayer thin films using specialized TEM holders.</p>
-	</div>
-	
-	<div class="highlight-card">
-		<h3>Grain Boundary Engineering</h3>
-		<p>Understanding grain boundary structure, segregation phenomena, and their impact on material properties.</p>
-	</div>
-	
-	<div class="highlight-card">
-		<h3>Multiscale Characterization</h3>
-		<p>Connecting atomic structure and composition to macroscopic properties through comprehensive material analysis.</p>
-	</div>
-</div>
+</section>
 
 <script>
 	let slideIndex = 1;

@@ -1,3 +1,37 @@
-<div class="footer-content">
-    <p>&copy; {{ site.time | date: '%Y' }} {{ site.title }}. All rights reserved.</p>
-</div>
+<footer class="site-footer">
+  <div class="wrapper footer-grid">
+    <div class="footer-block">
+      <p class="footer-name">{{ site.title }}</p>
+      <p>Postdoctoral Researcher<br>
+         Laboratory for Mechanics of Materials and Nanostructures<br>
+         Empa, Thun, Switzerland</p>
+    </div>
+
+    <div class="footer-block">
+      <p class="footer-heading">Contact</p>
+      <p><a href="mailto:vivek.devulapalli@empa.ch">vivek.devulapalli@empa.ch</a><br>
+         Nunenenstrasse 38, Thun 3600</p>
+    </div>
+
+    <div class="footer-block">
+      <p class="footer-heading">Profiles</p>
+      <ul class="footer-links">
+        {%- for link in site.minima.social_links %}
+          {%- case link.platform %}
+            {%- when 'github' %}{% assign label = 'GitHub' %}
+            {%- when 'linkedin' %}{% assign label = 'LinkedIn' %}
+            {%- when 'google_scholar' %}{% assign label = 'Google Scholar' %}
+            {%- when 'orcid' %}{% assign label = 'ORCID' %}
+            {%- when 'web_of_science' %}{% assign label = 'Web of Science' %}
+            {%- else %}{% assign label = link.platform %}
+          {%- endcase %}
+        <li><a href="{{ link.user_url }}" target="_blank" rel="noopener">{{ label }}</a></li>
+        {%- endfor %}
+      </ul>
+    </div>
+  </div>
+
+  <div class="wrapper footer-bottom">
+    <p>&copy; {{ site.time | date: '%Y' }} {{ site.title }}</p>
+  </div>
+</footer>

@@ -1,0 +1,28 @@
+<!-- Navy title banner shown at the top of every page. Front matter:
+     headline (defaults to title), eyebrow, subtitle, banner_links, and
+     banner: large | false -->
+<section class="page-banner{% if page.banner == 'large' %} page-banner--large{% endif %}">
+  <div class="page-banner__image" aria-hidden="true"
+       style="background-image: url('{{ '/assets/images/banner-lattice.jpg' | relative_url }}');"></div>
+  <div class="wrapper">
+    {%- if page.eyebrow %}
+    <p class="page-banner__eyebrow">{{ page.eyebrow }}</p>
+    {%- endif %}
+    <h1 class="page-banner__title">{{ page.headline | default: page.title }}</h1>
+    {%- if page.subtitle %}
+    <p class="page-banner__subtitle">{{ page.subtitle }}</p>
+    {%- endif %}
+    {%- if page.banner_links %}
+    <p class="page-banner__links">
+      {%- for link in page.banner_links %}
+        {%- if link.url contains '://' or link.url contains 'mailto:' %}
+          {%- assign href = link.url %}
+        {%- else %}
+          {%- assign href = link.url | relative_url %}
+        {%- endif %}
+      <a class="banner-button{% if forloop.first %} banner-button--primary{% endif %}" href="{{ href }}"{% if link.url contains '://' or link.url contains '.pdf' %} target="_blank" rel="noopener"{% endif %}>{{ link.label }}</a>
+      {%- endfor %}
+    </p>
+    {%- endif %}
+  </div>
+</section>

@@ -2,12 +2,10 @@
 layout: page
 title: Empa Young Scientist Fellowship 2026
 permalink: /proposal/eysf-2026/
+eyebrow: Empa Young Scientist Fellowship 2026 · Awarded
+headline: Nanoscale Mechanics of Amorphous/Amorphous Nanolaminates
+subtitle: Principal investigator · CHF 270,000
 ---
-
-<div class="proposal-header">
-    <h1>Nanoscale Mechanics of Amorphous/Amorphous Nanolaminates</h1>
-    <p class="subtitle">Empa Young Scientist Fellowship 2026 — Awarded (CHF 270,000), PI</p>
-</div>
 
 <div class="proposal-image-container">
     <img src="{{ '/assets/images/proposal-overview.png' | relative_url }}" alt="Project Overview - A/A Nanolaminates Testing" class="proposal-overview-image">
@@ -105,25 +103,6 @@ If you have questions about this research or are interested in collaboration opp
 **Email:** [vivek.devulapalli@empa.ch](mailto:vivek.devulapalli@empa.ch)
 
 <style>
-.proposal-header {
-    text-align: center;
-    margin-bottom: 3rem;
-    padding: 2rem 0;
-    border-bottom: 2px solid #e1e4e8;
-}
-
-.proposal-header h1 {
-    color: #2c3e50;
-    margin-bottom: 0.5rem;
-    font-size: 2.2em;
-}
-
-.subtitle {
-    color: #7f8c8d;
-    font-size: 1.2em;
-    font-style: italic;
-}
-
 .methodology {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -132,14 +111,14 @@ If you have questions about this research or are interested in collaboration opp
 }
 
 .method-item {
-    background: #f8f9fa;
+    background: #f3f6f8;
     padding: 1.5rem;
-    border-radius: 8px;
-    border-left: 4px solid #3498db;
+    border-radius: 6px;
+    border-left: 4px solid #0c4466;
 }
 
 .method-item h4 {
-    color: #2c3e50;
+    color: #14202b;
     margin-bottom: 0.5rem;
     font-size: 1.1em;
 }
@@ -169,14 +148,14 @@ If you have questions about this research or are interested in collaboration opp
 
 .faq-section summary {
     cursor: pointer;
-    color: #2c3e50;
+    color: #14202b;
     font-size: 1.1em;
     padding: 0.5rem 0;
     user-select: none;
 }
 
 .faq-section summary:hover {
-    color: #3498db;
+    color: #0c4466;
 }
 
 .faq-answer {
@@ -195,7 +174,7 @@ If you have questions about this research or are interested in collaboration opp
 }
 
 .faq-answer strong {
-    color: #2c3e50;
+    color: #14202b;
 }
 
 .proposal-download {
@@ -214,7 +193,7 @@ If you have questions about this research or are interested in collaboration opp
 }
 
 .proposal-image-container {
-    margin: 2rem auto 3rem;
+    margin: 0 auto 3rem;
     text-align: center;
     max-width: 100%;
 }
@@ -255,9 +234,6 @@ If you have questions about this research or are interested in collaboration opp
 }
 
 @media screen and (max-width: 768px) {
-    .proposal-header h1 {
-        font-size: 1.6em;
-    }
     
     .methodology {
         grid-template-columns: 1fr;
